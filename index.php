@@ -10,7 +10,7 @@
 	$request_method = 'GET' ;
 
 	// TwitterのユーザID(入力値を格納)
-    $twitter_id = "SpursJapan";
+    $twitter_id = "kirschwas_25";
     
     // htmlテキストを格納する変数を予め生成
     $html = '' ;
@@ -127,18 +127,10 @@
 
 	// アカウントが非公開ユーザでいいねにアクセスできない場合、以降の処理を行わず、終了
     if($array_user['protected']){
-        echo("指定したID [" . $twitter_id . "] は、非公開設定のユーザのため、いいねを取得できません。\n");
+        echo("指定されたID [" . $twitter_id . "] は、非公開設定のユーザのため、いいねを取得できません。");
         // 以降の処理を行わず、終了
         exit();
-	}
-
-	// $array_userが取得できない場合、以降の処理を行わず、終了
-	if(count($array_user) == 0){
-		echo("何らかの理由で、指定したID [" . $twitter_id . "] の情報を取得できませんでした。\n");
-        // 以降の処理を行わず、終了
-        exit();
-	}
-	
+    }
 
 	// タイトル
 	// $html .= '<h1 style="text-align:center; border-bottom:1px solid #555; padding-bottom:12px; margin-bottom:48px; color:#D36015;">GET users/show</h1>' ;
@@ -372,11 +364,11 @@
 				print_r($array['errors']);
 				echo "</pre>";
 				if($array['errors'][0]['code'] === 32){
-					echo("ユーザ認証ができませんでした。\n");
+					echo("認証でエラーが発生しました\n");
 				} elseif($array['errors'][0]['code'] === 88){
 					echo("APIの使用回数の上限に達したため、Twitterにアクセスできません。\n");
 				} else {
-					echo("何らかのエラーが発生しました。申し訳ございません。\n");
+					echo("何らかのエラーが発生しました\n");
 				}
 				break;
 			};
@@ -389,8 +381,7 @@
 			// $MAX_LOOP回ループして、$display_num個以上のいいねを取得できない場合、break
 			if($loop_count > $MAX_LOOP){
 				echo("\n");
-				echo("指定した日付の範囲内で " . $display_num . " 件のいいねがありませんでした。\n");
-				echo("そのため、指定した日付の範囲内の" . count($array) . "件のいいねを表示します。");
+				echo("指定した日付の範囲内で " . $display_num. " 件のいいねがありませんでした。\n");
 				break;
 			};
             
@@ -415,8 +406,8 @@
 
         $html .= '<h2>取得したデータ</h2>' ;
         $html .= '<p>下記のデータを取得できました。</p>' ;
-        $html .=     '<h3>ボディ(JSON)</h3>' ;
-        $html .=     '<p><textarea style="width:80%" rows="8">' . $json . '</textarea></p>' ;
+        // $html .=     '<h3>ボディ(JSON)</h3>' ;
+        // $html .=     '<p><textarea style="width:80%" rows="8">' . $json . '</textarea></p>' ;
         $html .=     '<h3>レスポンスヘッダー</h3>' ;
         $html .=     '<p><textarea style="width:80%" rows="8">' . $header . '</textarea></p>' ;        // 検証用
         $html .= '<h2>リクエストしたデータ</h2>' ;
@@ -445,6 +436,9 @@
             if($display_count >= $display_num){break;}
         }
     }
+
+	// DEBUG フッターを出力
+    $html .= '<small style="display:block; border-top:1px solid #555; padding-top:12px; margin-top:72px; text-align:center; font-weight:700;">プログラムの説明: <a href="https://syncer.jp/Web/API/Twitter/REST_API/GET/favorites/list/" target="_blank">SYNCER</a></small>' ;
 
     echo $html ;
 ?>
