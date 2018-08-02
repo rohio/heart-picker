@@ -20,9 +20,7 @@
                     <input type="text" name="end_date" placeholder="yyyy/mm/dd">
                     <!-- <button type="submit" id="login-button-head">GET!</button> -->
                     <button type="submit">GET!</button>
-                    <br>
-                    <blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">サンムーンS2【最高レート2102】2100達成愚地流滅殺構築 <br>SM最高レート更新とはいきませんでしたが今の私の全力の全力を尽くしたパーティです！是非ご覧になってください！<a href="https://t.co/POHNKg4tRb">https://t.co/POHNKg4tRb</a></p>&mdash; かっと (@pocketermm) <a href="https://twitter.com/pocketermm/status/844126961475624960?ref_src=twsrc%5Etfw">2017年3月21日</a></blockquote>
-                    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                    
 
 					<?php
 
@@ -228,8 +226,8 @@ $display_num = $_GET['display_num'];
 // $end_date = "2015/09/28";
 
 //DEBUG
-$begin_date = "";
-$end_date = "";
+$begin_date = $_GET['begin_date'];
+$end_date = $_GET['end_date'];
 
 // 一度のAPIへのアクセスで取得するいいねの件数
 $GET_NUM = 200;
@@ -287,7 +285,7 @@ if($array_user["favourites_count"] > $GET_NUM){
 // TODO この分岐必要?
 // いいね数が$display_numより小さい場合、メッセージを表示し、終了
 if($array_user["favourites_count"] < $display_num){
-	echo('display_num down ');
+	echo('指定したユーザのいいね数が、指定した表示件数より少ないため、表示できませんでした。');
 } else {    //いいね数が$display_numより大きい場合、いいねを取得し、表示
 	// ループ回数をカウント
 	$loop_count = 1;

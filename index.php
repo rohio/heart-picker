@@ -22,8 +22,6 @@
                     <!-- <button type="submit" id="login-button-head">GET!</button> -->
                     <button type="submit">GET!</button>
                     <br>
-                    <blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">サンムーンS2【最高レート2102】2100達成愚地流滅殺構築 <br>SM最高レート更新とはいきませんでしたが今の私の全力の全力を尽くしたパーティです！是非ご覧になってください！<a href="https://t.co/POHNKg4tRb">https://t.co/POHNKg4tRb</a></p>&mdash; かっと (@pocketermm) <a href="https://twitter.com/pocketermm/status/844126961475624960?ref_src=twsrc%5Etfw">2017年3月21日</a></blockquote>
-                    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
                 </form>                
             </div>
 
