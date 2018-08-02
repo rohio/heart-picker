@@ -19,7 +19,7 @@
                     日付指定範囲(終了日)
                     <input type="text" name="end_date" placeholder="yyyy/mm/dd">
                     <!-- <button type="submit" id="login-button-head">GET!</button> -->
-                    <button type="submit">GET!</button>
+                    <button type="submit">GET!</button><br>
                     
 
 					<?php
@@ -443,12 +443,12 @@ if($array_user["favourites_count"] < $display_num){
 	// $html .=     '<p><textarea style="width:80%" rows="8">' . $json . '</textarea></p>' ;
 	$html .=     '<h3>レスポンスヘッダー</h3>' ;
 	$html .=     '<p><textarea style="width:80%" rows="8">' . $header . '</textarea></p>' ;        // 検証用
-	$html .= '<h2>リクエストしたデータ</h2>' ;
-	$html .= '<p>下記内容でリクエストをしました。</p>' ;
-	$html .=     '<h3>URL</h3>' ;
-	$html .=     '<p><textarea style="width:80%" rows="8">' . $context['http']['method'] . ' ' . $request_url . '</textarea></p>' ;
-	$html .=     '<h3>ヘッダー</h3>' ; 
-	$html .=     '<p><textarea style="width:80%" rows="8">' . implode( "\r\n" , $context['http']['header'] ) . '</textarea></p>' ;
+	// $html .= '<h2>リクエストしたデータ</h2>' ;
+	// $html .= '<p>下記内容でリクエストをしました。</p>' ;
+	// $html .=     '<h3>URL</h3>' ;
+	// $html .=     '<p><textarea style="width:80%" rows="8">' . $context['http']['method'] . ' ' . $request_url . '</textarea></p>' ;
+	// $html .=     '<h3>ヘッダー</h3>' ; 
+	// $html .=     '<p><textarea style="width:80%" rows="8">' . implode( "\r\n" , $context['http']['header'] ) . '</textarea></p>' ;
 
 	$html .= '<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>';
 
