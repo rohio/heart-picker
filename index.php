@@ -10,11 +10,13 @@
         <div class="wrapper">
             <div class="container">
 
-                <h1>Welcome</h1>
+                <h1>はーとぴっかー</h1>
                 
                 <form class="form" action="heart.php" method="get">
+                    必須だよ
                     <input type="text" name="twitter_id" placeholder="TwitterID">
                     <input type="text" name="display_num" placeholder="表示件数">
+                    以降は、必須じゃないよ<br>
                     日付指定範囲(開始日)
                     <input type="text" name="begin_date" placeholder="yyyy/mm/dd">
                     日付指定範囲(終了日)
