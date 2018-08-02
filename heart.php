@@ -415,8 +415,8 @@
 
         $html .= '<h2>取得したデータ</h2>' ;
         $html .= '<p>下記のデータを取得できました。</p>' ;
-        $html .=     '<h3>ボディ(JSON)</h3>' ;
-        $html .=     '<p><textarea style="width:80%" rows="8">' . $json . '</textarea></p>' ;
+        // $html .=     '<h3>ボディ(JSON)</h3>' ;
+        // $html .=     '<p><textarea style="width:80%" rows="8">' . $json . '</textarea></p>' ;
         $html .=     '<h3>レスポンスヘッダー</h3>' ;
         $html .=     '<p><textarea style="width:80%" rows="8">' . $header . '</textarea></p>' ;        // 検証用
         $html .= '<h2>リクエストしたデータ</h2>' ;
