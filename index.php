@@ -25,7 +25,7 @@
 
                     <label for="begin_date" accesskey="n"><font size="4">日付指定(開始日)　</font><font size="3">任意</font><br>
                     <font size="2" color="lightcyan">yyyy/mm/ddの形式で指定してください</font></label>
-                    <input type="text" name="begin_date" placeholder="例: 2015/01/01" id="begin_date">
+                    <input type="date" name="begin_date" placeholder="例: 2015/01/01" id="begin_date">
 
                     <label for="end_date" accesskey="n"><font size="4">日付指定(終了日)　</font><font size="3">任意</font><br>
                     <font size="2" color="lightcyan">yyyy/mm/ddの形式で指定してください</font></label>

@@ -46,12 +46,16 @@ body{
 	background: -o-linear-gradient(top left, #50a3a2 0%, #53e3a6 100%);
 	background: linear-gradient(to bottom right, #50a3a2 0%, #53e3a6 100%);
 	
+	// 相対位置、絶対位置を指定。absoluteは絶対位置
 	position: absolute;
+	// 上からの配置距離を指定。
 	top: 0;
+	// 左からの配置距離を指定。
 	left: auto;
 	width: 100%;
 	height: auto;
 	// margin-top: -200px;
+	// ボックスの範囲内に収まらない場合に、はみ出た部分の表示方法を指定。hiddenを表示しない
 	overflow: hidden;
 	
 	&.form-success{
@@ -64,10 +68,14 @@ body{
 }
 
 .container{
-	max-width: 600px;
+	// 領域の幅の最大値を指定
+	max-width: none;
+	// 領域外のスペースを指定。2つ指定であれば[上下、左右]が指定される
 	margin: 0 auto;
+	// 領域内のスペースを指定。2つ指定であれば[上下、左右]が指定される
 	padding: 40px 0;
 	height: auto;
+	// ブロックコンテナ内の位置を指定
 	text-align: center;
 	
 	h1{
@@ -79,13 +87,19 @@ body{
 }
 
 form{
+	// 領域内のスペースを指定。2つ指定であれば[上下、左右]が指定される
 	padding: 20px 0;
+	// 相対位置、絶対位置を指定。absoluteは絶対位置
 	position: relative;
+	// 表示が重なった場合に、優先的に表示するものを指定
 	z-index: 2;
 	
 	input{
+		// ブロックレベルインラインレベル指定
 		display: block;
+		// インタフェースの指定。関係なさそう
 		appearance: none;
+		// アウトラインのスタイルを指定
 		outline: 0;
 		border: 1px solid fade(white, 40%);
 		background-color: fade(white, 20%);
@@ -93,6 +107,7 @@ form{
 		
 		border-radius: 3px;
 		padding: 10px 15px;
+		// 領域内のスペースを指定。4つ指定であれば[上、右、下、左]が指定される
 		margin: 0 auto 10px auto;
 		display: block;
 		text-align: center;
@@ -100,6 +115,7 @@ form{
 		
 		color: white;
 		
+		// 変化にかかる時間を指定
 		transition-duration: 0.25s;
 		font-weight: 300;
 		
@@ -131,6 +147,10 @@ form{
 		&:hover{
 			background-color: rgb(245, 247, 249);
 		}
+	}
+
+	p.tweet{
+		margin: 0 auto 10px auto;
 	}
 }
 
