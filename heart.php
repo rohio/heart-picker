@@ -9,21 +9,27 @@
         <div class="wrapper">
             <div class="container">
 
-                <h1>はーとぴっかー</h1>
+                <h1>はーとぴっかー - Heart♡Pickker</h1>
                 
-                <form class="form" action="heart.php" method="get">
+                <form class="form" action="heart.php" method="post">
                     必須だよ
-                    <input type="text" name="twitter_id" placeholder="TwitterID">
-                    <input type="text" name="display_num" placeholder="表示件数">
+                    <input type="text" name="twitter_id" placeholder="TwitterID" value="<?php echo $_POST["twitter_id"]?>">
+                    <input type="text" name="display_num" placeholder="表示件数" value="<?php echo $_POST["display_num"]?>">
                     以降は、必須じゃないよ<br>
                     日付指定範囲(開始日)
-                    <input type="text" name="begin_date" placeholder="yyyy/mm/dd">
+                    <input type="text" name="begin_date" placeholder="yyyy/mm/dd" value="<?php echo $_POST["begin_date"]?>">
                     日付指定範囲(終了日)
-                    <input type="text" name="end_date" placeholder="yyyy/mm/dd">
+                    <input type="text" name="end_date" placeholder="yyyy/mm/dd" value="<?php echo $_POST["end_date"]?>">
                     <button type="submit">GET!</button><br>
                     
 
 					<?php
+
+// TwitterIDを入力していない場合
+if($_POST['twitter_id'] === ""){
+	echo('<h2>TwitterIDを入力してね！</h2>');
+	exit();
+}
 
 // アクセスキー、アクセストークン
 $api_key = '5L41MwG316NQvDhd3ru1UDiIa'; 
@@ -35,7 +41,7 @@ $request_url = 'https://api.twitter.com/1.1/users/show.json' ;
 $request_method = 'GET' ;
 
 // TwitterのユーザID(入力値を格納)
-$twitter_id = $_GET['twitter_id'];
+$twitter_id = $_POST['twitter_id'];
 
 // htmlテキストを格納する変数を予め生成
 $html = '' ;
@@ -139,7 +145,7 @@ if(array_key_exists('errors', $array_user)){
 	echo "</pre>";
 	
 	if($array_user['errors'][0]['code'] === 50){
-		echo("指定されたID [" . $twitter_id . "] は存在しません。\n");
+		echo("指定したID [" . $twitter_id . "] は存在しません。\n");
 	} elseif($array_user['errors'][0]['code'] === 32){
 		echo("認証でエラーが発生しました。\n");
 	} elseif($array_user['errors'][0]['code'] === 88){
@@ -218,7 +224,7 @@ $current_date = date("Y/m/d H:i:s");
 $rand_max = create_id($current_date); 
 
 // 画面に表示するいいねの件数(入力値を格納)
-$display_num = $_GET['display_num'];
+$display_num = $_POST['display_num'];
 
 // 日付指定範囲の開始日(入力値を格納)
 // $begin_date = "2015/09/28";
@@ -227,8 +233,8 @@ $display_num = $_GET['display_num'];
 // $end_date = "2015/09/28";
 
 //DEBUG
-$begin_date = $_GET['begin_date'];
-$end_date = $_GET['end_date'];
+$begin_date = $_POST['begin_date'];
+$end_date = $_POST['end_date'];
 
 // 一度のAPIへのアクセスで取得するいいねの件数
 $GET_NUM = 200;
