@@ -4,9 +4,9 @@
         <meta charset="UTF-8">
         <title>はーとぴっかー</title>
         <link rel="stylesheet/less" type="text/css" href="style.less">
+        <meta name="viewport" content="width=device-width, user-scale=yes, initial-scale=1.0, maximum-scale=5.0" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.5.1/less.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
         <script type="text/javascript">
             function checkForm($this)
             {
@@ -17,7 +17,7 @@
                 }
                 $this.value=str;
             }
-    </script>
+        </script>
     </head>
     <body>
         <div class="wrapper">

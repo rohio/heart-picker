@@ -2,7 +2,7 @@
 // TwitterIDを入力していない場合
 if($_POST['twitter_id'] === ""){
 	echo('<h2>TwitterIDを入力してね！</h2>');
-	exit();
+	return;
 }
 
 // アクセスキー、アクセストークン
@@ -127,21 +127,21 @@ if(array_key_exists('errors', $array_user)){
 	} else {
 		echo("何らかのエラーが発生しました。\n");
 	}
-	exit();
+	return;
 };
 
 // アカウントが非公開ユーザでいいねにアクセスできない場合、以降の処理を行わず、終了
 if($array_user['protected']){
 	echo("指定したID [" . $twitter_id . "] は、非公開設定のユーザのため、いいねを取得できません。\n");
 	// 以降の処理を行わず、終了
-	exit();
+	return;
 }
 
 // $array_userが取得できない場合、以降の処理を行わず、終了
 if(count($array_user) == 0){
 	echo("何らかの理由で、指定したID [" . $twitter_id . "] の情報を取得できませんでした。\n");
 	// 以降の処理を行わず、終了
-	exit();
+	return;
 }
 
 
@@ -422,7 +422,7 @@ if($array_user["favourites_count"] < $display_num){
 	// print_r($array);
 	// echo "</pre>";
 	
-	$html .= '<h1 style="text-align:center; border-bottom:1px solid #555; padding-bottom:12px; margin-bottom:48px; color:#D36015;">GET favorites/list</h1>' ;  // 検証用
+	// $html .= '<h1 style="text-align:center; border-bottom:1px solid #555; padding-bottom:12px; margin-bottom:48px; color:#D36015;">GET favorites/list</h1>' ;  // 検証用
 
 	// $html .= '<h2>取得したデータ</h2>' ;
 	// $html .= '<p>下記のデータを取得できました。</p>' ;
@@ -450,7 +450,7 @@ if($array_user["favourites_count"] < $display_num){
 		// var_dump($key);
 		// var_dump($value);
 		// 埋め込みtweetの形で表示
-		$html .= '<blockquote class="twitter-tweet tw-align-center" data-lang="ja"><p lang="ja" dir="ltr" text-align="center">' . $value["text"] . '</p>&mdash; ' . $value["user"]["name"] . '(@' . $value["user"]["screen_name"] . ') <a href="https://twitter.com/' . $value["user"]["screen_name"] . '/status/' . $value["id_str"] . '?ref_src=twsrc%5Etfw">' . $value["created_at"] . '</a></blockquote>';
+		$html .= '<blockquote class="twitter-tweet tw-align-center" data-lang="ja"><p lang="ja" dir="ltr" text-align="center">' . $value["text"] . '</p>&mdash; ' . $value["user"]["name"] . '(@' . $value["user"]["screen_name"] . ') <a href="https://twitter.com/' . $value["user"]["screen_name"] . '/status/' . $value["id_str"] . '?ref_src=twsrc%5Etfw">' . $value["created_at"] . '</a></blockquote> <br>';
 		$display_count++;
 		// 表示したいいね数が表示件数以上になったら、break
 		if($display_count >= $display_num){break;}
