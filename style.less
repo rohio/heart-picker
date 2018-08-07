@@ -107,7 +107,7 @@ form{
 		
 		border-radius: 3px;
 		padding: 10px 15px;
-		// 領域内のスペースを指定。4つ指定であれば[上、右、下、左]が指定される
+		// 領域内のスペースを指定。2つ指定であれば[上、右、下、左]が指定される
 		margin: 0 auto 10px auto;
 		display: block;
 		text-align: center;
@@ -149,8 +149,32 @@ form{
 		}
 	}
 
-	p.tweet{
-		margin: 0 auto 10px auto;
+	font.must{
+		appearance: none;
+		outline: 0;
+		background-color: orangered;
+		border: 0;
+		padding: 2px 5px;
+		color: black;
+		border-radius: 3px;
+		width: 250px;
+		cursor: pointer;
+		font-size: 14px;
+		transition-duration: 0.25s;
+	}
+
+	font.free{
+		appearance: none;
+		outline: 0;
+		background-color: white;
+		border: 0;
+		padding: 2px 5px;
+		color: black;
+		border-radius: 3px;
+		width: 250px;
+		cursor: pointer;
+		font-size: 14px;
+		transition-duration: 0.25s;
 	}
 }
 
