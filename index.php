@@ -32,16 +32,16 @@
                     <input type="text" name="twitter_id" placeholder="例: TwitterJP" id="twitter_id" required>
 
                     <label for="display_num" accesskey="n"><font size="4">表示件数　</font><font class="must">必須</font><br>
-                    <font size="2" color="lightcyan">1~200の間で指定してください</font></label>
-                    <input type="number" name="display_num" placeholder="例: 10" id="display_num" min="1" max="200" required><br>
+                    <font size="2" color="lightcyan">1~20の間で指定してください</font></label>
+                    <input type="number" name="display_num" placeholder="例: 10" id="display_num" min="1" max="20" required><br>
 
                     <label for="begin_date" accesskey="n"><font size="4">日付範囲(開始日)　</font><font class="free">任意</font><br>
                     <font size="2" color="lightcyan">Year-Month-Dayの形式で指定してください</font></label>
-                    <input type="text" name="begin_date" placeholder="例: 2015-1-1" id="begin_date" maxlength="10" onInput="checkForm(this)" pattern="201[0-9][/-]([1-9]|0[1-9]|1[12])[/-]([1-9]|[0-2][1-9]|3[01])">
+                    <input type="text" name="begin_date" placeholder="例: 2015-1-1" id="begin_date" maxlength="10" onInput="checkForm(this)" pattern="201[0-9][/-]([1-9]|0[1-9]|1[12])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])">
 
                     <label for="end_date" accesskey="n"><font size="4">日付範囲(終了日)　</font><font class="free">任意</font><br>
                     <font size="2" color="lightcyan">Year-Month-Dayの形式で指定してください</font></label>
-                    <input type="text" name="end_date" placeholder="例: 2016-1-31" id="end_date" maxlength="10" onInput="checkForm(this)" pattern="201[0-9][/-]([1-9]|0[1-9]|1[12])[/-]([1-9]|[0-2][1-9]|3[01])">
+                    <input type="text" name="end_date" placeholder="例: 2016-1-31" id="end_date" maxlength="10" onInput="checkForm(this)" pattern="201[0-9][/-]([1-9]|0[1-9]|1[12])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])">
 
                     <br>
                     <button type="submit">Heart Pick!</button>

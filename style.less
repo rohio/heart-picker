@@ -172,6 +172,36 @@ form{
 		width: 250px;
 		font-size: 14px;
 	}
+
+    #pageTop {
+		position: fixed;
+		bottom: 20px;
+		right: 20px;
+	  }
+    
+	  #pageTop i {
+		padding-top: 6px
+	  }
+  
+	  #pageTop a {
+		display: block;
+		z-index: 999;
+		padding: 7px 0 0 0;
+		border-radius: 30px;
+		width: 35px;
+		height: 35px;
+		background-color: #9FD6D2;
+		color: black;
+		font-weight: bold;
+		text-decoration: none;
+		text-align: center;
+	  }
+  
+	  #pageTop a:hover {
+		text-decoration: none;
+		opacity: 0.7;
+	  }
+  
 }
 
 .bg-bubbles{
@@ -186,15 +216,17 @@ form{
 	
 	li{
 		position: absolute;
+		// リストの先頭に表示するマーカーに関する指定
 		list-style: none;
+		// ブロックボックスを生成
 		display: block;
 		width: 40px;
 		height: 40px;
 		background-color: fade(white, 15%);
 		bottom: -160px;
 		
-		-webkit-animation: square 25s infinite;
-		animation:         square 25s infinite;
+		-webkit-animation: square 100s infinite;
+		animation: square 100s infinite;
 		
 		-webkit-transition-timing-function: linear;
 		transition-timing-function: linear;
@@ -280,9 +312,9 @@ form{
 
 @-webkit-keyframes square {
   0%   { transform: translateY(0); }
-  100% { transform: translateY(-700px) rotate(600deg); }
+  100% { transform: translateY(-7000px) rotate(600deg); }
 }
 @keyframes square {
   0%   { transform: translateY(0); }
-  100% { transform: translateY(-700px) rotate(600deg); }
+  100% { transform: translateY(-7000px) rotate(600deg); }
 }
