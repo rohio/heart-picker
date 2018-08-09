@@ -78,7 +78,7 @@
                 </form>                
             </div>
 
-            <ul class="bg-bubbles">
+            <ul class="bg-bubbles-heart">
                 <li></li>
                 <li></li>
                 <li></li>

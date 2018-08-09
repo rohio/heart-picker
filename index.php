@@ -50,7 +50,7 @@
             </div>
 
 
-            <ul class="bg-bubbles">
+            <ul class="bg-bubbles-index">
                 <li></li>
                 <li></li>
                 <li></li>
