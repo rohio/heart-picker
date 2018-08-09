@@ -256,6 +256,14 @@ $params_a = array(
 	} elseif($begin_date === "" && $end_date === ""){
 		$params_a["max_id"] = mt_rand(0, $rand_max);
 	}
+
+	// 日付入力が互い違いの場合、エラー処理
+	if($params_a["max_id"] == NULL){
+		echo("日付が互い違いになっています。開始日と終了日の入力を入れ替えてください。\n");
+		// 以降の処理を行わず、終了
+		return;
+	}
+
 	// DEBUG
 	// echo($params_a["max_id"] . "\n");
 	// echo($GET_NUM . ' up ');
