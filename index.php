@@ -46,6 +46,10 @@
                     <br>
                     <button type="submit">Heart Pick!</button>
                 </form>
+
+                <form class="form" action="auth.php" method="get">
+                    <button type="submit">認証</button>
+                </form>
             </div>
 
 
