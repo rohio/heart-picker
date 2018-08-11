@@ -252,7 +252,7 @@ if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
 }
 
 // アクセスキー、アクセストークン
-$access_token = $_SESSION["oauth_token"]
+$access_token = $_SESSION["oauth_token"];
 $access_token_secret = $_SESSION["oauth_token_secret"];
 
 $request_url = 'https://api.twitter.com/1.1/users/show.json' ;
