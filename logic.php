@@ -105,10 +105,10 @@ if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
 	parse_str( $response, $query ) ;
 
 	// アクセストークン
-	// $query["oauth_token"]
+	$_SESSION["oauth_token"] = $query["oauth_token"];
 
 	// アクセストークン・シークレット
-	// $query["oauth_token_secret"]
+	$_SESSION["oauth_token_secret"] = $query["oauth_token_secret"];
 
 	// ユーザーID
 	// $query["user_id"]
@@ -245,15 +245,15 @@ if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
 	/*** [手順2] ユーザーを認証画面へ飛ばす ***/
 
 	// ユーザーを認証画面へ飛ばす (毎回ボタンを押す場合)
-	header( "Location: https://api.twitter.com/oauth/authorize?oauth_token=" . $query["oauth_token"] ) ;
+	// header( "Location: https://api.twitter.com/oauth/authorize?oauth_token=" . $query["oauth_token"] ) ;
 
 	// ユーザーを認証画面へ飛ばす (二回目以降は認証画面をスキップする場合)
-	// header( "Location: https://api.twitter.com/oauth/authenticate?oauth_token=" . $query["oauth_token"] ) ;
+	header( "Location: https://api.twitter.com/oauth/authenticate?oauth_token=" . $query["oauth_token"] ) ;
 }
 
 // アクセスキー、アクセストークン
-$access_token = $query["oauth_token"];
-$access_token_secret = $query["oauth_token_secret"];
+$access_token = $_SESSION["oauth_token"]
+$access_token_secret = $_SESSION["oauth_token_secret"];
 
 $request_url = 'https://api.twitter.com/1.1/users/show.json' ;
 $request_method = 'GET' ;
