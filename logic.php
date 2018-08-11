@@ -232,10 +232,6 @@ if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
 		exit ;
 	}
 
-	echo $response;
-	echo $header;
-
-
 	// $responseの内容(文字列)を$query(配列)に直す
 	// aaa=AAA&bbb=BBB → [ "aaa"=>"AAA", "bbb"=>"BBB" ]
 	$query = [] ;
