@@ -1,7 +1,7 @@
 <?php
 $api_key = '5L41MwG316NQvDhd3ru1UDiIa'; 
 $api_secret = 'Y8daT5rjGsfQL49nHIzJKkL07Gq3BB2IAlR6NIl7owWSn00Lkz';
-$callback_url = "https://inputform.herokuapp.com/" ;	// Callback URL (このプログラムのURLアドレス)
+$callback_url = "https://inputform.herokuapp.com/heart.php" ;	// Callback URL (このプログラムのURLアドレス)
 // $callback_url = "http://192.168.33.10:8000/" ;	// Callback URL (このプログラムのURLアドレス)
 
 /*** [手順4] ユーザーが戻ってくる ***/
