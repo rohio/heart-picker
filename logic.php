@@ -1,7 +1,19 @@
 <?php
+$api_key = '5L41MwG316NQvDhd3ru1UDiIa'; 
+$api_secret = 'Y8daT5rjGsfQL49nHIzJKkL07Gq3BB2IAlR6NIl7owWSn00Lkz';
+
 // アクセスキー、アクセストークン
-$access_token = $_SESSION["oauth_token"];
-$access_token_secret = $_SESSION["oauth_token_secret"];
+if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"])){
+	$access_token = $_SESSION["oauth_token"];
+	$access_token_secret = $_SESSION["oauth_token_secret"];
+	// DEBUG
+	echo 'SESSION ';
+} else {
+	$access_token = '305336457-BqgHQqfKFhIPCXNvFtXbLiQRPulkBpBXTQFO6EXV';
+	$access_token_secret = 'wPn9LWO6XXYLNHfovD0PRXXJQ4CDxZS5x75vFdqB4CL7g';
+	// DEBUG
+	echo 'NO SESSION ';
+}
 
 $request_url = 'https://api.twitter.com/1.1/users/show.json' ;
 $request_method = 'GET' ;
