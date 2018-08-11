@@ -467,4 +467,6 @@ if($array_user["favourites_count"] < $display_num){
 		// 表示したいいね数が表示件数以上になったら、break
 		if($display_count >= $display_num){break;}
 	}
+
+	echo $html;
 }
