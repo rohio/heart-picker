@@ -11,8 +11,8 @@ if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"])){
 	// DEBUG
 	echo 'SESSION ';
 } else {
-	$access_token = '305336457-1EPS0ejUUok5sgDxDjXDozxz9i5qEmqCNuAVjdVM';
-	$access_token_secret = 'UPf2Rac3ZKGakDqa3JKk78Mej8GelysLwrxYOq0LrLI3U';
+	$access_token = '305336457-f4SkCiMphhamnllp0ezut9dsMsl6OJOYI273IfuK';
+	$access_token_secret = 'bSCdmn8QQhhPwnyCD9pV261FC5OAUUTvsJzCGBa7vPEks';
 	// DEBUG
 	echo 'NO SESSION ';
 }
