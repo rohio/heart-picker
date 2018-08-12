@@ -180,7 +180,11 @@ if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
 	$_SESSION["oauth_token"] = $query["oauth_token"];
 
 	// アクセストークン・シークレット
-	$_SESSION["oauth_token_secret"] = $query["oauth_token_secret"];
+    $_SESSION["oauth_token_secret"] = $query["oauth_token_secret"];
+    
+    // DEBUG
+    echo $_SESSION["oauth_token"];
+    echo $_SESSION["oauth_token_secret"];
 
 	// ユーザーID
 	// $query["user_id"]
