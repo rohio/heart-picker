@@ -73,13 +73,13 @@ body{
 	// 領域外のスペースを指定。2つ指定であれば[上下、左右]が指定される
 	margin: 0 auto;
 	// 領域内のスペースを指定。2つ指定であれば[上下、左右]が指定される
-	padding: 40px 0;
+	padding: 20px 0;
 	height: auto;
 	// ブロックコンテナ内の位置を指定
 	text-align: center;
 	
 	h1{
-		font-size: 40px;
+		font-size: 50px;
 		transition-duration: 1s;
 		transition-timing-function: ease-in-put;
 		font-weight: 200;
@@ -94,7 +94,7 @@ form{
 	// 表示が重なった場合に、優先的に表示するものを指定
 	z-index: 2;
 	
-	input{
+	input.user_input{
 		// ブロックレベルインラインレベル指定
 		display: block;
 		// インタフェースの指定。関係なさそう
@@ -130,6 +130,58 @@ form{
 			color: @prim;
 		}
 	}
+
+	input.login_twitter{
+		width: 10px;
+	}
+
+	.input-group,
+	.input-group__control,
+	.input-group__addon {
+	box-sizing:border-box;
+	}
+
+	.input-group {
+	display:table;
+	width:250px;
+	border-collapse:separate;
+	font-size:14px;
+	}
+
+	.input-group__control,
+	.input-group__addon {
+	display:table-cell;
+	height:40px;
+	padding:8px 14px;
+	}
+
+	.input-group__control {
+	float:left;
+	width:100%;
+	margin:0;
+	border:1px solid #bbb;
+	border-radius:0;
+	font-size:14px;
+	font-family:inherit;
+	line-height:1.5;
+	-webkit-appearance:none;
+			appearance:none;
+	}
+
+	.input-group__addon {
+	width:1%;
+	border-width:1px 0 1px 1px;
+	border-style:solid;
+	border-color:#bbb;
+	white-space:nowrap;
+	vertical-align:middle;
+	text-align:center;
+	line-height:1;
+	}
+
+	.input-group__control + .input-group__addon {
+	border-width:1px 1px 1px 0;
+	}
 	
 	button{
 		appearance: none;
@@ -140,6 +192,7 @@ form{
 		color: @prim;
 		border-radius: 3px;
 		width: 250px;
+		height: auto;
 		cursor: pointer;
 		font-size: 18px;
 		transition-duration: 0.25s;
@@ -147,6 +200,13 @@ form{
 		&:hover{
 			background-color: rgb(245, 247, 249);
 		}
+	}
+
+	button.login_twitter{
+		width: 19px;
+		height: 16px;
+		padding: 0px;
+		margin-top: -3px;
 	}
 
 	label.item_EN{
@@ -162,6 +222,21 @@ form{
 	div.explain{
 		font-size: 12px;
 		color: lightcyan;
+	}
+
+	div.use{
+		font-size: 15px;
+		color: black;
+		background-color: white;
+		text-align: left;
+		margin-left: 10%;
+		margin-right: 10%;
+		border-radius: 10px;
+		padding: 2px 5px;
+	}
+	
+	div.limit{
+		padding-left: 15px;
 	}
 
 	span.must{
@@ -192,31 +267,30 @@ form{
 		position: fixed;
 		bottom: 50px;
 		right: 30px;
-	  }
-    
-	  #pageTop i {
-		padding-top: 6px
-	  }
-  
-	  #pageTop a {
-		display: block;
-		z-index: 999;
-		padding: 17px 0 0 0;
-		border-radius: 30px;
-		width: 55px;
-		height: 55px;
-		background-color: #9FD6D2;
-		color: black;
-		font-weight: bold;
-		text-decoration: none;
-		text-align: center;
-	  }
-  
-	  #pageTop a:hover {
-		text-decoration: none;
-		opacity: 0.7;
-	  }
-  
+	}
+
+	#pageTop i {
+	padding-top: 6px
+	}
+
+	#pageTop a {
+	display: block;
+	z-index: 999;
+	padding: 17px 0 0 0;
+	border-radius: 30px;
+	width: 55px;
+	height: 55px;
+	background-color: #9FD6D2;
+	color: black;
+	font-weight: bold;
+	text-decoration: none;
+	text-align: center;
+	}
+
+	#pageTop a:hover {
+	text-decoration: none;
+	opacity: 0.7;
+	}
 }
 
 .bg-bubbles-index{

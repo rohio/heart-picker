@@ -50,31 +50,38 @@
                 <h1>Heart♡Pickker</h1>
                 
                 <form class="form" action="heart.php" method="post">
-                    <label for="twitter_id" accesskey="n"><font size="5">TwitterID　</font><font class="must">必須</font><br>
-                    <font size="2" color="aqua">@ は付けないでください </font></label>
-                    <input type="text" name="twitter_id" placeholder="例: TwitterJP" id="twitter_id" value="<?php echo $_POST["twitter_id"]?>" required>
+                    <label for="twitter_id" accesskey="n" class="item_EN">TwitterID　<span class="must">必須</span><br>
+                    <div class="explain">@ は付けないでください </div></label>
+                    <input type="text" name="twitter_id" placeholder="例: TwitterJP" id="twitter_id" required>
 
-                    <label for="display_num" accesskey="n"><font size="4">表示件数　</font><font class="must">必須</font><br>
-                    <font size="2" color="lightcyan">1~20の間で指定してください</font></label>
-                    <input type="number" name="display_num" placeholder="例: 10" id="display_num" min="1" max="20" value="<?php echo $_POST["display_num"]?>" required><br>
+                    <label for="display_num" accesskey="n" class="item_JP">表示件数　<span class="must">必須</span><br>
+                    <div class="explain">1~20 の間で指定してください</div></label>
+                    <input type="number" name="display_num" placeholder="例: 10" id="display_num" min="1" max="20" required><br>
 
-                    <label for="begin_date" accesskey="n"><font size="4">日付範囲(開始日)　</font><font class="free">任意</font><br>
-                    <font size="2" color="lightcyan">Year-Month-Dayの形式で指定してください</font></label>
-                    <input type="text" name="begin_date" placeholder="例: 2015-1-1" id="begin_date" maxlength="10" onInput="checkForm(this)" value="<?php echo $_POST["begin_date"]?>" pattern="201[0-9][/-]([1-9]|0[1-9]|1[12])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])">
+                    <label for="begin_date" accesskey="n" class="item_JP">日付範囲(開始日)　<span class="free">任意</span><br>
+                    <div class="explain">Year-Month-Day の形式で指定してください</div></label>
+                    <input type="text" name="begin_date" placeholder="例: 2015-1-1" id="begin_date" maxlength="10" onInput="checkForm(this)" pattern="201[0-9][/-]([1-9]|0[1-9]|1[12])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])">
 
-                    <label for="end_date" accesskey="n"><font size="4">日付範囲(終了日)　</font><font class="free">任意</font><br>
-                    <font size="2" color="lightcyan">Year-Month-Dayの形式で指定してください</font></label>
-                    <input type="text" name="end_date" placeholder="例: 2016-1-31" id="end_date" maxlength="10" onInput="checkForm(this)" value="<?php echo $_POST["end_date"]?>" pattern="201[0-9][/-]([1-9]|0[1-9]|1[12])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])">
+                    <label for="end_date" accesskey="n" class="item_JP">日付範囲(終了日)　<span class="free">任意</span><br>
+                    <div class="explain">Year-Month-Day の形式で指定してください</div></label>
+                    <input type="text" name="end_date" placeholder="例: 2016-1-31" id="end_date" maxlength="10" onInput="checkForm(this)" pattern="201[0-9][/-]([1-9]|0[1-9]|1[12])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])">
 
                     <br>
                     <button type="submit">Heart Pick!</button>
+                    
                     <br>
 
                     <?php require('logic.php'); ?>
 
                     <p id="pageTop"><a href="#"><i class="fa fa-chevron-up"></i>↑</a></p>
 
-                </form>                
+                </form>
+                
+                <div class="explain">
+                	<form class="form" action="auth.php" method="get">
+                    	<button type="submit">認証</button>
+                	</form>
+                </div>
             </div>
 
             <ul class="bg-bubbles-heart">

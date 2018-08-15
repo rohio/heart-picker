@@ -47,9 +47,11 @@
                     <button type="submit">Heart Pick!</button>
                 </form>
 
-                <form class="form" action="auth.php" method="get">
-                    <button type="submit">認証</button>
-                </form>
+                <div class="explain">
+                	<form class="form" action="auth.php" method="get">
+                    	<button type="submit">認証</button>
+                	</form>
+                </div>
             </div>
 
 
@@ -74,19 +76,15 @@
 $api_key = '5L41MwG316NQvDhd3ru1UDiIa'; 
 $api_secret = 'Y8daT5rjGsfQL49nHIzJKkL07Gq3BB2IAlR6NIl7owWSn00Lkz';
 $callback_url = "https://inputform.herokuapp.com/auth.php" ;	// Callback URL (このプログラムのURLアドレス)
-// $callback_url = "http://192.168.33.10:8000/" ;	// Callback URL (このプログラムのURLアドレス)
-
-/*** [手順4] ユーザーが戻ってくる ***/
 
 // 認証画面から戻ってきた時 (認証OK)
 if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
-	/*** [手順5] [手順5] アクセストークンを取得する ***/
-
-	//[リクエストトークン・シークレット]をセッションから呼び出す
+	/*** アクセストークンを取得する ***/
+	//[リクエストトークン・シークレット]をセッションから取得
 	session_start() ;
 	$request_token_secret = $_SESSION["oauth_token_secret"] ;
 
-	// リクエストURL
+	// アクセストークンを取得するAPI
 	$request_url = "https://api.twitter.com/oauth/access_token" ;
 
 	// リクエストメソッド
@@ -110,34 +108,24 @@ if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
 	foreach( $params as $key => $value ) {
 		$params[ $key ] = rawurlencode( $value ) ;
 	}
-
 	// 連想配列をアルファベット順に並び替え
 	ksort($params) ;
-
 	// パラメータの連想配列を[キー=値&キー=値...]の文字列に変換
 	$request_params = http_build_query( $params , "" , "&" ) ;
-
 	// 変換した文字列をURLエンコードする
 	$request_params = rawurlencode($request_params) ;
-
 	// リクエストメソッドをURLエンコードする
 	$encoded_request_method = rawurlencode( $request_method ) ;
-
 	// リクエストURLをURLエンコードする
 	$encoded_request_url = rawurlencode( $request_url ) ;
-
 	// リクエストメソッド、リクエストURL、パラメータを[&]で繋ぐ
 	$signature_data = $encoded_request_method . "&" . $encoded_request_url . "&" . $request_params ;
-
 	// キー[$signature_key]とデータ[$signature_data]を利用して、HMAC-SHA1方式のハッシュ値に変換する
 	$hash = hash_hmac( "sha1" , $signature_data , $signature_key , TRUE ) ;
-
 	// base64エンコードして、署名[$signature]が完成する
 	$signature = base64_encode( $hash ) ;
-
 	// パラメータの連想配列、[$params]に、作成した署名を加える
 	$params["oauth_signature"] = $signature ;
-
 	// パラメータの連想配列を[キー=値,キー=値,...]の文字列に変換する
 	$header_params = http_build_query( $params, "", "," ) ;
 
@@ -165,54 +153,37 @@ if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
 	curl_close( $curl ) ;
 
 	// 取得したデータ
-	$response = substr( $res1, $res2["header_size"] ) ;	// 取得したデータ(JSONなど)
-	$header = substr( $res1, 0, $res2["header_size"] ) ;	// レスポンスヘッダー (検証に利用したい場合にどうぞ)
-
-	// [cURL]ではなく、[file_get_contents()]を使うには下記の通りです…
-	// $response = file_get_contents( $request_url , false , stream_context_create( $context ) ) ;
+	$response = substr( $res1, $res2["header_size"] ) ;
 
 	// $responseの内容(文字列)を$query(配列)に直す
 	// aaa=AAA&bbb=BBB → [ "aaa"=>"AAA", "bbb"=>"BBB" ]
 	$query = [] ;
 	parse_str( $response, $query ) ;
 
-	// アクセストークン
+	// 取得したアクセストークンをセッションの変数に格納
 	$_SESSION["oauth_token"] = $query["oauth_token"];
 
-	// アクセストークン・シークレット
+	// 取得したアクセストークン・シークレットをセッションの変数に格納
     $_SESSION["oauth_token_secret"] = $query["oauth_token_secret"];
     
-    // DEBUG
-    echo $_SESSION["oauth_token"];
-    echo $_SESSION["oauth_token_secret"];
-
 	// ユーザーID
 	// $query["user_id"]
 
 	// スクリーンネーム
 	// $query["screen_name"]
 
-	// 配列の内容を出力する (本番では不要)
-	echo '<p>下記の認証情報を取得しました。(<a href="' . explode( "?", $_SERVER["REQUEST_URI"] )[0] . '">もう1回やってみる</a>)</p>' ;
-
-	foreach ( $query as $key => $value ) {
-		echo "<b>" . $key . "</b>: " . $value . "<BR>" ;
-	}
-
-// 認証画面から戻ってきた時 (認証NG)
+// 認証画面から戻ってきた時 (認証NG) 特に何も処理をしない
 } elseif ( isset( $_GET["denied"] ) ) {
-	// エラーメッセージを出力して終了
-	echo "連携を拒否しました。" ;
+	// TODO return でOK?
 	exit ;
-
 // 初回のアクセス
 } else {
-	/*** [手順1] リクエストトークンの取得 ***/
+	/*** リクエストトークンの取得 ***/
 
-	// [アクセストークンシークレット] (まだ存在しないので「なし」)
+	// [アクセストークンシークレット] (まだ存在しないので空文字)
 	$access_token_secret = "" ;
 
-	// エンドポイントURL
+	// リクエストトークンを取得するAPI
 	$request_url = "https://api.twitter.com/oauth/request_token" ;
 
 	// リクエストメソッド
@@ -244,31 +215,22 @@ if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
 
 	// 連想配列をアルファベット順に並び替える
 	ksort( $params ) ;
-
 	// パラメータの連想配列を[キー=値&キー=値...]の文字列に変換する
 	$request_params = http_build_query( $params , "" , "&" ) ;
- 
 	// 変換した文字列をURLエンコードする
 	$request_params = rawurlencode( $request_params ) ;
- 
 	// リクエストメソッドをURLエンコードする
 	$encoded_request_method = rawurlencode( $request_method ) ;
- 
 	// リクエストURLをURLエンコードする
 	$encoded_request_url = rawurlencode( $request_url ) ;
- 
 	// リクエストメソッド、リクエストURL、パラメータを[&]で繋ぐ
 	$signature_data = $encoded_request_method . "&" . $encoded_request_url . "&" . $request_params ;
-
 	// キー[$signature_key]とデータ[$signature_data]を利用して、HMAC-SHA1方式のハッシュ値に変換する
 	$hash = hash_hmac( "sha1" , $signature_data , $signature_key , TRUE ) ;
-
 	// base64エンコードして、署名[$signature]が完成する
 	$signature = base64_encode( $hash ) ;
-
 	// パラメータの連想配列、[$params]に、作成した署名を加える
 	$params["oauth_signature"] = $signature ;
-
 	// パラメータの連想配列を[キー=値,キー=値,...]の文字列に変換する
 	$header_params = http_build_query( $params , "" , "," ) ;
 
@@ -297,6 +259,7 @@ if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
 
 	// 取得したデータ
 	$response = substr( $res1, $res2["header_size"] ) ;	// 取得したデータ(JSONなど)
+	// TODO 不要だよね？
 	$header = substr( $res1, 0, $res2["header_size"] ) ;	// レスポンスヘッダー (検証に利用したい場合にどうぞ)
 
 	// [cURL]ではなく、[file_get_contents()]を使うには下記の通りです…
@@ -304,7 +267,8 @@ if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
 
 	// リクエストトークンを取得できなかった場合
 	if( !$response ) {
-		echo "<p>リクエストトークンを取得できませんでした…。$api_keyと$callback_url、そしてTwitterのアプリケーションに設定しているCallback URLを確認して下さい。</p>" ;
+		echo "<p>何らかの理由で、リクエストトークンを取得できませんでした。申し訳ございません。</p>" ;
+		// TODO returnでOK？
 		exit ;
 	}
 
@@ -315,10 +279,11 @@ if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
 
 	// セッション[$_SESSION["oauth_token_secret"]]に[oauth_token_secret]を保存する
 	session_start() ;
-	session_regenerate_id( true ) ;
+	// TODO これなに？
+	session_regenerate_id(true) ;
 	$_SESSION["oauth_token_secret"] = $query["oauth_token_secret"] ;
 
-	/*** [手順2] ユーザーを認証画面へ飛ばす ***/
+	/*** ユーザーを認証画面へ飛ばす ***/
 
 	// ユーザーを認証画面へ飛ばす (毎回ボタンを押す場合)
 	// header( "Location: https://api.twitter.com/oauth/authorize?oauth_token=" . $query["oauth_token"] ) ;
