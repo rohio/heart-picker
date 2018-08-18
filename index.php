@@ -25,17 +25,16 @@
 
                 <h1>Heart♡Picker</h1>
                 
-                HeartPickerはいいねをランダムに表示するサービスです。<br>
+                HeartPickerは自分や友達のいいねをランダムに表示するサービスです。<br>
 				TwitterID、日時範囲(任意)を指定して、"Heart Pick!"ボタンを押してね！
                 
                 <form class="form" action="heart.php" method="post">
+                    <label for="twitter_id" accesskey="n" class="item_EN">TwitterID　<span class="must">必須</span><br></label>
                     <div class="input-group">
                         <span class="input-group__addon">@</span>
-                        <input type="text" class="input-group__control" placeholder="例: TwitterJP">
+                        <input type="text" name="twitter_id" id="twitter_id" class="input-group__control" placeholder="例: TwitterJP">
                     </div>
-                    <label for="twitter_id" accesskey="n" class="item_EN">TwitterID　<span class="must">必須</span><br></label>
-                    <span>@</span>
-                    <input type="text" name="twitter_id" placeholder="例: TwitterJP" id="twitter_id" class="user_input" required>
+                    <br>
 
                     <label for="begin_date" accesskey="n" class="item_JP">日付範囲(開始日)　<span class="free">任意</span><br>
                     <div class="explain">Year-Month-Day の形式で指定してください<br>※｢2010-11-4｣より前は指定できません</div></label>
@@ -52,31 +51,34 @@
                 <details>
                     <summary>詳しい使い方、仕様（クリックすると展開）</summary>
                     <div class="use">
-                        ・TwitterIDは自分、他人のどちらも指定できます。<br>
-                        ・日付範囲が未指定の場合、全件からランダムに選ばれます。<br>
-                        ・TwitterAPIの仕様により、3200件より多くのいいねをしているユーザは、最近3200件のいいねの中からランダムに表示されます。<br>
-                        ・非公開設定にしているアカウント（鍵アカウント）のいいねは表示できません。<br>
-                        ・TwitterAPIの使用回数制限のため、サービスを実行する回数が多いと制限がかかり、サービスを利用できなくなります。<br>
-                        　より多く使用したい人は、文末のTwitterのアイコンを押して、Twitterでログインしアプリケーション認証を行ってください。
-                        <button class="login_twitter" type="submit"><img src="images/TwitterLogo.png" alt="Twitterでログイン" width="19" height="16"/></button><br>
-                        　TwitterAPIの使用制限とTwitterのログインによるアプリケーション認証に関して詳細を知りたい方は、本文末にて説明しますので、そちらを参照ください。<br>
-                        ・日付範囲が未指定だったり、日付範囲が広いと、最近のものが選ばれる確率が少しだけ高くなります。<br><br>
+                        <ul>
+                        <li>TwitterIDは自分、他人のどちらも指定できます。</li>
+                        <li>日付範囲が未指定の場合、全件からランダムに選ばれます。</li>
+                        <li>TwitterAPIの仕様により、3200件より多くのいいねをしているユーザは、最近3200件のいいねの中からランダムに表示されます。</li>
+                        <li>非公開設定にしているアカウント（鍵アカウント）のいいねは表示できません。</li>
+                        <li>TwitterAPIの使用回数制限のため、サービスを実行する回数が多いと制限がかかり、サービスを利用できなくなります。
+                        より多く使用したい人は、文末のTwitterのアイコンを押して、Twitterでログインしアプリケーション認証を行ってください。
+                        <button class="login_twitter" type="submit"><img src="images/TwitterLogo.png" alt="Twitterでログイン" width="19" height="16"/></button></li>
+                        TwitterAPIの使用制限とTwitterのログインによるアプリケーション認証に関しての詳細を知りたい方は、本ページの末尾にて説明しますので、そちらを参照ください。</li>
+                        <li>日付範囲が未指定であったり、日付範囲が広いと、最近のものが選ばれる確率が少しだけ高くなります。</li><br>
                         <details>
                             <summary>使用制限、認証に関して（クリックすると展開）</summary>
                             <div class="limit">
-                                1.使用回数制限に関して<br>
+                                <ol>
+                                <li>使用回数制限に関して<br>
                                 TwitterAPIは、認証を行わない場合はアプリケーション単位、認証を行った場合はユーザ単位に対して使用回数が制限されます。
                                 アプリケーション単位の場合は、アプリケーションを複数のユーザが使用している場合、複数ユーザの合計の使用回数を基準としてTwitterAPIの使用が制限されます。
                                 ユーザ単位の場合は、アプリケーションを複数のユーザが使用している場合でも、1ユーザの使用回数を基準として、TwitterAPIの使用が制限されます。
-                                そのため、ユーザ認証を行えば、使用制限が緩和されます。ユーザ認証を行った場合の使用回数の目安ですが、最低でも15分間に15回のいいね表示を行うことができます。<br>
-                                2.ユーザ認証(read only)に関して<br>
+                                そのため、ユーザ認証を行えば、使用制限が緩和されます。ユーザ認証を行った場合の使用回数の目安ですが、最低でも15分間に15回のいいね表示を行うことができます。</li>
+                                <li>ユーザ認証(read only)に関して<br>
                                 HeartPickerはユーザ認証を行っても、権限を悪用しユーザの意図に反するようなこと（ツイートする、フォローを行う等）は行いません。
                                 しかし、1.で述べたようにHeartPickerはAPIの使用回数緩和のため、認証が必要となります。
                                 そこで、最低限の権限の認証で十分なため、read権限のみの認証を行います。
                                 以下は補足ですが、勝手にツイートがされてしまう、いわゆるスパムと呼ばれるものはread権限だけでなく、write権限を必要とします。
-                                そのため、HeartPickerはスパムと呼ばれるようなアプリの動作は権限の面で不可能となっています。
+                                そのため、HeartPickerはスパムと呼ばれるようなアプリの動作は権限の面で不可能となっています。</li>
                             </div>
                         </details>
+                        </ul>
                     </div>
                 </details>
                 </form>

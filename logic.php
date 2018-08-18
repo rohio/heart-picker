@@ -108,27 +108,32 @@ $array_user = json_decode( $json, true);
 
 // APIからエラーが返されている場合、以降のプログラムを実行せずにエラー処理を行う
 if(array_key_exists('errors', $array_user)){
+	echo('<div class="error">');
 	if($array_user['errors'][0]['code'] === 50){
 		echo("指定したID [" . $twitter_id . "] は存在しません。\n");
-	} elseif($array_user['errors'][0]['code'] === 32){
-		echo("認証でエラーが発生しました。\n");
 	} elseif($array_user['errors'][0]['code'] === 88){
 		echo("APIの使用回数の上限に達したため、Twitterにアクセスできません。\n");
+		echo("上限を緩和したい場合は、ページ下部の｢詳細の使い方｣内にあるTwiiterのアイコンをクリックして、Twitterでログインを行ってください。");
 	} else {
 		echo("何らかのエラーが発生しました。申し訳ございません。\n");
 	}
+	echo('</div>');
 	return;
 };
 
 // アカウントが非公開ユーザでいいねにアクセスできない場合、以降の処理を行わず、終了
 if($array_user['protected']){
+	echo('<div class="error">');
 	echo("指定したID [" . $twitter_id . "] は、非公開設定のユーザのため、いいねを取得できません。\n");
+	echo('</div>');
 	return;
 }
 
 // $array_userが取得できない場合、以降の処理を行わず、終了
 if(count($array_user) == 0){
+	echo('<div class="error">');
 	echo("何らかの理由で、指定したID [" . $twitter_id . "] の情報を取得できませんでした。\n");
+	echo('</div>');
 	return;
 }
 
@@ -155,8 +160,8 @@ $rand_min = 0;
 $current_date = date("Y/m/d H:i:s");
 $rand_max = create_id($current_date);
 
-// 画面に表示するいいねの件数(入力値を格納)
-$display_num = $_POST['display_num'];
+// 画面に表示するいいねの件数
+$DISPLAY_NUM = 20
 
 // 日付範囲の開始日(入力値を格納)
 $begin_date = $_POST['begin_date'];
@@ -207,7 +212,9 @@ if($begin_date != "" && $end_date != ""){
 // 日付入力が互い違いの場合、以降のプログラムを実行せずにエラー処理を行う
 // TEST max_idが設定されない時は、本当に日付が互い違いになっているときのみ？
 if($params_a["max_id"] == NULL){
+	echo('<div class="error">');
 	echo("日付が互い違いになっています。開始日と終了日の入力を入れ替えてください。\n");
+	echo('</div>');
 	// 以降の処理を行わず、終了
 	return;
 }
@@ -295,20 +302,18 @@ while(true){
 	$array = json_decode($json, true);
 
 	// 入力値の表示件数以上のいいねを取得できたらループを抜ける
-	if(count($array) >= $display_num){break;};
+	if(count($array) >= $DISPLAY_NUM){break;};
 
 	// APIからエラーが返されている場合、ループを抜ける
 	if(array_key_exists('errors', $array)){
-		echo "<pre>";
-		print_r($array['errors']);
-		echo "</pre>";
-		if($array['errors'][0]['code'] === 32){
-			echo("ユーザ認証ができませんでした。\n");
-		} elseif($array['errors'][0]['code'] === 88){
+		echo('<div class="error">');
+		if($array['errors'][0]['code'] === 88){
 			echo("APIの使用回数の上限に達したため、Twitterにアクセスできません。\n");
+			echo("上限を緩和したい場合は、ページ下部の｢詳細の使い方｣内にあるTwiiterのアイコンをクリックして、Twitterでログインを行ってください。");
 		} else {
 			echo("何らかのエラーが発生しました。申し訳ございません。\n");
 		}
+		echo('</div>');
 		break;
 	};
 
@@ -318,10 +323,14 @@ while(true){
 	// $MAX_LOOP回ループして、入力値の表示件数以上のいいねを取得できない場合、ループを抜ける
 	if($loop_count > $MAX_LOOP){
 		if(count($array)){
-			echo("指定した日付の範囲内で " . $display_num . " 件のいいねがありませんでした。\n");
+			echo('<div class="error">');
+			echo("HeartPickのいいね表示件数は通常 " . $DISPLAY_NUM . " 件ですが、指定した日付の範囲内で " . $DISPLAY_NUM . " 件のいいねがありませんでした。\n");
 			echo("そのため、指定した日付の範囲内の " . count($array) . " 件のいいねを表示します。");
+			echo('</div>');
 		} else {
+			echo('<div class="error">');
 			echo("指定した日付の範囲内でいいねがありませんでした。\n");
+			echo('</div>');
 		}
 		
 		break;
@@ -354,7 +363,7 @@ foreach($array as $key => $value){
 	$html .= '<blockquote class="twitter-tweet tw-align-center" data-lang="ja"><p lang="ja" dir="ltr" text-align="center">' . $value["text"] . '</p>&mdash; ' . $value["user"]["name"] . '(@' . $value["user"]["screen_name"] . ') <a href="https://twitter.com/' . $value["user"]["screen_name"] . '/status/' . $value["id_str"] . '?ref_src=twsrc%5Etfw">' . $value["created_at"] . '</a></blockquote> <br>';
 	$display_count++;
 	// 表示したいいね数が表示件数以上になったら、break
-	if($display_count >= $display_num){break;}
+	if($display_count >= $DISPLAY_NUM){break;}
 }
 
 echo $html;
