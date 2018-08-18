@@ -26,7 +26,7 @@
                 <h1>Heart♡Picker</h1>
                 
                 HeartPickerは自分や友達のいいねをランダムに表示するサービスです。<br>
-				TwitterID、日時範囲(任意)を指定して、"Heart Pick!"ボタンを押してね！
+				TwitterIDと日時範囲(任意)を指定して、｢Heart Pick!｣ボタンを押してね！
                 
                 <form class="form" action="heart.php" method="post">
                     <label for="twitter_id" accesskey="n" class="item_EN">TwitterID　<span class="must">必須</span><br></label>
@@ -49,7 +49,7 @@
                 </form>
                 <form class="form" action="auth.php" method="get">
                 <details>
-                    <summary>詳しい使い方、仕様（クリックすると展開）</summary>
+                    <summary>詳しい使い方,仕様（クリックで展開）</summary>
                     <div class="use">
                         <ul>
                         <li>TwitterIDは自分、他人のどちらも指定できます。</li>
@@ -62,7 +62,7 @@
                         TwitterAPIの使用制限とTwitterのログインによるアプリケーション認証に関しての詳細を知りたい方は、本ページの末尾にて説明しますので、そちらを参照ください。</li>
                         <li>日付範囲が未指定であったり、日付範囲が広いと、最近のものが選ばれる確率が少しだけ高くなります。</li><br>
                         <details>
-                            <summary>使用制限、認証に関して（クリックすると展開）</summary>
+                            <summary>使用制限,認証に関して（クリックで展開）</summary>
                             <div class="limit">
                                 <ol>
                                 <li>使用回数制限に関して<br>
