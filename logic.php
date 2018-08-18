@@ -3,6 +3,62 @@
 $api_key = '5L41MwG316NQvDhd3ru1UDiIa'; 
 $api_secret = 'Y8daT5rjGsfQL49nHIzJKkL07Gq3BB2IAlR6NIl7owWSn00Lkz';
 
+// 入力フォームのhtml
+$form = "<form class=\"form\" action=\"heart.php\" method=\"post\">
+<label for=\"twitter_id\" accesskey=\"n\" class=\"item_EN\">TwitterID　<span class=\"must\">必須</span><br></label>
+<div class=\"input-group\">
+	<span class=\"input-group__addon\">@</span>
+	<input type=\"text\" name=\"twitter_id\" id=\"twitter_id\" class=\"input-group__control\" value=\"" . $_POST["twitter_id"] . "\" placeholder=\"例: TwitterJP\">
+</div>
+<br>
+
+<label for=\"begin_date\" accesskey=\"n\" class=\"item_JP\">日付範囲(開始日)　<span class=\"free\">任意</span><br>
+<div class=\"explain\">Year-Month-Day の形式で指定してください<br>※｢2010-11-4｣より前は指定できません</div></label>
+<input type=\"text\" name=\"begin_date\" placeholder=\"例: 2015-1-1\" id=\"begin_date\" class=\"user_input\" value=\"" . $_POST["begin_date"] . "\" maxlength=\"10\" onInput=\"checkForm(this)\" pattern=\"(201[1-9][/-]([1-9]|0[1-9]|1[12])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
+
+<label for=\"end_date\" accesskey=\"n\" class=\"item_JP\">日付範囲(終了日)　<span class=\"free\">任意</span><br>
+<div class=\"explain\">Year-Month-Day の形式で指定してください<br>※｢2010-11-4｣より前は指定できません</div></label>
+<input type=\"text\" name=\"end_date\" placeholder=\"例: 2016-1-31\" id=\"end_date\" class=\"user_input\" value=\"" . $_POST["end_date"] . "\" maxlength=\"10\" onInput=\"checkForm(this)\" pattern=\"(201[1-9][/-]([1-9]|0[1-9]|1[12])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
+
+<br>
+<button type=\"submit\">Heart Pick!</button>
+</form>
+<form class=\"form\" action=\"auth.php\" method=\"get\">
+<details>
+<summary>詳しい使い方,仕様（クリックで展開）</summary>
+<div class=\"use\">
+	<ul>
+	<li>TwitterIDは自分、他人のどちらも指定できます。</li>
+	<li>日付範囲が未指定の場合、全件からランダムに選ばれます。</li>
+	<li>TwitterAPIの仕様により、3200件より多くのいいねをしているユーザは、最近3200件のいいねの中からランダムに表示されます。</li>
+	<li>非公開設定にしているアカウント（鍵アカウント）のいいねは表示できません。</li>
+	<li>TwitterAPIの使用回数制限のため、サービスを実行する回数が多いと制限がかかり、サービスを利用できなくなります。
+	より多く使用したい人は、文末のTwitterのアイコンを押して、Twitterでログインしアプリケーション認証を行ってください。
+	<button class=\"login_twitter\" type=\"submit\"><img src=\"images/TwitterLogo.png\" alt=\"Twitterでログイン\" width=\"19\" height=\"16\"/></button></li>
+	TwitterAPIの使用制限とTwitterのログインによるアプリケーション認証に関しての詳細を知りたい方は、本ページの末尾にて説明しますので、そちらを参照ください。</li>
+	<li>日付範囲が未指定であったり、日付範囲が広いと、最近のものが選ばれる確率が少しだけ高くなります。</li><br>
+	<details>
+		<summary>使用制限,認証に関して（クリックで展開）</summary>
+		<div class=\"limit\">
+			<ol>
+			<li>使用回数制限に関して<br>
+			TwitterAPIは、認証を行わない場合はアプリケーション単位、認証を行った場合はユーザ単位に対して使用回数が制限されます。
+			アプリケーション単位の場合は、アプリケーションを複数のユーザが使用している場合、複数ユーザの合計の使用回数を基準としてTwitterAPIの使用が制限されます。
+			ユーザ単位の場合は、アプリケーションを複数のユーザが使用している場合でも、1ユーザの使用回数を基準として、TwitterAPIの使用が制限されます。
+			そのため、ユーザ認証を行えば、使用制限が緩和されます。ユーザ認証を行った場合の使用回数の目安ですが、最低でも15分間に15回のいいね表示を行うことができます。</li>
+			<li>ユーザ認証(read only)に関して<br>
+			HeartPickerはユーザ認証を行っても、権限を悪用しユーザの意図に反するようなこと（ツイートする、フォローを行う等）は行いません。
+			しかし、1.で述べたようにHeartPickerはAPIの使用回数緩和のため、認証が必要となります。
+			そこで、最低限の権限の認証で十分なため、read権限のみの認証を行います。
+			以下は補足ですが、勝手にツイートがされてしまう、いわゆるスパムと呼ばれるものはread権限だけでなく、write権限を必要とします。
+			そのため、HeartPickerはスパムと呼ばれるようなアプリの動作は権限の面で不可能となっています。</li>
+		</div>
+	</details>
+	</ul>
+</div>
+</details>
+</form>";
+
 // アクセスキー、アクセストークン
 // ユーザごとの認証を使用する場合
 if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"])){
@@ -110,14 +166,15 @@ $array_user = json_decode( $json, true);
 if(array_key_exists('errors', $array_user)){
 	echo('<div class="error">');
 	if($array_user['errors'][0]['code'] === 50){
-		echo("指定したID [" . $twitter_id . "] は存在しません。\n");
+		echo("指定したID [" . $twitter_id . "] は存在しません。");
 	} elseif($array_user['errors'][0]['code'] === 88){
-		echo("APIの使用回数の上限に達したため、Twitterにアクセスできません。\n");
+		echo("APIの使用回数の上限に達したため、Twitterにアクセスできません。");
 		echo("上限を緩和したい場合は、ページ下部の｢詳細の使い方｣内にあるTwiiterのアイコンをクリックして、Twitterでログインを行ってください。");
 	} else {
-		echo("何らかのエラーが発生しました。申し訳ございません。\n");
+		echo("何らかのエラーが発生しました。申し訳ございません。");
 	}
-	echo('</div>');
+	echo("</div>\n");
+	echo($form);
 	return;
 };
 
@@ -125,7 +182,8 @@ if(array_key_exists('errors', $array_user)){
 if($array_user['protected']){
 	echo('<div class="error">');
 	echo("指定したID [" . $twitter_id . "] は、非公開設定のユーザのため、いいねを取得できません。\n");
-	echo('</div>');
+	echo("</div>\n");
+	echo($form);
 	return;
 }
 
@@ -133,7 +191,8 @@ if($array_user['protected']){
 if(count($array_user) == 0){
 	echo('<div class="error">');
 	echo("何らかの理由で、指定したID [" . $twitter_id . "] の情報を取得できませんでした。\n");
-	echo('</div>');
+	echo("</div>\n");
+	echo($form);
 	return;
 }
 
@@ -161,7 +220,7 @@ $current_date = date("Y/m/d H:i:s");
 $rand_max = create_id($current_date);
 
 // 画面に表示するいいねの件数
-$DISPLAY_NUM = 20
+$DISPLAY_NUM = 20;
 
 // 日付範囲の開始日(入力値を格納)
 $begin_date = $_POST['begin_date'];
@@ -214,7 +273,8 @@ if($begin_date != "" && $end_date != ""){
 if($params_a["max_id"] == NULL){
 	echo('<div class="error">');
 	echo("日付が互い違いになっています。開始日と終了日の入力を入れ替えてください。\n");
-	echo('</div>');
+	echo("</div>\n");
+	echo($form);
 	// 以降の処理を行わず、終了
 	return;
 }
@@ -313,7 +373,8 @@ while(true){
 		} else {
 			echo("何らかのエラーが発生しました。申し訳ございません。\n");
 		}
-		echo('</div>');
+		echo("</div>\n");
+		echo($form);
 		break;
 	};
 
@@ -326,13 +387,12 @@ while(true){
 			echo('<div class="error">');
 			echo("HeartPickのいいね表示件数は通常 " . $DISPLAY_NUM . " 件ですが、指定した日付の範囲内で " . $DISPLAY_NUM . " 件のいいねがありませんでした。\n");
 			echo("そのため、指定した日付の範囲内の " . count($array) . " 件のいいねを表示します。");
-			echo('</div>');
+			echo("</div>\n");
 		} else {
 			echo('<div class="error">');
 			echo("指定した日付の範囲内でいいねがありませんでした。\n");
-			echo('</div>');
+			echo("</div>\n");
 		}
-		
 		break;
 	};
 	
@@ -358,6 +418,8 @@ shuffle($array);
 // いいねを表示している配列数をカウントする変数
 $display_count = 0;
 
+echo($form);
+$html .= "<form>";
 foreach($array as $key => $value){
 	// 埋め込みTweetの形で表示
 	$html .= '<blockquote class="twitter-tweet tw-align-center" data-lang="ja"><p lang="ja" dir="ltr" text-align="center">' . $value["text"] . '</p>&mdash; ' . $value["user"]["name"] . '(@' . $value["user"]["screen_name"] . ') <a href="https://twitter.com/' . $value["user"]["screen_name"] . '/status/' . $value["id_str"] . '?ref_src=twsrc%5Etfw">' . $value["created_at"] . '</a></blockquote> <br>';
@@ -365,5 +427,7 @@ foreach($array as $key => $value){
 	// 表示したいいね数が表示件数以上になったら、break
 	if($display_count >= $DISPLAY_NUM){break;}
 }
+$html .= "<p id=\"pageTop\"><a href=\"#\"><i class=\"fa fa-chevron-up\"></i>↑</a></p>";
+$html .= "</form>";
 
 echo $html;
