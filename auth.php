@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <title>はーとぴっかー</title>
         <link rel="stylesheet/less" type="text/css" href="style.less">
+		<link rel="icon" href="favicon.ico">
         <meta name="viewport" content="width=device-width, user-scale=yes, initial-scale=1.0, maximum-scale=5.0" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.5.1/less.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -83,9 +84,6 @@
                 </details>
                 </form>
             </div>
-            </div>
-
-
             <ul class="bg-bubbles-index">
                 <li></li>
                 <li></li>
@@ -99,11 +97,12 @@
                 <li></li>
             </ul>
         </div>
-        
-    </body>
-</html>
 
 <?php
+ini_set("display_errors",1);
+error_reporting(E_ALL);
+ob_start();
+
 $api_key = '5L41MwG316NQvDhd3ru1UDiIa'; 
 $api_secret = 'Y8daT5rjGsfQL49nHIzJKkL07Gq3BB2IAlR6NIl7owWSn00Lkz';
 $callback_url = "https://inputform.herokuapp.com/auth.php" ;	// Callback URL (このプログラムのURLアドレス)
@@ -299,8 +298,7 @@ if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
 	// リクエストトークンを取得できなかった場合
 	if( !$response ) {
 		echo "<p>何らかの理由で、リクエストトークンを取得できませんでした。申し訳ございません。</p>" ;
-		// TODO returnでOK？
-		exit ;
+		return ;
 	}
 
 	// $responseの内容(文字列)を$query(配列)に直す
@@ -310,17 +308,18 @@ if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
 
 	// セッション[$_SESSION["oauth_token_secret"]]に[oauth_token_secret]を保存する
 	session_start() ;
-	// TODO これなに？
 	session_regenerate_id(true) ;
 	$_SESSION["oauth_token_secret"] = $query["oauth_token_secret"] ;
 
 	/*** ユーザーを認証画面へ飛ばす ***/
 
 	// ユーザーを認証画面へ飛ばす (毎回ボタンを押す場合)
-	// header( "Location: https://api.twitter.com/oauth/authorize?oauth_token=" . $query["oauth_token"] ) ;
+	header( "Location: https://api.twitter.com/oauth/authorize?oauth_token=" . $query["oauth_token"] ) ;
 
 	// ユーザーを認証画面へ飛ばす (二回目以降は認証画面をスキップする場合)
-	header( "Location: https://api.twitter.com/oauth/authenticate?oauth_token=" . $query["oauth_token"] ) ;
+	// header( "Location: https://api.twitter.com/oauth/authenticate?oauth_token=" . $query["oauth_token"] ) ;
 }
 
 ?>
+	</body>
+</html>
