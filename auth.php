@@ -97,12 +97,7 @@
                 <li></li>
             </ul>
         </div>
-
 <?php
-ini_set("display_errors",1);
-error_reporting(E_ALL);
-ob_start();
-
 $api_key = '5L41MwG316NQvDhd3ru1UDiIa'; 
 $api_secret = 'Y8daT5rjGsfQL49nHIzJKkL07Gq3BB2IAlR6NIl7owWSn00Lkz';
 $callback_url = "https://inputform.herokuapp.com/auth.php" ;	// Callback URL (このプログラムのURLアドレス)
@@ -111,7 +106,6 @@ $callback_url = "https://inputform.herokuapp.com/auth.php" ;	// Callback URL (�
 if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
 	/*** アクセストークンを取得する ***/
 	//[リクエストトークン・シークレット]をセッションから取得
-	session_start() ;
 	$request_token_secret = $_SESSION["oauth_token_secret"] ;
 
 	// アクセストークンを取得するAPI
@@ -307,7 +301,6 @@ if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
 	parse_str( $response, $query ) ;
 
 	// セッション[$_SESSION["oauth_token_secret"]]に[oauth_token_secret]を保存する
-	session_start() ;
 	session_regenerate_id(true) ;
 	$_SESSION["oauth_token_secret"] = $query["oauth_token_secret"] ;
 
