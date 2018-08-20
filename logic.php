@@ -52,6 +52,7 @@ $form = "<form class=\"form\" action=\"heart.php\" method=\"post\">
 			そこで、最低限の権限の認証で十分なため、read権限のみの認証を行います。
 			以下は補足ですが、勝手にツイートがされてしまう、いわゆるスパムと呼ばれるものはread権限だけでなく、write権限を必要とします。
 			そのため、HeartPickerはスパムと呼ばれるようなアプリの動作は権限の面で不可能となっています。</li>
+			</ol>
 		</div>
 	</details>
 	</ul>
@@ -67,10 +68,14 @@ if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"])){
 	// ユーザのアクセストークンを設定
 	$access_token = $_SESSION["oauth_token"];
 	$access_token_secret = $_SESSION["oauth_token_secret"];
+	// DEBUG
+	echo 'SESSION';
 } else {	// アプリケーションごとの認証を使用する場合
 	// アプリケーションのアクセストークンを設定
 	$access_token = '305336457-f4SkCiMphhamnllp0ezut9dsMsl6OJOYI273IfuK';
 	$access_token_secret = 'bSCdmn8QQhhPwnyCD9pV261FC5OAUUTvsJzCGBa7vPEks';
+	// DEBUG
+	echo 'NO SESSION';
 }
 
 /* ユーザのいいね件数、非公開設定か否かを取得 */
@@ -407,9 +412,6 @@ while(true){
 		$params_a["max_id"] = $rand_max;
 	};
 }
-
-// TODO heart.phpのヘッダーにあるため不要？
-// $html .= '<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>';
 
 // いいねを格納している配列の要素をシャッフル
 // 最大200件取得したTweetの中から、更にランダムに表示するためにシャッフルする。

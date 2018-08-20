@@ -1,6 +1,5 @@
 <?php
-// ini_set("display_errors",1);
-// error_reporting(E_ALL);
+session_start();
 $api_key = '5L41MwG316NQvDhd3ru1UDiIa'; 
 $api_secret = 'Y8daT5rjGsfQL49nHIzJKkL07Gq3BB2IAlR6NIl7owWSn00Lkz';
 $callback_url = "https://inputform.herokuapp.com/auth.php" ;	// Callback URL (このプログラムのURLアドレス)
@@ -101,8 +100,7 @@ if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
 
 // 認証画面から戻ってきた時 (認証NG) 特に何も処理をしない
 } elseif ( isset( $_GET["denied"] ) ) {
-	// TODO return でOK?
-	exit ;
+	return ;
 // 初回のアクセス
 } else {
 	/*** リクエストトークンの取得 ***/
@@ -186,11 +184,6 @@ if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
 
 	// 取得したデータ
 	$response = substr( $res1, $res2["header_size"] ) ;	// 取得したデータ(JSONなど)
-	// TODO 不要だよね？
-	$header = substr( $res1, 0, $res2["header_size"] ) ;	// レスポンスヘッダー (検証に利用したい場合にどうぞ)
-
-	// [cURL]ではなく、[file_get_contents()]を使うには下記の通りです…
-	// $response = file_get_contents( $request_url , false , stream_context_create( $context ) ) ;
 
 	// リクエストトークンを取得できなかった場合
 	if( !$response ) {
@@ -210,13 +203,12 @@ if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
 	/*** ユーザーを認証画面へ飛ばす ***/
 
 	// ユーザーを認証画面へ飛ばす (毎回ボタンを押す場合)
-	header( "Location: https://api.twitter.com/oauth/authorize?oauth_token=" . $query["oauth_token"] ) ;
+	// header( "Location: https://api.twitter.com/oauth/authorize?oauth_token=" . $query["oauth_token"] ) ;
 
 	// ユーザーを認証画面へ飛ばす (二回目以降は認証画面をスキップする場合)
-	// header( "Location: https://api.twitter.com/oauth/authenticate?oauth_token=" . $query["oauth_token"] ) ;
+	header( "Location: https://api.twitter.com/oauth/authenticate?oauth_token=" . $query["oauth_token"] ) ;
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="ja">
