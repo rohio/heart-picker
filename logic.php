@@ -1,4 +1,6 @@
 <?php
+// ユーザごとのアクセストークンを使用する場合、セッションから認証のトークンを取得するため、セッションを開始
+session_start() ;
 // Webアプリケーションのapi情報を設定
 $api_key = '5L41MwG316NQvDhd3ru1UDiIa'; 
 $api_secret = 'Y8daT5rjGsfQL49nHIzJKkL07Gq3BB2IAlR6NIl7owWSn00Lkz';
@@ -63,8 +65,6 @@ $form = "<form class=\"form\" action=\"heart.php\" method=\"post\">
 // アクセスキー、アクセストークン
 // ユーザごとの認証を使用する場合
 if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"])){
-	// ユーザごとのアクセストークンを使用する場合、セッションから認証のトークンを取得するため、セッションを開始
-	session_start() ;
 	// ユーザのアクセストークンを設定
 	$access_token = $_SESSION["oauth_token"];
 	$access_token_secret = $_SESSION["oauth_token_secret"];
