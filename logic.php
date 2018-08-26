@@ -369,12 +369,11 @@ while(true){
 	$array = json_decode($json, true);
 
 	// 非公開アカウントのTweetを削除
-	foreach($array as $key => $value){
-		if($value["user"]["protected"]){
-			unset($array[$key]);
-		}
-
-	}
+	// foreach($array as $key => $value){
+	// 	if($value["user"]["protected"]){
+	// 		unset($array[$key]);
+	// 	}
+	// }
 
 	// 入力値の表示件数以上のいいねを取得できたらループを抜ける
 	if(count($array) >= $DISPLAY_NUM){break;};
