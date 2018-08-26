@@ -96,7 +96,7 @@ if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
 	// $query["user_id"]
 
 	// スクリーンネーム
-	$_SESSION["screen_name"] = $query["screen_name"]
+	$_SESSION["screen_name"] = $query["screen_name"];
 
 // 認証画面から戻ってきた時 (認証NG) 特に何も処理をしない
 } elseif ( isset( $_GET["denied"] ) ) {

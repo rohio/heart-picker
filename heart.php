@@ -49,7 +49,7 @@
             
                 $("#fade").css("height", pageH).delay(900).fadeOut(800);
                 $("#loader").delay(600).fadeOut(300);
-                $("#container").css("display", "block");
+                $("#wrapper").css("display", "block");
             });
         </script>
         <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
