@@ -40,7 +40,7 @@
                     return false;
                 });
             });
-            
+
             $('head').append(
                 '<style type="text/css">#wrapper { display: none; } #fade, #loader { display: block; }</style>'
             );
@@ -53,7 +53,7 @@
                 $("#wrapper").css("display", "block");
             });
         </script>
-        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        <!-- <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> -->
     </head>
     <body>
         <div id="loader">

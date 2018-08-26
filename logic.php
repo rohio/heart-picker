@@ -70,7 +70,7 @@ if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"])){
 	$access_token_secret = $_SESSION["oauth_token_secret"];
 	// DEBUG
 	echo('<div class="session">');
-	echo ('あなたは今、TwitterID: @' . $_SESSION["screen_name"] . ' でHeartPickにログインしています。');
+	echo ('あなたは今、TwitterID: @' . $_SESSION["screen_name"] . ' で HeartPick にログインしています。');
 	echo('</div>');
 } else {	// アプリケーションごとの認証を使用する場合
 	// アプリケーションのアクセストークンを設定
@@ -429,7 +429,7 @@ echo($form);
 $html .= "<form>";
 foreach($array as $key => $value){
 	// 埋め込みTweetの形で表示
-	$html .= '<blockquote class="twitter-tweet tw-align-center" data-lang="ja"><p lang="ja" dir="ltr" text-align="center">' . $value["text"] . '</p>&mdash; ' . $value["user"]["name"] . '(@' . $value["user"]["screen_name"] . ') <a href="https://twitter.com/' . $value["user"]["screen_name"] . '/status/' . $value["id_str"] . '?ref_src=twsrc%5Etfw">' . $value["created_at"] . '</a></blockquote> <br>';
+	$html .= '<blockquote class="twitter-tweet tw-align-center" data-lang="ja"><p lang="ja" dir="ltr" text-align="center">' . $value["text"] . '</p>&mdash; ' . $value["user"]["name"] . '(@' . $value["user"]["screen_name"] . ') <a href="https://twitter.com/' . $value["user"]["screen_name"] . '/status/' . $value["id_str"] . '?ref_src=twsrc%5Etfw">' . $value["created_at"] . '</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> <br>';
 	$display_count++;
 	// 表示したいいね数が表示件数以上になったら、break
 	if($display_count >= $DISPLAY_NUM){break;}
