@@ -371,6 +371,10 @@ while(true){
 
 	// APIからエラーが返されている場合、ループを抜ける
 	if(array_key_exists('errors', $array)){
+		echo "<pre>";
+		print_r($array['errors']);
+		echo "</pre>";
+		
 		echo('<div class="error">');
 		if($array['errors'][0]['code'] === 88){
 			echo("APIの使用回数の上限に達したため、Twitterにアクセスできません。\n");

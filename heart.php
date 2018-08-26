@@ -82,3 +82,9 @@
         
     </body>
 </html>
+
+<!--
+Copyright (c) 2015 Lewi Hussey @Lewitje's
+Released under the MIT license
+http://opensource.org/licenses/mit-license.php
+-->

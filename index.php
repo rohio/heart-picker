@@ -59,9 +59,10 @@
                         <li>非公開設定にしているアカウント（鍵アカウント）のいいねは表示できません。</li>
                         <li>TwitterAPIの使用回数制限のため、サービスを実行する回数が多いと制限がかかり、サービスを利用できなくなります。
                         より多く使用したい人は、文末のTwitterのアイコンを押して、Twitterでログインしアプリケーション認証を行ってください。
-                        <button class="login_twitter" type="submit"><img src="images/TwitterLogo.png" alt="Twitterでログイン" width="19" height="16"/></button></li>
-                        TwitterAPIの使用制限とTwitterのログインによるアプリケーション認証に関しての詳細を知りたい方は、本ページの末尾にて説明しますので、そちらを参照ください。</li>
+                        
+                        TwitterAPIの使用制限とTwitterのログインによるアプリケーション認証に関して、詳細を知りたい方は、本ページの末尾にて説明していますので、そちらを参照ください。</li>
                         <li>日付範囲が未指定であったり、日付範囲が広いと、最近のものが選ばれる確率が少しだけ高くなります。</li><br>
+                        <button class="login_twitter" type="submit"><img src="images/buttons.png" alt="Twitterでログイン" width="200" height="40"/></button>  
                         <details>
                             <summary>使用制限,認証に関して（クリックで展開）</summary>
                             <div class="limit">
@@ -102,3 +103,9 @@
         
     </body>
 </html>
+
+<!--
+Copyright (c) 2015 Lewi Hussey @Lewitje's
+Released under the MIT license
+http://opensource.org/licenses/mit-license.php
+-->
