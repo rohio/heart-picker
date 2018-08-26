@@ -10,7 +10,7 @@ $form = "<form class=\"form\" action=\"heart.php\" method=\"post\">
 <label for=\"twitter_id\" accesskey=\"n\" class=\"item_EN\">TwitterID　<span class=\"must\">必須</span><br></label>
 <div class=\"input-group\">
 	<span class=\"input-group__addon\">@</span>
-	<input type=\"text\" name=\"twitter_id\" id=\"twitter_id\" class=\"input-group__control\" value=\"" . $_POST["twitter_id"] . "\" placeholder=\"例: TwitterJP\">
+	<input type=\"text\" name=\"twitter_id\" id=\"twitter_id\" class=\"input-group__control\" value=\"" . $_POST["twitter_id"] . "\" placeholder=\"例: TwitterJP\" required>
 </div>
 <br>
 
@@ -69,13 +69,15 @@ if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"])){
 	$access_token = $_SESSION["oauth_token"];
 	$access_token_secret = $_SESSION["oauth_token_secret"];
 	// DEBUG
-	echo 'SESSION';
+	echo('<div class="session">');	
+	echo ('あなたは今、TwitterID: ' . $_SESSION["screen_name"] . 'でHeartPickにログインしています。');
+	echo('</div>');
 } else {	// アプリケーションごとの認証を使用する場合
 	// アプリケーションのアクセストークンを設定
 	$access_token = '305336457-f4SkCiMphhamnllp0ezut9dsMsl6OJOYI273IfuK';
 	$access_token_secret = 'bSCdmn8QQhhPwnyCD9pV261FC5OAUUTvsJzCGBa7vPEks';
 	// DEBUG
-	echo 'NO SESSION';
+	// echo 'NO SESSION';
 }
 
 /* ユーザのいいね件数、非公開設定か否かを取得 */
@@ -374,11 +376,11 @@ while(true){
 		echo "<pre>";
 		print_r($array['errors']);
 		echo "</pre>";
-		
+
 		echo('<div class="error">');
 		if($array['errors'][0]['code'] === 88){
 			echo("APIの使用回数の上限に達したため、Twitterにアクセスできません。\n");
-			echo("上限を緩和したい場合は、ページ下部の｢詳細の使い方｣内にあるTwiiterのアイコンをクリックして、Twitterでログインを行ってください。");
+			echo("上限を緩和したい場合は、ページ下部の｢詳しい使い方,仕様｣内にあるTwiiterのアイコンをクリックして、Twitterでログインを行ってください。");
 		} else {
 			echo("何らかのエラーが発生しました。申し訳ございません。\n");
 		}
