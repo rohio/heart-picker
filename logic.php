@@ -69,8 +69,8 @@ if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"])){
 	$access_token = $_SESSION["oauth_token"];
 	$access_token_secret = $_SESSION["oauth_token_secret"];
 	// DEBUG
-	echo('<div class="session">');	
-	echo ('あなたは今、TwitterID: ' . $_SESSION["screen_name"] . 'でHeartPickにログインしています。');
+	echo('<div class="session">');
+	echo ('あなたは今、TwitterID: @' . $_SESSION["screen_name"] . ' でHeartPickにログインしています。');
 	echo('</div>');
 } else {	// アプリケーションごとの認証を使用する場合
 	// アプリケーションのアクセストークンを設定
@@ -386,7 +386,7 @@ while(true){
 		}
 		echo("</div>\n");
 		echo($form);
-		break;
+		return;
 	};
 
 	// ループ回数をインクリメント
@@ -394,17 +394,16 @@ while(true){
 	
 	// $MAX_LOOP回ループして、入力値の表示件数以上のいいねを取得できない場合、ループを抜ける
 	if($loop_count > $MAX_LOOP){
+		echo('<div class="error">');
 		if(count($array)){
-			echo('<div class="error">');
 			echo("HeartPickのいいね表示件数は通常 " . $DISPLAY_NUM . " 件ですが、指定した日付の範囲内で " . $DISPLAY_NUM . " 件のいいねがありませんでした。\n");
 			echo("そのため、指定した日付の範囲内の " . count($array) . " 件のいいねを表示します。");
-			echo("</div>\n");
 		} else {
-			echo('<div class="error">');
 			echo("指定した日付の範囲内でいいねがありませんでした。\n");
-			echo("</div>\n");
 		}
-		break;
+		echo("</div>\n");
+		echo($form);
+		return;
 	};
 	
 	// 乱数幅の最小値に、本ループで入力値の表示件数以上のデータを取得できなかった値を代入
