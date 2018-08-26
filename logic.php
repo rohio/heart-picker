@@ -16,11 +16,11 @@ $form = "<form class=\"form\" action=\"heart.php\" method=\"post\">
 
 <label for=\"begin_date\" accesskey=\"n\" class=\"item_JP\">日付範囲(開始日)　<span class=\"free\">任意</span><br>
 <div class=\"explain\">Year-Month-Day の形式で指定してください<br>※｢2010-11-4｣より前は指定できません</div></label>
-<input type=\"text\" name=\"begin_date\" placeholder=\"例: 2015-1-1\" id=\"begin_date\" class=\"user_input\" value=\"" . $_POST["begin_date"] . "\" maxlength=\"10\" onInput=\"checkForm(this)\" pattern=\"(201[1-9][/-]([1-9]|0[1-9]|1[12])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
+<input type=\"text\" name=\"begin_date\" placeholder=\"例: 2015-1-1\" id=\"begin_date\" class=\"user_input\" value=\"" . $_POST["begin_date"] . "\" maxlength=\"10\" onInput=\"checkForm(this)\" pattern=\"(201[1-9][/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
 
 <label for=\"end_date\" accesskey=\"n\" class=\"item_JP\">日付範囲(終了日)　<span class=\"free\">任意</span><br>
 <div class=\"explain\">Year-Month-Day の形式で指定してください<br>※｢2010-11-4｣より前は指定できません</div></label>
-<input type=\"text\" name=\"end_date\" placeholder=\"例: 2016-1-31\" id=\"end_date\" class=\"user_input\" value=\"" . $_POST["end_date"] . "\" maxlength=\"10\" onInput=\"checkForm(this)\" pattern=\"(201[1-9][/-]([1-9]|0[1-9]|1[12])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
+<input type=\"text\" name=\"end_date\" placeholder=\"例: 2016-1-31\" id=\"end_date\" class=\"user_input\" value=\"" . $_POST["end_date"] . "\" maxlength=\"10\" onInput=\"checkForm(this)\" pattern=\"(201[1-9][/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
 
 <br>
 <button type=\"submit\">Heart Pick!</button>
@@ -197,7 +197,7 @@ if($array_user['protected']){
 // $array_userが取得できない場合、以降の処理を行わず、終了
 if(count($array_user) == 0){
 	echo('<div class="error">');
-	echo("何らかの理由で、指定したID [" . $twitter_id . "] の情報を取得できませんでした。\n");
+	echo("何らかの理由で、指定したID [" . $twitter_id . "] の情報を取得できませんでした。申し訳ございません。\n");
 	echo("</div>\n");
 	echo($form);
 	return;
@@ -266,24 +266,31 @@ $params_a = array(
 if($begin_date != "" && $end_date != ""){
 	$params_a["max_id"] = mt_rand($rand_min, $rand_max);
 	$params_a["since_id"] = $rand_min;
+	// 日付入力が互い違いの場合、以降のプログラムを実行せずにエラー処理を行う
+	if($params_a["max_id"] == NULL){
+		echo('<div class="error">');
+		echo("指定した日付が互い違いになっています。開始日と終了日を入れ替えてください。\n");
+		echo("</div>\n");
+		echo($form);
+		// 以降の処理を行わず、終了
+		return;
+	}
 } elseif($begin_date === "" && $end_date != ""){
 	$params_a["max_id"] = mt_rand(0, $rand_max);
 } elseif($begin_date != "" && $end_date === ""){
 	$params_a["max_id"] = mt_rand($rand_min, $rand_max);
+	// 日付入力が現在日時より未来の場合、以降のプログラムを実行せずにエラー処理を行う
+	if($params_a["max_id"] == NULL){
+		echo('<div class="error">');
+		echo("指定した開始日は未来です。現在日時の " . date("Y-m-d") . " 以前を入力してください。");
+		echo("</div>\n");
+		echo($form);
+		// 以降の処理を行わず、終了
+		return;
+	}
 	$params_a["since_id"] = $rand_min;
 } elseif($begin_date === "" && $end_date === ""){
 	$params_a["max_id"] = mt_rand(0, $rand_max);
-}
-
-// 日付入力が互い違いの場合、以降のプログラムを実行せずにエラー処理を行う
-// TEST max_idが設定されない時は、本当に日付が互い違いになっているときのみ？
-if($params_a["max_id"] == NULL){
-	echo('<div class="error">');
-	echo("日付が互い違いになっています。開始日と終了日の入力を入れ替えてください。\n");
-	echo("</div>\n");
-	echo($form);
-	// 以降の処理を行わず、終了
-	return;
 }
 
 // ループ回数をカウントする変数
