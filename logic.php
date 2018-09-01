@@ -293,8 +293,11 @@ $array_user = json_decode( $json, true);
 // セッション情報を破棄するため、ログインしているTwitterIDを表示する前にエラー処理を行う
 if(array_key_exists('errors', $array_user)){
 	if($array_user['errors'][0]['code'] === 89){
+		echo('<div class="session">');
 		echo("HeartPickにログインしていたTwitterID: @" . $_SESSION["screen_name"] . " とのアプリ連携の許可が取り消されたため、HeartPick からログアウトしました。");
 		echo("申し訳ございませんが、再度 HeartPick! ボタンを押してください。");
+		echo('</div>');
+		echo($form);	
 		// SESSION情報を破棄
 		unset($_SESSION["oauth_token"]);
 		unset($_SESSION["screen_name"]);
