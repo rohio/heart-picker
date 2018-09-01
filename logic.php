@@ -129,6 +129,17 @@ if($begin_date != ""){
 		// 以降の処理を行わず、終了
 		return;
 	}
+
+	// 日付が未来の場合エラー処理 
+	if(strtotime($begin_date) > strtotime(date("Y/m/d"))){
+		echo('<div class="error">');
+		echo("指定した開始日 [" . $begin_date . " ]は未来です。現在日時の " . date("Y-m-d") . " 以前を入力してください。");
+		echo("</div>\n");
+		echo($form);
+		// 以降の処理を行わず、終了
+		return;
+	}
+
 	// $begin_dateの全日を含めるために00:00:00の時間を設定
 	$begin_date .= " 00:00:00";
 	$rand_min = create_id($begin_date);
@@ -150,8 +161,6 @@ if($end_date != ""){
 	// $end_dateの全日を含めるために23:59:59の時間を設定
 	$end_date .= " 23:59:59";
 	$rand_max = create_id($end_date);
-	// DEBUG
-	echo $rand_max;
 }
 
 // 日付指定範囲の開始日、終了日を入力しているかによって4つに分岐
@@ -171,15 +180,6 @@ if($begin_date != "" && $end_date != ""){
 	$max_id = mt_rand(0, $rand_max);
 } elseif($begin_date != "" && $end_date === ""){
 	$max_id = mt_rand($rand_min, $rand_max);
-	// 日付入力が現在日時より未来の場合、以降のプログラムを実行せずにエラー処理を行う
-	if($max_id == NULL){
-		echo('<div class="error">');
-		echo("指定した開始日 [" . $begin_date . " ]は未来です。現在日時の " . date("Y-m-d") . " 以前を入力してください。");
-		echo("</div>\n");
-		echo($form);
-		// 以降の処理を行わず、終了
-		return;
-	}
 	$since_id = $rand_min;
 } elseif($begin_date === "" && $end_date === ""){
 	$max_id = mt_rand(0, $rand_max);
