@@ -133,7 +133,7 @@ if($begin_date != ""){
 	// 日付が未来の場合エラー処理 
 	if(strtotime($begin_date) > strtotime(date("Y/m/d"))){
 		echo('<div class="error">');
-		echo("指定した開始日 [" . $begin_date . " ]は未来です。現在日時の " . date("Y-m-d") . " 以前を入力してください。");
+		echo("指定した開始日 [" . $begin_date . "] は未来です。現在日時の " . date("Y-m-d") . " 以前を入力してください。");
 		echo("</div>\n");
 		echo($form);
 		// 以降の処理を行わず、終了
@@ -309,7 +309,7 @@ if(array_key_exists('errors', $array_user)){
 // ログインしているTwitterIDを表示
 if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"])){
 	echo('<div class="session">');
-	echo ('あなたは今、TwitterID: @' . $_SESSION["screen_name"] . ' で HeartPick にログインしています。');
+	echo ('あなたは今、TwitterID [@' . $_SESSION["screen_name"] . '] で HeartPick にログインしています。');
 	echo('</div>');
 }
 
@@ -317,7 +317,7 @@ if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"])){
 if(array_key_exists('errors', $array_user)){
 	echo('<div class="error">');
 	if($array_user['errors'][0]['code'] === 50){
-		echo("指定したTwitterID [" . $twitter_id . "] は存在しません。");
+		echo("指定したTwitterID [@" . $twitter_id . "] は存在しません。");
 	} elseif($array_user['errors'][0]['code'] === 88){
 		echo("APIの使用回数の上限に達したため、Twitterにアクセスできません。");
 		if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"]) === false){
@@ -325,10 +325,6 @@ if(array_key_exists('errors', $array_user)){
 		}
 	} else {
 		echo("何らかのエラーが発生しました。申し訳ございません。");
-		// DEBUG
-		echo "<pre>";
-		print_r($array_user['errors']);
-		echo "</pre>";
 	}
 	echo("</div>\n");
 	echo($form);
@@ -346,11 +342,6 @@ if($array_user['protected']){
 
 // $array_userが取得できない場合、以降の処理を行わず、終了
 if(count($array_user) == 0){
-	// DEBUG
-	echo "<pre>";
-	print_r($array['errors']);
-	echo "</pre>";
-
 	echo('<div class="error">');
 	echo("何らかの理由で、指定したTwitterID [@" . $twitter_id . "] の情報を取得できませんでした。申し訳ございません。\n");
 	echo("</div>\n");
@@ -447,13 +438,8 @@ while(true){
 	// TODO ヘッダーからAPIの回復時間を取得できる
 	// $header = substr( $res1, 0, $res2['header_size'] ) ;
 
-	$html .= 	'<p><textarea style="width:80%" rows="8">' . implode( "\r\n" , $context['http']['header'] ) . '</textarea></p>' ;
-
 	// JSONをオブジェクトに変換
 	$array = json_decode($json, true);
-
-	// DEBUG
-	echo ("pre: " . count($array) . "\n");
 
 	// 非公開アカウントのTweetを削除
 	foreach($array as $key => $value){
@@ -462,19 +448,11 @@ while(true){
 		}
 	}
 
-	// DEBUG
-	echo ("done: " . count($array) . "\n");
-
 	// 入力値の表示件数以上のいいねを取得できたらループを抜ける
 	if(count($array) >= $DISPLAY_NUM){break;};
 
 	// APIからエラーが返されている場合、ループを抜ける
 	if(array_key_exists('errors', $array)){
-		// DEBUG
-		echo "<pre>";
-		print_r($array['errors']);
-		echo "</pre>";
-
 		echo('<div class="error">');
 		if($array['errors'][0]['code'] === 88){
 			echo("APIの使用回数の上限に達したため、Twitterにアクセスできません。");
