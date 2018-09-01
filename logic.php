@@ -180,7 +180,7 @@ if(array_key_exists('errors', $array_user)){
 		echo("何らかのエラーが発生しました。申し訳ございません。");
 		// DEBUG
 		echo "<pre>";
-		print_r($array['errors']);
+		print_r($array_user['errors']);
 		echo "</pre>";
 	}
 	echo("</div>\n");
