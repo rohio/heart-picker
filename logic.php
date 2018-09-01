@@ -154,19 +154,12 @@ if($end_date != ""){
 	echo $rand_max;
 }
 
-// クエリとしてAPIへ送信するパラメータ
-$params_a = array(
-	"screen_name" => $twitter_id,
-	"count" => $GET_NUM,
-	"include_entities" => "false",
-);
-
 // 日付指定範囲の開始日、終了日を入力しているかによって4つに分岐
 if($begin_date != "" && $end_date != ""){
-	$params_a["max_id"] = mt_rand($rand_min, $rand_max);
-	$params_a["since_id"] = $rand_min;
+	$max_id = mt_rand($rand_min, $rand_max);
+	$since_id = $rand_min;
 	// 日付入力が互い違いの場合、以降のプログラムを実行せずにエラー処理を行う
-	if($params_a["max_id"] == NULL){
+	if($max_id == NULL){
 		echo('<div class="error">');
 		echo("指定した日付が互い違いになっています。開始日と終了日を入れ替えてください。\n");
 		echo("</div>\n");
@@ -175,11 +168,11 @@ if($begin_date != "" && $end_date != ""){
 		return;
 	}
 } elseif($begin_date === "" && $end_date != ""){
-	$params_a["max_id"] = mt_rand(0, $rand_max);
+	$max_id = mt_rand(0, $rand_max);
 } elseif($begin_date != "" && $end_date === ""){
-	$params_a["max_id"] = mt_rand($rand_min, $rand_max);
+	$max_id = mt_rand($rand_min, $rand_max);
 	// 日付入力が現在日時より未来の場合、以降のプログラムを実行せずにエラー処理を行う
-	if($params_a["max_id"] == NULL){
+	if($max_id == NULL){
 		echo('<div class="error">');
 		echo("指定した開始日 [" . $begin_date . " ]は未来です。現在日時の " . date("Y-m-d") . " 以前を入力してください。");
 		echo("</div>\n");
@@ -187,9 +180,9 @@ if($begin_date != "" && $end_date != ""){
 		// 以降の処理を行わず、終了
 		return;
 	}
-	$params_a["since_id"] = $rand_min;
+	$since_id = $rand_min;
 } elseif($begin_date === "" && $end_date === ""){
-	$params_a["max_id"] = mt_rand(0, $rand_max);
+	$max_id = mt_rand(0, $rand_max);
 }
 /* 入力値チェック完了 */
 
@@ -362,8 +355,18 @@ if(count($array_user) == 0){
 	return;
 }
 
+/* いいねを取得する処理 */
 // ループ回数をカウントする変数
 $loop_count = 1;
+
+// クエリとしてAPIへ送信するパラメータ
+$params_a = array(
+	"screen_name" => $twitter_id,
+	"max_id" => $max_id,
+	"since_id" => $since_id,
+	"count" => $GET_NUM,
+	"include_entities" => "false",
+);
 
 // キーを作成する (URLエンコードする)
 $signature_key = rawurlencode( $api_secret ) . '&' . rawurlencode( $access_token_secret ) ;
@@ -439,10 +442,15 @@ while(true){
 	// 取得したデータ
 	$json = substr( $res1, $res2['header_size'] ) ;		// 取得したデータ(JSONなど)
 	// TODO ヘッダーからAPIの回復時間を取得できる
-	//$header = substr( $res1, 0, $res2['header_size'] ) ;
+	// $header = substr( $res1, 0, $res2['header_size'] ) ;
+
+	$html .= 	'<p><textarea style="width:80%" rows="8">' . implode( "\r\n" , $context['http']['header'] ) . '</textarea></p>' ;
 
 	// JSONをオブジェクトに変換
 	$array = json_decode($json, true);
+
+	// DEBUG
+	echo ("pre: " . count($array) . "\n");
 
 	// 非公開アカウントのTweetを削除
 	foreach($array as $key => $value){
@@ -450,6 +458,9 @@ while(true){
 			unset($array[$key]);
 		}
 	}
+
+	// DEBUG
+	echo ("done: " . count($array) . "\n");
 
 	// 入力値の表示件数以上のいいねを取得できたらループを抜ける
 	if(count($array) >= $DISPLAY_NUM){break;};
