@@ -10,17 +10,17 @@ $form = "<form class=\"form\" action=\"heart.php\" method=\"post\">
 <label for=\"twitter_id\" accesskey=\"n\" class=\"item_EN\">TwitterID　<span class=\"must\">必須</span><br></label>
 <div class=\"input-group\">
 	<span class=\"input-group__addon\">@</span>
-	<input type=\"text\" name=\"twitter_id\" id=\"twitter_id\" class=\"input-group__control\" value=\"" . $_POST["twitter_id"] . "\" placeholder=\"例: TwitterJP\" required>
+	<input type=\"text\" name=\"twitter_id\" id=\"twitter_id\" class=\"input-group__control\" value=\"" . htmlspecialchars( $_POST['twitter_id'], ENT_QUOTES, 'UTF-8' ) . "\" placeholder=\"例: TwitterJP\" required>
 </div>
 <br>
 
 <label for=\"begin_date\" accesskey=\"n\" class=\"item_JP\">日付範囲(開始日)　<span class=\"free\">任意</span><br>
 <div class=\"explain\">Year-Month-Day の形式で指定してください<br>※｢2010-11-4｣より前は指定できません</div></label>
-<input type=\"text\" name=\"begin_date\" placeholder=\"例: 2015-1-1\" id=\"begin_date\" class=\"user_input\" value=\"" . $_POST["begin_date"] . "\" maxlength=\"10\" onInput=\"checkForm(this)\" pattern=\"(201[1-9][/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
+<input type=\"text\" name=\"begin_date\" placeholder=\"例: 2015-1-1\" id=\"begin_date\" class=\"user_input\" value=\"" . htmlspecialchars( $_POST['begin_date'], ENT_QUOTES, 'UTF-8' ) . "\" maxlength=\"10\" onInput=\"checkForm(this)\" pattern=\"(201[1-9][/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
 
 <label for=\"end_date\" accesskey=\"n\" class=\"item_JP\">日付範囲(終了日)　<span class=\"free\">任意</span><br>
 <div class=\"explain\">Year-Month-Day の形式で指定してください<br>※｢2010-11-4｣より前は指定できません</div></label>
-<input type=\"text\" name=\"end_date\" placeholder=\"例: 2016-1-31\" id=\"end_date\" class=\"user_input\" value=\"" . $_POST["end_date"] . "\" maxlength=\"10\" onInput=\"checkForm(this)\" pattern=\"(201[1-9][/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
+<input type=\"text\" name=\"end_date\" placeholder=\"例: 2016-1-31\" id=\"end_date\" class=\"user_input\" value=\"" . htmlspecialchars( $_POST['end_date'], ENT_QUOTES, 'UTF-8' ) . "\" maxlength=\"10\" onInput=\"checkForm(this)\" pattern=\"(201[1-9][/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
 
 <br>
 <button type=\"submit\">Heart Pick!</button>
@@ -68,7 +68,7 @@ if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"])){
 	// ユーザのアクセストークンを設定
 	$access_token = $_SESSION["oauth_token"];
 	$access_token_secret = $_SESSION["oauth_token_secret"];
-	// DEBUG
+	// ログインしているTwitterIDを表示
 	echo('<div class="session">');
 	echo ('あなたは今、TwitterID: @' . $_SESSION["screen_name"] . ' で HeartPick にログインしています。');
 	echo('</div>');
@@ -76,8 +76,6 @@ if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"])){
 	// アプリケーションのアクセストークンを設定
 	$access_token = '305336457-f4SkCiMphhamnllp0ezut9dsMsl6OJOYI273IfuK';
 	$access_token_secret = 'bSCdmn8QQhhPwnyCD9pV261FC5OAUUTvsJzCGBa7vPEks';
-	// DEBUG
-	// echo 'NO SESSION';
 }
 
 /* ユーザのいいね件数、非公開設定か否かを取得 */
@@ -86,7 +84,8 @@ $request_url = 'https://api.twitter.com/1.1/users/show.json' ;
 $request_method = 'GET' ;
 
 // TwitterのユーザID(入力値を格納)
-$twitter_id = $_POST['twitter_id'];
+// XSS対策のために、htmlspecialchars関数を使用
+$twitter_id = htmlspecialchars( $_POST['twitter_id'], ENT_QUOTES, 'UTF-8' );
 
 // htmlテキストを格納する変数を生成
 $html = '' ;
@@ -179,6 +178,10 @@ if(array_key_exists('errors', $array_user)){
 		echo("上限を緩和したい場合は、ページ下部の｢詳細の使い方｣内にあるTwiiterのアイコンをクリックして、Twitterでログインを行ってください。");
 	} else {
 		echo("何らかのエラーが発生しました。申し訳ございません。");
+		// DEBUG
+		echo "<pre>";
+		print_r($array['errors']);
+		echo "</pre>";
 	}
 	echo("</div>\n");
 	echo($form);
@@ -196,6 +199,11 @@ if($array_user['protected']){
 
 // $array_userが取得できない場合、以降の処理を行わず、終了
 if(count($array_user) == 0){
+	// DEBUG
+	echo "<pre>";
+	print_r($array['errors']);
+	echo "</pre>";
+
 	echo('<div class="error">');
 	echo("何らかの理由で、指定したID [" . $twitter_id . "] の情報を取得できませんでした。申し訳ございません。\n");
 	echo("</div>\n");
@@ -214,6 +222,25 @@ function create_id($time) {
 	// 22bit桁上げを行う(tweetのIDのタイムスタンプ部分は22bit桁上げした部分のため)
 	$id = ($timestamp << 22);
 	return $id;
+}
+
+// 日付が存在するか確認する関数
+function exist_date($date){
+	// 日付の入力形式によって場合分け
+	if(strptime($date, '%Y-%m-%d')){
+		// '-'を区切り文字として分割
+		list($Y, $m, $d) = explode('-', $date);
+	} elseif(strptime($date, '%Y-%m/%d')){
+		list($Y, $tmp) = explode('-', $date);
+		list($m, $d) = explode('/', $tmp);
+	} elseif(strptime($date, '%Y/%m-%d')){
+		list($Y, $tmp) = explode('/', $date);
+		list($m, $d) = explode('-', $tmp);
+	} elseif(strptime($date, '%Y/%m/%d')){
+		list($Y, $m, $d) = explode('/', $date);
+	}
+	// 日付が存在する場合にtrue、日付が存在しない場合にfalseを返却
+	return checkdate($m, $d, $Y);
 }
 
 /* いいねをランダムに出力するために、max_idの乱数の範囲を設定
@@ -243,6 +270,16 @@ $MAX_LOOP = 5;
 
 // $begin_dateが入力されていた場合、疑似のTweetIDを生成
 if($begin_date != ""){
+	// 日付が存在するか確認
+	if(exist_date($begin_date) === false){
+		// 日付が存在しない場合、以降のプログラムを実行せずにエラー処理を行う
+		echo('<div class="error">');
+		echo("指定した開始日 [" . $begin_date . "] は存在しない日付です。日付を確認してください。\n");
+		echo("</div>\n");
+		echo($form);
+		// 以降の処理を行わず、終了
+		return;
+	}
 	// $begin_dateの全日を含めるために00:00:00の時間を設定
 	$begin_date .= " 00:00:00";
 	$rand_min = create_id($begin_date);
@@ -250,9 +287,22 @@ if($begin_date != ""){
 
 // $end_dateが入力されていた場合、疑似TweetIDを生成
 if($end_date != ""){
+	// 日付が存在するか確認
+	if(exist_date($end_date) === false){
+		// 日付が存在しない場合、以降のプログラムを実行せずにエラー処理を行う
+		echo('<div class="error">');
+		echo("指定した終了日 [" . $end_date . "] は存在しない日付です。日付を確認してください。\n");
+		echo("</div>\n");
+		echo($form);
+		// 以降の処理を行わず、終了
+		return;
+	}
+
 	// $end_dateの全日を含めるために23:59:59の時間を設定
 	$end_date .= " 23:59:59";
 	$rand_max = create_id($end_date);
+	// DEBUG
+	echo $rand_max;
 }
 
 // クエリとしてAPIへ送信するパラメータ
@@ -282,7 +332,7 @@ if($begin_date != "" && $end_date != ""){
 	// 日付入力が現在日時より未来の場合、以降のプログラムを実行せずにエラー処理を行う
 	if($params_a["max_id"] == NULL){
 		echo('<div class="error">');
-		echo("指定した開始日は未来です。現在日時の " . date("Y-m-d") . " 以前を入力してください。");
+		echo("指定した開始日 [" . $begin_date . " ]は未来です。現在日時の " . date("Y-m-d") . " 以前を入力してください。");
 		echo("</div>\n");
 		echo($form);
 		// 以降の処理を行わず、終了
