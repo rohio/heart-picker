@@ -70,6 +70,9 @@ $GET_NUM = 200;
 // max_idをランダムに設定してAPIへアクセスするため、ループが過剰に起こらないようにするため設定
 $MAX_LOOP = 5;
 
+// 入力値によるエラーの個数を格納する配列
+$input_error = array();
+
 /* 入力値チェックをプログラムの最初に行う */
 // 日付から疑似のツイートのIDを生成する関数
 function create_id($time) {
@@ -121,23 +124,12 @@ $end_date = $_POST['end_date'];
 if($begin_date != ""){
 	// 日付が存在するか確認
 	if(exist_date($begin_date) === false){
-		// 日付が存在しない場合、以降のプログラムを実行せずにエラー処理を行う
-		echo('<div class="error">');
-		echo("指定した開始日 [" . $begin_date . "] は存在しない日付です。日付を確認してください。\n");
-		echo("</div>\n");
-		echo($form);
-		// 以降の処理を行わず、終了
-		return;
+		array_push($input_error, 'not_exist_begin_date');
 	}
 
 	// 日付が未来の場合エラー処理 
 	if(strtotime($begin_date) > strtotime(date("Y/m/d"))){
-		echo('<div class="error">');
-		echo("指定した開始日 [" . $begin_date . "] は未来です。現在日時の " . date("Y-m-d") . " 以前を入力してください。");
-		echo("</div>\n");
-		echo($form);
-		// 以降の処理を行わず、終了
-		return;
+		array_push($input_error, 'begin_date_future');
 	}
 
 	// $begin_dateの全日を含めるために00:00:00の時間を設定
@@ -149,13 +141,7 @@ if($begin_date != ""){
 if($end_date != ""){
 	// 日付が存在するか確認
 	if(exist_date($end_date) === false){
-		// 日付が存在しない場合、以降のプログラムを実行せずにエラー処理を行う
-		echo('<div class="error">');
-		echo("指定した終了日 [" . $end_date . "] は存在しない日付です。日付を確認してください。\n");
-		echo("</div>\n");
-		echo($form);
-		// 以降の処理を行わず、終了
-		return;
+		array_push($input_error, 'not_exist_end_date');
 	}
 
 	// $end_dateの全日を含めるために23:59:59の時間を設定
@@ -169,12 +155,7 @@ if($begin_date != "" && $end_date != ""){
 	$since_id = $rand_min;
 	// 日付入力が互い違いの場合、以降のプログラムを実行せずにエラー処理を行う
 	if($max_id == NULL){
-		echo('<div class="error">');
-		echo("指定した日付が互い違いになっています。開始日と終了日を入れ替えてください。\n");
-		echo("</div>\n");
-		echo($form);
-		// 以降の処理を行わず、終了
-		return;
+		array_push($input_error, 'alternate_date');
 	}
 } elseif($begin_date === "" && $end_date != ""){
 	$max_id = mt_rand(0, $rand_max);
@@ -347,6 +328,46 @@ if(count($array_user) == 0){
 	echo("</div>\n");
 	echo($form);
 	return;
+}
+
+// エラーがあった場合エラー内容を出力し、以降の処理を行わず、終了
+if(count($input_error)){
+    foreach($input_error as $key =<$value){
+        switch ($value){
+            case 'not_exist_begin_date':
+                // 開始日が存在しない場合
+                echo('<div class="error">');
+                echo("指定した開始日 [" . $begin_date . "] は存在しない日付です。日付を確認してください。\n")
+                echo("</div>\n");
+                echo($form);
+                break;
+
+            case 'begin_date_future':
+                // 開始日が未来の場合
+                echo('<div class="error">');
+                echo("指定した開始日 [" . $begin_date . "] は未来です。現在日時の " . date("Y-m-d") . " 以前を入力してください。");
+                echo("</div>\n");
+                echo($form);
+
+            case 'not_exist_end_date':
+                // 終了日が存在しない場合
+                echo('<div class="error">');
+                echo("指定した終了日 [" . $end_date . "] は存在しない日付です。日付を確認してください。\n");
+                echo("</div>\n");
+                echo($form);
+
+            case 'alternate_date':
+                // 開始日と終了日が互い違いの場合
+                echo('<div class="error">');
+                echo("指定した日付が互い違いになっています。開始日と終了日を入れ替えてください。\n");
+                echo("</div>\n");
+                echo($form);
+
+            case '':
+        }
+    }
+    // 以降の処理を行わず、終了
+    return;
 }
 
 /* いいねを取得する処理 */
