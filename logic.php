@@ -296,76 +296,83 @@ if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"])){
 
 // APIからエラーが返されている場合、以降のプログラムを実行せずにエラー処理を行う
 if(array_key_exists('errors', $array_user)){
-	echo('<div class="error">');
 	if($array_user['errors'][0]['code'] === 50){
-		echo("指定したTwitterID [@" . $twitter_id . "] は存在しません。");
+		array_push($input_error, 'not_exist_twitterid');
 	} elseif($array_user['errors'][0]['code'] === 88){
-		echo("APIの使用回数の上限に達したため、Twitterにアクセスできません。");
-		if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"]) === false){
-			echo("上限を緩和したい場合は、ページ下部の｢詳細の使い方｣内にあるTwiiterのアイコンをクリックして、Twitterでログインを行ってください。");
-		}
+		array_push($input_error, 'api_restriction');
 	} else {
-		echo("何らかのエラーが発生しました。申し訳ございません。");
+		array_push($input_error, 'unknown_error');
 	}
-	echo("</div>\n");
-	echo($form);
-	return;
 };
 
 // アカウントが非公開ユーザでいいねにアクセスできない場合、以降の処理を行わず、終了
 if($array_user['protected']){
-	echo('<div class="error">');
-	echo("指定したTwitterID [@" . $twitter_id . "] は、非公開設定のユーザのため、いいねを取得できません。\n");
-	echo("</div>\n");
-	echo($form);
-	return;
+	array_push($input_error, 'private_account');
 }
 
 // $array_userが取得できない場合、以降の処理を行わず、終了
 if(count($array_user) == 0){
-	echo('<div class="error">');
-	echo("何らかの理由で、指定したTwitterID [@" . $twitter_id . "] の情報を取得できませんでした。申し訳ございません。\n");
-	echo("</div>\n");
-	echo($form);
-	return;
+	array_push($input_error, 'empty_array_user');
 }
 
 // エラーがあった場合エラー内容を出力し、以降の処理を行わず、終了
 if(count($input_error)){
-    foreach($input_error as $key =<$value){
+    foreach($input_error as $key => $value){
+		echo('<div class="error">');
         switch ($value){
+			// 開始日が存在しない場合
             case 'not_exist_begin_date':
-                // 開始日が存在しない場合
-                echo('<div class="error">');
-                echo("指定した開始日 [" . $begin_date . "] は存在しない日付です。日付を確認してください。\n")
-                echo("</div>\n");
-                echo($form);
+                echo("指定した開始日 [" . str_replace(' 00:00:00', '', $begin_date) . "] は存在しない日付です。日付を確認してください。\n");
                 break;
 
+			// 開始日が未来の場合
             case 'begin_date_future':
-                // 開始日が未来の場合
-                echo('<div class="error">');
-                echo("指定した開始日 [" . $begin_date . "] は未来です。現在日時の " . date("Y-m-d") . " 以前を入力してください。");
-                echo("</div>\n");
-                echo($form);
+				echo("指定した開始日 [" . str_replace(' 00:00:00', '', $begin_date) . "] は未来です。現在日時の " . date("Y-m-d") . " 以前を入力してください。");
+				break;
 
+			// 終了日が存在しない場合
             case 'not_exist_end_date':
-                // 終了日が存在しない場合
-                echo('<div class="error">');
-                echo("指定した終了日 [" . $end_date . "] は存在しない日付です。日付を確認してください。\n");
-                echo("</div>\n");
-                echo($form);
+				echo("指定した終了日 [" . str_replace(' 23:59:59', '', $end_date) . "] は存在しない日付です。日付を確認してください。\n");
+				break;
 
+			// 開始日と終了日が互い違いの場合
             case 'alternate_date':
-                // 開始日と終了日が互い違いの場合
-                echo('<div class="error">');
-                echo("指定した日付が互い違いになっています。開始日と終了日を入れ替えてください。\n");
-                echo("</div>\n");
-                echo($form);
+				echo("指定した開始日と終了日が互い違いになっています。開始日と終了日を入れ替えてください。\n");
+				break;
 
-            case '':
-        }
-    }
+			// TwitterIDが存在しない場合
+			case 'not_exist_twitterid':
+				echo("指定したTwitterID [@" . $twitter_id . "] は存在しません。");
+				break;
+
+			// APIの使用回数制限の上限に達した場合
+			case 'api_restriction':
+				echo("APIの使用回数の上限に達したため、Twitterにアクセスできません。");
+				if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"]) === false){
+					echo("上限を緩和したい場合は、ページ下部の｢詳細の使い方｣内にあるTwiiterのアイコンをクリックして、Twitterでログインを行ってください。");
+				}
+				break;
+
+			// 原因不明のエラーが発生した場合
+			case 'unknown_error':
+				echo("何らかのエラーが発生しました。申し訳ございません。");
+				break;
+
+			// 指定したTwitterIDが非公開アカウントの場合
+			case 'private_account':
+				echo("指定したTwitterID [@" . $twitter_id . "] は、非公開設定のユーザのため、いいねを取得できません。\n");
+				break;
+
+			// 原因不明で、指定されたTwitterIDの情報を取得できなかった場合
+			case 'empty_array_user':
+				echo("何らかの理由で、指定したTwitterID [@" . $twitter_id . "] の情報を取得できませんでした。申し訳ございません。\n");
+				break;
+
+		}
+		echo("</div>\n");
+	}
+	// フォームを出力
+	echo($form);
     // 以降の処理を行わず、終了
     return;
 }
