@@ -70,6 +70,9 @@ $GET_NUM = 200;
 // max_idをランダムに設定してAPIへアクセスするため、ループが過剰に起こらないようにするため設定
 $MAX_LOOP = 5;
 
+// タイムゾーンをJSTにする
+date_default_timezone_set('Asia/Tokyo');
+
 // 入力値によるエラーの個数を格納する配列
 $input_error = array();
 
