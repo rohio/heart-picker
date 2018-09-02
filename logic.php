@@ -113,6 +113,10 @@ $rand_min = 0;
 // 乱数の範囲の最大値の初期値を設定。最大値は現在の日付を元に生成したTweetIDとする。
 // TEST リアルタイムにいいねしたTweetを取得できるか
 $current_date = date("Y/m/d H:i:s");
+
+// DEBUG
+echo('date: '. $current_date . "\n");
+
 $rand_max = create_id($current_date);
 
 // 日付範囲の開始日(入力値を格納)
