@@ -23,7 +23,7 @@ $form = "<form class=\"form\" action=\"heart.php\" method=\"post\">
 <input type=\"text\" name=\"end_date\" placeholder=\"例: 2016-1-31\" id=\"end_date\" class=\"user_input\" value=\"" . htmlspecialchars( $_POST['end_date'], ENT_QUOTES, 'UTF-8' ) . "\" maxlength=\"10\" onInput=\"checkForm(this)\" pattern=\"(201[1-9][/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
 
 <br>
-<button type=\"submit\">Heart Pick!</button>
+<button type=\"submit\">はーとぴっく!</button>
 </form>
 <form class=\"form\" action=\"auth.php\" method=\"get\">
 <details>
@@ -34,7 +34,7 @@ $form = "<form class=\"form\" action=\"heart.php\" method=\"post\">
 		<li>日付範囲が未指定の場合、全件からランダムに選ばれます。</li>
 		<li>TwitterAPIの仕様により、3200件より多くのいいねをしているアカウントは、最近3200件のいいねの中からランダムに表示されます。</li>
 		<li>非公開アカウント（鍵アカウント）のいいねは表示できません。</li>
-		<li>TwitterAPIの使用回数制限のため、サービスを実行する回数が多いと制限がかかり、サービスを利用できなくなります。
+		<li>TwitterAPIに使用回数の制限があるため、はーとぴっかーを使用する回数が多いと制限がかかり、はーとぴっかーを利用できなくなります。
 		より多く利用したい方は、以下からTwitterでログインしてください。
 		<button class=\"login_twitter\" type=\"submit\">Twitterでログイン</button><br>
 		TwitterAPIの使用回数制限とTwitterのログインによるアプリケーション認証に関して、詳細を知りたい方は本ページの末尾にて説明しているので、そちらを参照ください。</li>
@@ -48,13 +48,13 @@ $form = "<form class=\"form\" action=\"heart.php\" method=\"post\">
 				TwitterAPIは、認証を行わない場合はアプリケーション単位、認証を行った場合はユーザ単位に対して使用回数が制限されます。
 				アプリケーション単位の場合は、アプリケーションを複数のユーザが使用している場合、複数ユーザの合計の使用回数を基準としてTwitterAPIの使用が制限されます。
 				ユーザ単位の場合は、アプリケーションを複数のユーザが使用している場合でも、ユーザ1人の使用回数を基準として、TwitterAPIの使用が制限されます。
-				そのため、アプリケーション認証を行えば使用制限が緩和されます。ユーザ認証を行った場合の使用回数の目安ですが、最低でも15分間に15回のいいね表示を行うことができます。</li>
+				そのため、アプリケーション認証を行えば使用制限が緩和されます。ユーザ認証を行った場合の使用回数の目安ですが、最低でも15分間当たり、15回のいいね表示を行うことができます。</li>
 				<li>アプリケーション認証(read only)に関して<br>
-				HeartPickerはユーザ認証を行っても、権限を悪用しユーザの意図に反するようなこと（ツイートする、フォローを行う等）は行いません。
-				しかし、1.で述べたようにHeartPickerはAPIの使用回数緩和のため、認証が必要となります。
+				はーとぴっかーはアプリケーション認証を行っても、権限を悪用しユーザの意図に反するようなこと（ツイートする、フォローを行う等）は行いません。
+				しかし、1.で述べたようにはーとぴっかーはAPIの使用回数緩和のため、認証が必要となります。
 				そこで、最低限の権限の認証で十分なため、read権限のみの認証を行います。
 				以下は補足ですが、勝手にツイートがされてしまう、いわゆるスパムと呼ばれるものはread権限だけでなく、write権限を必要とします。
-				そのため、HeartPickerはスパムと呼ばれるようなアプリの動作は権限の面で不可能となっています。</li>
+				そのため、はーとぴっかーはスパムと呼ばれるようなアプリの動作は権限の面で不可能となっています。</li>
 			</div>
 		</details>
 		</ul>
@@ -278,8 +278,8 @@ $array_user = json_decode( $json, true);
 if(array_key_exists('errors', $array_user)){
 	if($array_user['errors'][0]['code'] === 89){
 		echo('<div class="session">');
-		echo("HeartPickにログインしていたTwitterID: @" . $_SESSION["screen_name"] . " とのアプリ連携の許可が取り消されたため、HeartPick からログアウトしました。");
-		echo("申し訳ございませんが、再度 HeartPick! ボタンを押してください。");
+		echo("はーとぴっかー にログインしていたTwitterID: @" . $_SESSION["screen_name"] . " とのアプリ連携の許可が取り消されたため、 はーとぴっかー からログアウトしました。\n");
+		echo("申し訳ございませんが、再度 はーとぴっく! ボタンを押してください。");
 		echo('</div>');
 		echo($form);	
 		// SESSION情報を破棄
@@ -293,7 +293,7 @@ if(array_key_exists('errors', $array_user)){
 // ログインしているTwitterIDを表示
 if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"])){
 	echo('<div class="session">');
-	echo ('あなたは今、TwitterID [@' . $_SESSION["screen_name"] . '] で HeartPick にログインしています。');
+	echo ('あなたは今、TwitterID [@' . $_SESSION["screen_name"] . '] で はーとぴっかー にログインしています。');
 	echo('</div>');
 }
 
@@ -332,17 +332,17 @@ if(count($input_error)){
 
 			// 開始日が未来の場合
             case 'begin_date_future':
-				echo("指定した開始日 [" . str_replace(' 00:00:00', '', $begin_date) . "] は未来です。現在日時の " . date("Y-m-d") . " 以前を入力してください。");
+				echo("指定した開始日 [" . str_replace(' 00:00:00', '', $begin_date) . "] は未来です。\n現在日時の " . date("Y-m-d") . " 以前を入力してください。");
 				break;
 
 			// 終了日が存在しない場合
             case 'not_exist_end_date':
-				echo("指定した終了日 [" . str_replace(' 23:59:59', '', $end_date) . "] は存在しない日付です。日付を確認してください。\n");
+				echo("指定した終了日 [" . str_replace(' 23:59:59', '', $end_date) . "] は存在しない日付です。\n日付を確認してください。\n");
 				break;
 
 			// 開始日と終了日が互い違いの場合
             case 'alternate_date':
-				echo("指定した開始日と終了日が互い違いになっています。開始日と終了日を入れ替えてください。\n");
+				echo("指定した開始日と終了日が互い違いになっています。\n開始日と終了日を入れ替えてください。\n");
 				break;
 
 			// TwitterIDが存在しない場合
@@ -352,7 +352,7 @@ if(count($input_error)){
 
 			// APIの使用回数制限の上限に達した場合
 			case 'api_restriction':
-				echo("APIの使用回数の上限に達したため、Twitterにアクセスできません。");
+				echo("APIの使用回数の上限に達したため、Twitterにアクセスできません。\n");
 				if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"]) === false){
 					echo("上限を緩和したい場合は、ページ下部の｢詳細の使い方｣内にあるTwiiterのアイコンをクリックして、Twitterでログインを行ってください。");
 				}
@@ -379,7 +379,7 @@ if(count($input_error)){
 
 			// 原因不明で、指定されたTwitterIDの情報を取得できなかった場合
 			case 'empty_array_user':
-				echo("何らかの理由で、指定したTwitterID [@" . $twitter_id . "] の情報を取得できませんでした。申し訳ございません。\n");
+				echo("何らかの理由で、指定したTwitterID [@" . $twitter_id . "] の情報を取得できませんでした。\n申し訳ございません。\n");
 				break;
 
 		}
@@ -497,7 +497,7 @@ while(true){
 	if(array_key_exists('errors', $array)){
 		echo('<div class="error">');
 		if($array['errors'][0]['code'] === 88){
-			echo("APIの使用回数の上限に達したため、Twitterにアクセスできません。");
+			echo("APIの使用回数の上限に達したため、Twitterにアクセスできません。\n");
 			if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"]) === false){
 				echo("上限を緩和したい場合は、ページ下部の｢詳細の使い方｣内にあるTwiiterのアイコンをクリックして、Twitterでログインを行ってください。");
 			}
@@ -516,7 +516,7 @@ while(true){
 	if($loop_count > $MAX_LOOP){
 		echo('<div class="error">');
 		if(count($array)){
-			echo("HeartPickのいいね表示件数は通常 " . $DISPLAY_NUM . " 件ですが、指定した日付の範囲内で " . $DISPLAY_NUM . " 件のいいねがありませんでした。\n");
+			echo("はーとぴっかーのいいね表示件数は通常 " . $DISPLAY_NUM . " 件ですが、指定した日付の範囲内で " . $DISPLAY_NUM . " 件のいいねがありませんでした。\n");
 			echo("そのため、指定した日付の範囲内の " . count($array) . " 件のいいねを表示します。");
 			echo("</div>\n");
 			break;

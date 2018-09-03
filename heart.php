@@ -62,7 +62,7 @@
         <div id="fade"></div>
         <div class="wrapper">
             <div class="container">
-                <h1>Heart♡Picker</h1>
+                <h1>はーと♡ぴっかー</h1>
 
                 <?php require('logic.php'); ?>
             </div>
