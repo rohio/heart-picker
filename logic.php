@@ -34,7 +34,7 @@ $form = "<form class=\"form\" action=\"heart.php\" method=\"post\">
 		<li>日付範囲が未指定の場合、全件からランダムに選ばれます。</li>
 		<li>TwitterAPIの仕様により、3200件より多くのいいねをしているアカウントは、最近3200件のいいねの中からランダムに表示されます。</li>
 		<li>非公開アカウント（鍵アカウント）のいいねは表示できません。</li>
-		<li>TwitterAPIに使用回数の制限があるため、はーとぴっかーを使用する回数が多いと制限がかかり、はーとぴっかーを利用できなくなります。
+		<li>TwitterAPIに使用回数の制限があるため、はーとぴっかーを利用する回数が多いと制限がかかり、はーとぴっかーを利用できなくなります。
 		より多く利用したい方は、以下からTwitterでログインしてください。
 		<button class=\"login_twitter\" type=\"submit\">Twitterでログイン</button><br>
 		TwitterAPIの使用回数制限とTwitterのログインによるアプリケーション認証に関して、詳細を知りたい方は本ページの末尾にて説明しているので、そちらを参照ください。</li>
@@ -278,7 +278,7 @@ $array_user = json_decode( $json, true);
 if(array_key_exists('errors', $array_user)){
 	if($array_user['errors'][0]['code'] === 89){
 		echo('<div class="session">');
-		echo("はーとぴっかー にログインしていたTwitterID: @" . $_SESSION["screen_name"] . " とのアプリ連携の許可が取り消されたため、 はーとぴっかー からログアウトしました。\n");
+		echo("はーとぴっかー にログインしていたTwitterID: @" . $_SESSION["screen_name"] . " とのアプリ連携の許可が取り消されたため、 はーとぴっかー からログアウトしました。");
 		echo("申し訳ございませんが、再度 はーとぴっく! ボタンを押してください。");
 		echo('</div>');
 		echo($form);	
