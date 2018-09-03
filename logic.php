@@ -70,6 +70,12 @@ $GET_NUM = 200;
 // max_idをランダムに設定してAPIへアクセスするため、ループが過剰に起こらないようにするため設定
 $MAX_LOOP = 5;
 
+// タイムゾーンをJSTにする
+date_default_timezone_set('Asia/Tokyo');
+
+// 入力値によるエラーの個数を格納する配列
+$input_error = array();
+
 /* 入力値チェックをプログラムの最初に行う */
 // 日付から疑似のツイートのIDを生成する関数
 function create_id($time) {
@@ -108,8 +114,8 @@ TweetのIDの一部はTimestampで生成されているため、実質日付の�
 // 乱数の範囲の最小値の初期値を設定
 $rand_min = 0;
 // 乱数の範囲の最大値の初期値を設定。最大値は現在の日付を元に生成したTweetIDとする。
-// TEST リアルタイムにいいねしたTweetを取得できるか
 $current_date = date("Y/m/d H:i:s");
+
 $rand_max = create_id($current_date);
 
 // 日付範囲の開始日(入力値を格納)
@@ -121,14 +127,14 @@ $end_date = $_POST['end_date'];
 if($begin_date != ""){
 	// 日付が存在するか確認
 	if(exist_date($begin_date) === false){
-		// 日付が存在しない場合、以降のプログラムを実行せずにエラー処理を行う
-		echo('<div class="error">');
-		echo("指定した開始日 [" . $begin_date . "] は存在しない日付です。日付を確認してください。\n");
-		echo("</div>\n");
-		echo($form);
-		// 以降の処理を行わず、終了
-		return;
+		array_push($input_error, 'not_exist_begin_date');
 	}
+
+	// 日付が未来の場合エラー処理 
+	if(strtotime($begin_date) > strtotime(date("Y/m/d"))){
+		array_push($input_error, 'begin_date_future');
+	}
+
 	// $begin_dateの全日を含めるために00:00:00の時間を設定
 	$begin_date .= " 00:00:00";
 	$rand_min = create_id($begin_date);
@@ -138,20 +144,12 @@ if($begin_date != ""){
 if($end_date != ""){
 	// 日付が存在するか確認
 	if(exist_date($end_date) === false){
-		// 日付が存在しない場合、以降のプログラムを実行せずにエラー処理を行う
-		echo('<div class="error">');
-		echo("指定した終了日 [" . $end_date . "] は存在しない日付です。日付を確認してください。\n");
-		echo("</div>\n");
-		echo($form);
-		// 以降の処理を行わず、終了
-		return;
+		array_push($input_error, 'not_exist_end_date');
 	}
 
 	// $end_dateの全日を含めるために23:59:59の時間を設定
 	$end_date .= " 23:59:59";
 	$rand_max = create_id($end_date);
-	// DEBUG
-	echo $rand_max;
 }
 
 // 日付指定範囲の開始日、終了日を入力しているかによって4つに分岐
@@ -160,26 +158,12 @@ if($begin_date != "" && $end_date != ""){
 	$since_id = $rand_min;
 	// 日付入力が互い違いの場合、以降のプログラムを実行せずにエラー処理を行う
 	if($max_id == NULL){
-		echo('<div class="error">');
-		echo("指定した日付が互い違いになっています。開始日と終了日を入れ替えてください。\n");
-		echo("</div>\n");
-		echo($form);
-		// 以降の処理を行わず、終了
-		return;
+		array_push($input_error, 'alternate_date');
 	}
 } elseif($begin_date === "" && $end_date != ""){
 	$max_id = mt_rand(0, $rand_max);
 } elseif($begin_date != "" && $end_date === ""){
 	$max_id = mt_rand($rand_min, $rand_max);
-	// 日付入力が現在日時より未来の場合、以降のプログラムを実行せずにエラー処理を行う
-	if($max_id == NULL){
-		echo('<div class="error">');
-		echo("指定した開始日 [" . $begin_date . " ]は未来です。現在日時の " . date("Y-m-d") . " 以前を入力してください。");
-		echo("</div>\n");
-		echo($form);
-		// 以降の処理を行わず、終了
-		return;
-	}
 	$since_id = $rand_min;
 } elseif($begin_date === "" && $end_date === ""){
 	$max_id = mt_rand(0, $rand_max);
@@ -293,8 +277,11 @@ $array_user = json_decode( $json, true);
 // セッション情報を破棄するため、ログインしているTwitterIDを表示する前にエラー処理を行う
 if(array_key_exists('errors', $array_user)){
 	if($array_user['errors'][0]['code'] === 89){
+		echo('<div class="session">');
 		echo("HeartPickにログインしていたTwitterID: @" . $_SESSION["screen_name"] . " とのアプリ連携の許可が取り消されたため、HeartPick からログアウトしました。");
 		echo("申し訳ございませんが、再度 HeartPick! ボタンを押してください。");
+		echo('</div>');
+		echo($form);	
 		// SESSION情報を破棄
 		unset($_SESSION["oauth_token"]);
 		unset($_SESSION["screen_name"]);
@@ -306,53 +293,102 @@ if(array_key_exists('errors', $array_user)){
 // ログインしているTwitterIDを表示
 if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"])){
 	echo('<div class="session">');
-	echo ('あなたは今、TwitterID: @' . $_SESSION["screen_name"] . ' で HeartPick にログインしています。');
+	echo ('あなたは今、TwitterID [@' . $_SESSION["screen_name"] . '] で HeartPick にログインしています。');
 	echo('</div>');
 }
 
 // APIからエラーが返されている場合、以降のプログラムを実行せずにエラー処理を行う
 if(array_key_exists('errors', $array_user)){
-	echo('<div class="error">');
 	if($array_user['errors'][0]['code'] === 50){
-		echo("指定したTwitterID [" . $twitter_id . "] は存在しません。");
+		array_push($input_error, 'not_exist_twitterid');
 	} elseif($array_user['errors'][0]['code'] === 88){
-		echo("APIの使用回数の上限に達したため、Twitterにアクセスできません。");
-		if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"]) === false){
-			echo("上限を緩和したい場合は、ページ下部の｢詳細の使い方｣内にあるTwiiterのアイコンをクリックして、Twitterでログインを行ってください。");
-		}
+		array_push($input_error, 'api_restriction');
+	} elseif($array_user['errors'][0]['code'] === 63){
+		array_push($input_error, 'suspend');
 	} else {
-		echo("何らかのエラーが発生しました。申し訳ございません。");
-		// DEBUG
-		echo "<pre>";
-		print_r($array_user['errors']);
-		echo "</pre>";
+		array_push($input_error, 'unknown_error');
 	}
-	echo("</div>\n");
-	echo($form);
-	return;
 };
 
 // アカウントが非公開ユーザでいいねにアクセスできない場合、以降の処理を行わず、終了
 if($array_user['protected']){
-	echo('<div class="error">');
-	echo("指定したTwitterID [@" . $twitter_id . "] は、非公開設定のユーザのため、いいねを取得できません。\n");
-	echo("</div>\n");
-	echo($form);
-	return;
+	array_push($input_error, 'private_account');
 }
 
 // $array_userが取得できない場合、以降の処理を行わず、終了
 if(count($array_user) == 0){
-	// DEBUG
-	echo "<pre>";
-	print_r($array['errors']);
-	echo "</pre>";
+	array_push($input_error, 'empty_array_user');
+}
 
-	echo('<div class="error">');
-	echo("何らかの理由で、指定したTwitterID [@" . $twitter_id . "] の情報を取得できませんでした。申し訳ございません。\n");
-	echo("</div>\n");
+// エラーがあった場合エラー内容を出力し、以降の処理を行わず、終了
+if(count($input_error)){
+    foreach($input_error as $key => $value){
+		echo('<div class="error">');
+        switch ($value){
+			// 開始日が存在しない場合
+            case 'not_exist_begin_date':
+                echo("指定した開始日 [" . str_replace(' 00:00:00', '', $begin_date) . "] は存在しない日付です。日付を確認してください。\n");
+                break;
+
+			// 開始日が未来の場合
+            case 'begin_date_future':
+				echo("指定した開始日 [" . str_replace(' 00:00:00', '', $begin_date) . "] は未来です。現在日時の " . date("Y-m-d") . " 以前を入力してください。");
+				break;
+
+			// 終了日が存在しない場合
+            case 'not_exist_end_date':
+				echo("指定した終了日 [" . str_replace(' 23:59:59', '', $end_date) . "] は存在しない日付です。日付を確認してください。\n");
+				break;
+
+			// 開始日と終了日が互い違いの場合
+            case 'alternate_date':
+				echo("指定した開始日と終了日が互い違いになっています。開始日と終了日を入れ替えてください。\n");
+				break;
+
+			// TwitterIDが存在しない場合
+			case 'not_exist_twitterid':
+				echo("指定したTwitterID [@" . $twitter_id . "] は存在しません。");
+				break;
+
+			// APIの使用回数制限の上限に達した場合
+			case 'api_restriction':
+				echo("APIの使用回数の上限に達したため、Twitterにアクセスできません。");
+				if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"]) === false){
+					echo("上限を緩和したい場合は、ページ下部の｢詳細の使い方｣内にあるTwiiterのアイコンをクリックして、Twitterでログインを行ってください。");
+				}
+				break;
+
+			case 'suspend':
+				echo("指定したTwitterID [@" . $twitter_id . "] は、凍結されているユーザのため、いいねを取得できません。\n");
+				break;
+			
+			// 原因不明のエラーが発生した場合
+			case 'unknown_error':
+				// DEBUG
+				echo "<pre>";
+				print_r($array_user['errors']);
+				echo "</pre>";
+
+				echo("何らかのエラーが発生しました。申し訳ございません。");
+				break;
+
+			// 指定したTwitterIDが非公開アカウントの場合
+			case 'private_account':
+				echo("指定したTwitterID [@" . $twitter_id . "] は、非公開設定のユーザのため、いいねを取得できません。\n");
+				break;
+
+			// 原因不明で、指定されたTwitterIDの情報を取得できなかった場合
+			case 'empty_array_user':
+				echo("何らかの理由で、指定したTwitterID [@" . $twitter_id . "] の情報を取得できませんでした。申し訳ございません。\n");
+				break;
+
+		}
+		echo("</div>\n");
+	}
+	// フォームを出力
 	echo($form);
-	return;
+    // 以降の処理を行わず、終了
+    return;
 }
 
 /* いいねを取得する処理 */
@@ -444,13 +480,8 @@ while(true){
 	// TODO ヘッダーからAPIの回復時間を取得できる
 	// $header = substr( $res1, 0, $res2['header_size'] ) ;
 
-	$html .= 	'<p><textarea style="width:80%" rows="8">' . implode( "\r\n" , $context['http']['header'] ) . '</textarea></p>' ;
-
 	// JSONをオブジェクトに変換
 	$array = json_decode($json, true);
-
-	// DEBUG
-	echo ("pre: " . count($array) . "\n");
 
 	// 非公開アカウントのTweetを削除
 	foreach($array as $key => $value){
@@ -459,19 +490,11 @@ while(true){
 		}
 	}
 
-	// DEBUG
-	echo ("done: " . count($array) . "\n");
-
 	// 入力値の表示件数以上のいいねを取得できたらループを抜ける
 	if(count($array) >= $DISPLAY_NUM){break;};
 
 	// APIからエラーが返されている場合、ループを抜ける
 	if(array_key_exists('errors', $array)){
-		// DEBUG
-		echo "<pre>";
-		print_r($array['errors']);
-		echo "</pre>";
-
 		echo('<div class="error">');
 		if($array['errors'][0]['code'] === 88){
 			echo("APIの使用回数の上限に達したため、Twitterにアクセスできません。");
