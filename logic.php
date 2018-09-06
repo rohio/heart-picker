@@ -179,8 +179,8 @@ if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"])){
 	$access_token_secret = $_SESSION["oauth_token_secret"];
 } else {	// アプリケーションごとの認証を使用する場合
 	// アプリケーションのアクセストークンを設定
-	$access_token = '305336457-f4SkCiMphhamnllp0ezut9dsMsl6OJOYI273IfuK';
-	$access_token_secret = 'bSCdmn8QQhhPwnyCD9pV261FC5OAUUTvsJzCGBa7vPEks';
+	$access_token = '305336457-m4sMXRoQauMVm4kh2WcrUQaReA6iTzK77pi4D5Ys';
+	$access_token_secret = '9V4B0mxTMBRyMkpQm257QGZDCkhdDpJdvD0xaY1E4NuMo';
 }
 
 /* ユーザのいいね件数、非公開設定か否かを取得 */
@@ -279,7 +279,7 @@ if(array_key_exists('errors', $array_user)){
 	if($array_user['errors'][0]['code'] === 89){
 		echo('<div class="session">');
 		echo("はーとぴっかー にログインしていたTwitterID: @" . $_SESSION["screen_name"] . " とのアプリ連携の許可が取り消されたため、 はーとぴっかー からログアウトしました。");
-		echo("申し訳ございませんが、再度 はーとぴっく! ボタンを押してください。");
+		echo("申し訳ございませんが、再度 [はーとぴっく!] ボタンを押してください。");
 		echo('</div>');
 		echo($form);	
 		// SESSION情報を破棄
