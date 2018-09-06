@@ -100,7 +100,6 @@ if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
 
 // 認証画面から戻ってきた時 (認証NG) 特に何も処理をしない
 } elseif ( isset( $_GET["denied"] ) ) {
-	return ;
 // 初回のアクセス
 } else {
 	/*** リクエストトークンの取得 ***/
