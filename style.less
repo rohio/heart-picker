@@ -20,6 +20,9 @@ body{
 	font-family: 'Source Sans Pro', sans-serif;
 	color: white;
 	font-weight: 300;
+
+	// スクロール禁止
+	overflow: hidden;
 	
 	
 	::-webkit-input-placeholder { /* WebKit browsers */
@@ -135,7 +138,7 @@ body{
 		display: inline-block;
 		appearance: none;
 		outline: 0;
-		margin: 5px 20%;
+		margin: 5px 0%;
 		color: deepskyblue;
 		background-color: white;
 		border: 2px solid deepskyblue;
@@ -189,10 +192,6 @@ form{
 			background-color: white;
 			color: @prim;
 		}
-	}
-
-	.login_twitter{
-		width: 200px;
 	}
 
 	.input-group,
@@ -266,6 +265,11 @@ form{
 	.input-group__control + .input-group__addon {
 		border-width:1px 1px 1px 0;
 	}
+
+	::placeholder{
+		font-style: italic;
+		color: fade(white, 80%);
+	}
 	
 	button{
 		appearance: none;
@@ -289,7 +293,7 @@ form{
 
 	button.login_twitter{
 		width: auto;
-		height: auto;
+		height: 28px;
 		margin-right: 5px;
 		padding: 1px 10px;
 		font-size: 13px;

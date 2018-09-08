@@ -520,8 +520,13 @@ while(true){
 			echo("そのため、指定した日付の範囲内の " . count($array) . " 件のいいねを表示します。");
 			echo("</div>\n");
 			break;
-		} else {
+		} elseif($begin_date != "" || $end_date != ""){
 			echo("指定した日付の範囲内でいいねがありませんでした。\n");
+			echo("</div>\n");
+			echo($form);
+			return;
+		} else {
+			echo("指定したTwitterID [@" . $twitter_id . "] は、いいねが0件でした。\n");
 			echo("</div>\n");
 			echo($form);
 			return;

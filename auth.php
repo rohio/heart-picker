@@ -261,7 +261,7 @@ if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
                 </form>
                 <form class="form" action="auth.php" method="get">
                 <details>
-                    <summary>詳しい使い方,仕様（クリックで展開）</summary>
+                    <summary>詳しい使い方,仕様 (クリックで展開)</summary>
                     <div class="use">
                         <ul>
                         <li>TwitterIDは自分、友達のどちらでも指定できます。</li>
@@ -275,7 +275,7 @@ if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
                         <li>日付範囲が未指定であったり、日付範囲が広い場合、最近のものが選ばれる確率が少しだけ高くなります。</li><br>
 
                         <details>
-                            <summary>使用回数制限,認証に関して（クリックで展開）</summary>
+                            <summary>使用回数制限,認証に関して (クリックで展開)</summary>
                             <div class="limit">
                                 <ol>
                                 <li>使用回数制限に関して<br>
