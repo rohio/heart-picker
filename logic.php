@@ -41,7 +41,7 @@ $form = "<form class=\"form\" action=\"heart.php\" method=\"post\">
 		<li>日付範囲が未指定であったり、日付範囲が広い場合、最近のものが選ばれる確率が少しだけ高くなります。</li><br>
 
 		<details>
-			<summary>使用制限,認証に関して（クリックで展開）</summary>
+			<summary>使用回数制限,認証に関して（クリックで展開）</summary>
 			<div class=\"limit\">
 				<ol>
 				<li>使用回数制限に関して<br>
