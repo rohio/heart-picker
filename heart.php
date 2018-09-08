@@ -64,6 +64,8 @@
             <div class="container">
                 <h1>はーと♡ぴっかー</h1>
 
+                いいねはページ下部に表示されます。<br>
+
                 <?php require('logic.php'); ?>
             </div>
 
