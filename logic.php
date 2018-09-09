@@ -347,6 +347,8 @@ if(count($input_error)){
 			// APIの使用回数制限の上限に達した場合
 			case 'api_restriction':
 				echo("TwitterAPIの使用回数の上限に達したため、いいねを取得できません。<br>");
+				echo("oauth_token:" . isset($_SESSION["oauth_token"]));
+				echo("oauth_token_secret:" . isset($_SESSION["oauth_token_secret"]));
 				if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"]) != true){
 					echo("上限を緩和したい場合は、ページ下部の｢詳細の使い方｣内にあるTwiiterのアイコンをクリックして、Twitterでログインを行ってください。");
 				}
@@ -493,6 +495,8 @@ while(true){
 		echo('<div class="error">');
 		if($array['errors'][0]['code'] === 88){
 			echo("TwitterAPIの使用回数の上限に達したため、いいねを取得できません。<br>");
+			echo("oauth_token:" . isset($_SESSION["oauth_token"]));
+			echo("oauth_token_secret:" . isset($_SESSION["oauth_token_secret"]));
 			if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"]) != true){
 				echo("上限を緩和したい場合は、ページ下部の｢詳細の使い方｣内にあるTwiiterのアイコンをクリックして、Twitterでログインを行ってください。");
 			}
