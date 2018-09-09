@@ -498,9 +498,6 @@ while(true){
 			}
 		} else {
 			echo("何らかのエラーが発生しました。申し訳ございません。");
-			echo "<pre>";
-			print_r($array['errors']);
-			echo "</pre>";
 		}
 		echo("</div><br>");
 		echo($form);
@@ -513,21 +510,30 @@ while(true){
 	// $MAX_LOOP回ループして、入力値の表示件数以上のいいねを取得できない場合、ループを抜ける
 	if($loop_count > $MAX_LOOP){
 		echo('<div class="error">');
-		if(count($array)){
-			echo("はーとぴっかーのいいね表示件数は通常 " . $DISPLAY_NUM . " 件ですが、指定した日付の範囲内で " . $DISPLAY_NUM . " 件のいいねがありませんでした。<br>");
-			echo("そのため、指定した日付の範囲内の " . count($array) . " 件のいいねを表示します。");
-			echo("</div><br>");
-			break;
-		} elseif($begin_date != "" || $end_date != ""){
-			echo("指定した日付の範囲内でいいねがありませんでした。");
-			echo("</div><br>");
-			echo($form);
-			return;
+		if($begin_date != "" || $end_date != ""){
+			if(count($array)){
+				echo("はーとぴっかーのいいね表示件数は通常 " . $DISPLAY_NUM . " 件ですが、指定した日付の範囲内で " . $DISPLAY_NUM . " 件のいいねがありませんでした。<br>");
+				echo("そのため、指定した日付の範囲内の " . count($array) . " 件のいいねを表示します。");
+				echo("</div><br>");
+				break;
+			} else {
+				echo("指定した日付の範囲内でいいねがありませんでした。");
+				echo("</div><br>");
+				echo($form);
+				return;
+			}
 		} else {
-			echo("指定したTwitterID [@" . $twitter_id . "] は、いいねが0件でした。");
-			echo("</div><br>");
-			echo($form);
-			return;
+			if(count($array)){
+				echo("はーとぴっかーのいいね表示件数は通常 " . $DISPLAY_NUM . " 件ですが、 指定したTwitterID [@" . $twitter_id . "] は、" . count($array) . " 件のいいねしかありません。<br>");
+				echo("そのため、その " . count($array) . " 件のいいねを表示します。");
+				echo("</div><br>");
+				break;
+			} else {
+				echo("指定したTwitterID [@" . $twitter_id . "] は、いいねが0件でした。");
+				echo("</div><br>");
+				echo($form);
+				return;
+			}
 		}
 	};
 	
