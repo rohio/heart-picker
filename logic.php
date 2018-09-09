@@ -279,7 +279,7 @@ $array_user = json_decode( $json, true);
 if(array_key_exists('errors', $array_user)){
 	if($array_user['errors'][0]['code'] === 89){
 		echo('<div class="session">');
-		echo("はーとぴっかーにログインしていたTwitterID: @" . $_SESSION["screen_name"] . " とのアプリ連携の許可が取り消されたため、 はーとぴっかーからログアウトしました。");
+		echo("はーとぴっかーにログインしていたTwitterID [@" . $_SESSION["screen_name"] . "] とのアプリ連携の許可が取り消されたため、 はーとぴっかーからログアウトしました。");
 		echo("申し訳ございませんが、再度 [はーとぴっく!] ボタンを押してください。");
 		echo('</div>');
 		echo($form);	
@@ -366,6 +366,9 @@ if(count($input_error)){
 			// 原因不明のエラーが発生した場合
 			case 'unknown_error':
 				echo("何らかのエラーが発生しました。申し訳ございません。");
+				echo "<pre>";
+				print_r($array_user['errors']);
+				echo "</pre>";
 				break;
 
 			// 指定したTwitterIDが非公開アカウントの場合
@@ -376,6 +379,9 @@ if(count($input_error)){
 			// 原因不明で、指定されたTwitterIDの情報を取得できなかった場合
 			case 'empty_array_user':
 				echo("何らかの理由で、指定したTwitterID [@" . $twitter_id . "] の情報を取得できませんでした。\n申し訳ございません。\n");
+				echo "<pre>";
+				print_r($array_user['errors']);
+				echo "</pre>";
 				break;
 
 		}
