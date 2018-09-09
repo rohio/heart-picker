@@ -171,16 +171,10 @@ if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"])){
 	// ユーザのアクセストークンを設定
 	$access_token = $_SESSION["oauth_token"];
 	$access_token_secret = $_SESSION["oauth_token_secret"];
-
-	// DEBUG
-	echo "SESSION";
 } else {	// アプリケーションごとの認証を使用する場合
 	// アプリケーションのアクセストークンを設定
-	$access_token = '305336457-VL6vpKQukKU4Wek5QW4AOHS8QjTGVve35x5qnXl1';
-	$access_token_secret = '6i7MA3q18UvaCa7y0z3dxexuJpSuKp3dxLmFKHUCqsbar';
-
-	// DEBUG
-	echo "NO SESSION";
+	$access_token = '305336457-v3QBJod8FAzhAa6EW6t198oSGkK7rMsK8glqUkeF';
+	$access_token_secret = 'tVA1fq0hmAmfxSlcttqFzU0XPiMQGBvk2FXz0h3IrxbYI';
 }
 
 /* ユーザのいいね件数、非公開設定か否かを取得 */
