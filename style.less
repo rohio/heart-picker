@@ -20,10 +20,6 @@ body{
 	font-family: 'Source Sans Pro', sans-serif;
 	color: white;
 	font-weight: 300;
-
-	// スクロール禁止
-	overflow: hidden;
-	
 	
 	::-webkit-input-placeholder { /* WebKit browsers */
 		font-family: 'Source Sans Pro', sans-serif;
@@ -63,10 +59,10 @@ body{
 }
 #fade{
     width: 100%;
-    height: 2000px;
+    height: 100%;
     display: none;
     background-color: #fff;
-    position: absolute;
+    position: fixed;
     top: 0px;
     left: 0px;
     z-index: 5;              /* #loaderより少ない値を入れて下さい */

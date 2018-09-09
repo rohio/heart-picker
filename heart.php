@@ -56,8 +56,6 @@
                 $("#fade").css("height", pageH).delay(900).fadeOut(800);
                 $("#loader").delay(600).fadeOut(300);
                 $("#wrapper").css("display", "block");
-                
-                $("#body").css("overflow", visible);
 
                 // スクロール無効を解除する(iOS用)
                 $(window).off('.noScroll');
