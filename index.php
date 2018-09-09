@@ -27,7 +27,7 @@
                 <h1>はーと♡ぴっかー</h1>
                 
                 はーとぴっかーは、自分や友達のいいねをランダムに表示するサービスです。<br>
-				TwitterIDを指定して、はーとぴっくボタンを押してね！
+				TwitterIDを指定して、はーとぴっくボタンを押してね!
                 
                 <form class="form" action="heart.php" method="post">
                     <label for="twitter_id" accesskey="n" class="item_EN">TwitterID　<span class="must">必須</span><br></label>
