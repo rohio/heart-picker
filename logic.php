@@ -281,7 +281,7 @@ if(array_key_exists('errors', $array_user)){
 		echo('<div class="session">');
 		echo("はーとぴっかーにログインしていたTwitterID [@" . $_SESSION["screen_name"] . "] とのアプリ連携の許可が取り消されたため、 はーとぴっかーからログアウトしました。");
 		echo("申し訳ございませんが、再度 [はーとぴっく!] ボタンを押してください。");
-		echo('</div>');
+		echo('</div>\n');
 		echo($form);	
 		// SESSION情報を破棄
 		unset($_SESSION["oauth_token"]);
@@ -295,7 +295,7 @@ if(array_key_exists('errors', $array_user)){
 if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"])){
 	echo('<div class="session">');
 	echo ('あなたは今、TwitterID [@' . $_SESSION["screen_name"] . '] で、<br>はーとぴっかーにログインしています。');
-	echo('</div>');
+	echo('</div>\n');
 }
 
 // APIからエラーが返されている場合、以降のプログラムを実行せずにエラー処理を行う
@@ -505,6 +505,9 @@ while(true){
 			}
 		} else {
 			echo("何らかのエラーが発生しました。申し訳ございません。\n");
+			echo "<pre>";
+			print_r($array['errors']);
+			echo "</pre>";
 		}
 		echo("</div>\n");
 		echo($form);
