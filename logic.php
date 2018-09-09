@@ -365,11 +365,6 @@ if(count($input_error)){
 			
 			// 原因不明のエラーが発生した場合
 			case 'unknown_error':
-				// DEBUG
-				echo "<pre>";
-				print_r($array_user['errors']);
-				echo "</pre>";
-
 				echo("何らかのエラーが発生しました。申し訳ございません。");
 				break;
 
