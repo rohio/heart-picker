@@ -92,19 +92,8 @@ function create_id($time) {
 
 // 日付が存在するか確認する関数
 function exist_date($date){
-	// 日付の入力形式によって場合分け
-	if(strptime($date, '%Y-%m-%d')){
-		// '-'を区切り文字として分割
-		list($Y, $m, $d) = explode('-', $date);
-	} elseif(strptime($date, '%Y-%m/%d')){
-		list($Y, $tmp) = explode('-', $date);
-		list($m, $d) = explode('/', $tmp);
-	} elseif(strptime($date, '%Y/%m-%d')){
-		list($Y, $tmp) = explode('/', $date);
-		list($m, $d) = explode('-', $tmp);
-	} elseif(strptime($date, '%Y/%m/%d')){
-		list($Y, $m, $d) = explode('/', $date);
-	}
+	// '-'を区切り文字として分割
+	list($Y, $m, $d) = explode('-', $date);
 	// 日付が存在する場合にtrue、日付が存在しない場合にfalseを返却
 	return checkdate($m, $d, $Y);
 }
@@ -121,8 +110,12 @@ $rand_max = create_id($current_date);
 
 // 日付範囲の開始日(入力値を格納)
 $begin_date = $_POST['begin_date'];
+// "/"を"-"に置換
+$begin_date = str_replace('/', '-', $begin_date);
 // 日付範囲の終了日(入力値を格納)
 $end_date = $_POST['end_date'];
+// "/"を"-"に置換
+$end_date = str_replace('/', '-', $end_date);
 
 // $begin_dateが入力されていた場合、疑似のTweetIDを生成
 if($begin_date != ""){
@@ -281,7 +274,7 @@ if(array_key_exists('errors', $array_user)){
 		echo('<div class="session">');
 		echo("はーとぴっかーにログインしていたTwitterID [@" . $_SESSION["screen_name"] . "] とのアプリ連携の許可が取り消されたため、 はーとぴっかーからログアウトしました。");
 		echo("申し訳ございませんが、再度 [はーとぴっく!] ボタンを押してください。");
-		echo('</div>\n');
+		echo("</div>\n");
 		echo($form);	
 		// SESSION情報を破棄
 		unset($_SESSION["oauth_token"]);
@@ -295,7 +288,7 @@ if(array_key_exists('errors', $array_user)){
 if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"])){
 	echo('<div class="session">');
 	echo ('あなたは今、TwitterID [@' . $_SESSION["screen_name"] . '] で、<br>はーとぴっかーにログインしています。');
-	echo('</div>\n');
+	echo("</div>\n");
 }
 
 // APIからエラーが返されている場合、以降のプログラムを実行せずにエラー処理を行う
