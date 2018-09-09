@@ -272,7 +272,7 @@ $array_user = json_decode( $json, true);
 if(array_key_exists('errors', $array_user)){
 	if($array_user['errors'][0]['code'] === 89){
 		echo('<div class="session">');
-		echo("はーとぴっかーにログインしていたTwitterID [@" . $_SESSION["screen_name"] . "] とのアプリ連携の許可が取り消されたため、 はーとぴっかーからログアウトしました。");
+		echo("はーとぴっかーにログインしていたTwitterID [@" . $_SESSION["screen_name"] . "] とのアプリ連携の許可が取り消されたため、 はーとぴっかーからログアウトしました。<br>");
 		echo("申し訳ございませんが、再度 [はーとぴっく!] ボタンを押してください。");
 		echo("</div><br>");
 		echo($form);	
@@ -326,7 +326,7 @@ if(count($input_error)){
 
 			// 開始日が未来の場合
             case 'begin_date_future':
-				echo("指定した開始日 [" . str_replace(' 00:00:00', '', $begin_date) . "] は未来です。現在日時の " . date("Y-m-d") . " 以前を入力してください。");
+				echo("指定した開始日 [" . str_replace(' 00:00:00', '', $begin_date) . "] は未来です。<br>現在日時の " . date("Y-m-d") . " 以前を入力してください。");
 				break;
 
 			// 終了日が存在しない場合
@@ -346,7 +346,7 @@ if(count($input_error)){
 
 			// APIの使用回数制限の上限に達した場合
 			case 'api_restriction':
-				echo("APIの使用回数の上限に達したため、Twitterにアクセスできません。<br>");
+				echo("TwitterAPIの使用回数の上限に達したため、いいねを取得できません。<br>");
 				if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"]) === false){
 					echo("上限を緩和したい場合は、ページ下部の｢詳細の使い方｣内にあるTwiiterのアイコンをクリックして、Twitterでログインを行ってください。");
 				}
@@ -492,7 +492,7 @@ while(true){
 	if(array_key_exists('errors', $array)){
 		echo('<div class="error">');
 		if($array['errors'][0]['code'] === 88){
-			echo("APIの使用回数の上限に達したため、Twitterにアクセスできません。<br>");
+			echo("TwitterAPIの使用回数の上限に達したため、いいねを取得できません。<br>");
 			if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"]) === false){
 				echo("上限を緩和したい場合は、ページ下部の｢詳細の使い方｣内にあるTwiiterのアイコンをクリックして、Twitterでログインを行ってください。");
 			}
