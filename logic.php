@@ -27,18 +27,19 @@ $form = "<form class=\"form\" action=\"heart.php\" method=\"post\">
 </form>
 <form class=\"form\" action=\"auth.php\" method=\"get\">
 <details>
-	<summary>詳しい使い方,仕様（クリックで展開）</summary>
+	<summary>詳しい使い方,仕様 (クリックで展開)</summary>
 	<div class=\"use\">
-		<ul>
+		<ul class=\"list\">
 		<li>TwitterIDは自分、友達のどちらでも指定できます。</li>
 		<li>日付範囲が未指定の場合、全件からランダムに選ばれます。</li>
 		<li>TwitterAPIの仕様により、3200件より多くのいいねをしているアカウントは、最近3200件のいいねの中からランダムに表示されます。</li>
 		<li>非公開アカウント（鍵アカウント）のいいねは表示できません。</li>
 		<li>TwitterAPIに使用回数の制限があるため、はーとぴっかーを利用する回数が多いと制限がかかり、はーとぴっかーを利用できなくなります。
-		より多く利用したい方は、以下からTwitterでログインしてください。
+		より多く利用したい方は、以下からTwitterでログインしてください。<br>
 		<button class=\"login_twitter\" type=\"submit\">Twitterでログイン</button><br>
 		TwitterAPIの使用回数制限とTwitterのログインによるアプリケーション認証に関して、詳細を知りたい方は本ページの末尾にて説明しているので、そちらを参照ください。</li>
 		<li>日付範囲が未指定であったり、日付範囲が広い場合、最近のものが選ばれる確率が少しだけ高くなります。</li><br>
+		</ul>
 
 		<details>
 			<summary>使用回数制限,認証に関して（クリックで展開）</summary>
@@ -55,9 +56,9 @@ $form = "<form class=\"form\" action=\"heart.php\" method=\"post\">
 				そこで、最低限の権限の認証で十分なため、read権限のみの認証を行います。
 				以下は補足ですが、勝手にツイートがされてしまう、いわゆるスパムと呼ばれるものはread権限だけでなく、write権限を必要とします。
 				そのため、はーとぴっかーはスパムと呼ばれるようなアプリの動作は権限の面で不可能となっています。</li>
+				</ol>
 			</div>
 		</details>
-		</ul>
 	</div>
 </details>
 </form>";
@@ -293,7 +294,7 @@ if(array_key_exists('errors', $array_user)){
 // ログインしているTwitterIDを表示
 if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"])){
 	echo('<div class="session">');
-	echo ('あなたは今、TwitterID [@' . $_SESSION["screen_name"] . '] で、はーとぴっかーにログインしています。');
+	echo ('あなたは今、TwitterID [@' . $_SESSION["screen_name"] . '] で、<br>はーとぴっかーにログインしています。');
 	echo('</div>');
 }
 

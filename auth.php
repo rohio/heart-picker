@@ -263,7 +263,7 @@ if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
                 <details>
                     <summary>詳しい使い方,仕様 (クリックで展開)</summary>
                     <div class="use">
-                        <ul>
+						<ul class="list">
                         <li>TwitterIDは自分、友達のどちらでも指定できます。</li>
                         <li>日付範囲が未指定の場合、全件からランダムに選ばれます。</li>
                         <li>TwitterAPIの仕様により、3200件より多くのいいねをしているアカウントは、最近3200件のいいねの中からランダムに表示されます。</li>
