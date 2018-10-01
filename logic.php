@@ -183,7 +183,7 @@ $request_url = 'https://api.twitter.com/1.1/users/show.json' ;
 $request_method = 'GET' ;
 
 // TwitterIDの入力値が空の場合、以降のプログラムを実行せずに終了
-if($_POST['twitter_id'] === ""){
+if($_POST['twitter_id'] === NULL){
 	echo($form);
 	return;
 }
