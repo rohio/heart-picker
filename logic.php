@@ -182,6 +182,12 @@ if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"])){
 $request_url = 'https://api.twitter.com/1.1/users/show.json' ;
 $request_method = 'GET' ;
 
+// TwitterIDの入力値が空の場合、以降のプログラムを実行せずに終了
+if($_POST['twitter_id'] === ""){
+	echo($form);
+	return;
+}
+
 // TwitterのユーザID(入力値を格納)
 // XSS対策のために、htmlspecialchars関数を使用
 $twitter_id = htmlspecialchars($_POST['twitter_id'], ENT_QUOTES, 'UTF-8' );
