@@ -119,7 +119,7 @@
                     </div>
                 </details>
                 <br>
-                <footer>ご意見・ご要望等のお問合せは、<a href="https://twitter.com/cutcurry" target="_blank">@cutcurry</a> へ DM or リプライ で連絡をお願いします。</footer>
+                <footer>ご意見・ご要望等のお問合せは、<a href="https://twitter.com/cutcurry" target="_blank">@cutcurry</a> へ <br> DM or リプライ で連絡をお願いします。</footer>
                 </form>
             </div>
 
