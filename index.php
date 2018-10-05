@@ -68,17 +68,17 @@
                     <label for="twitter_id" accesskey="n" class="item_EN">TwitterID　<span class="must">必須</span><br></label>
                     <div class="input-group">
                         <span class="input-group__addon">@</span>
-                        <input type="text" name="twitter_id" id="twitter_id" class="input-group__control" placeholder="例: TwitterJP" onInput="checkID(this)" required>
+                        <input type="text" name="twitter_id" id="twitter_id" class="input-group__control" placeholder="例: TwitterJP" onChange="checkID(this)" required>
                     </div>
                     <br>
 
                     <label for="begin_date" accesskey="n" class="item_JP">日付範囲(開始日)　<span class="free">任意</span><br>
                     <div class="explain">Year-Month-Day の形式で指定してください<br>※｢2010-11-4｣より前は指定できません</div></label>
-                    <input type="text" name="begin_date" placeholder="例: 2015-1-1" id="begin_date" class="user_input" maxlength="10" onInput="checkForm(this)" pattern="(201[1-9][/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))">
+                    <input type="text" name="begin_date" placeholder="例: 2015-1-1" id="begin_date" class="user_input" maxlength="10" onChange="checkForm(this)" pattern="(201[1-9][/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))">
 
                     <label for="end_date" accesskey="n" class="item_JP">日付範囲(終了日)　<span class="free">任意</span><br>
                     <div class="explain">Year-Month-Day の形式で指定してください<br>※｢2010-11-4｣より前は指定できません</div></label>
-                    <input type="text" name="end_date" placeholder="例: 2016-1-31" id="end_date" class="user_input" maxlength="10" onInput="checkForm(this)" pattern="(201[1-9][/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))">
+                    <input type="text" name="end_date" placeholder="例: 2016-1-31" id="end_date" class="user_input" maxlength="10" onChange="checkForm(this)" pattern="(201[1-9][/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))">
 
                     <br>
                     <button type="submit">はーとぴっく!</button>
