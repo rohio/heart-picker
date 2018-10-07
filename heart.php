@@ -9,6 +9,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.5.1/less.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="check_input.js"></script>
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
         <script type="text/javascript">
             //■page topボタン
             $(function(){
