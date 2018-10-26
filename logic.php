@@ -84,10 +84,10 @@ if(strpos($caller, 'heart.php') !== false){
 	$_SESSION['twitter_id'] = $twitter_id;
 	// 日付範囲の開始日(入力値を格納)
 	$begin_date = $_POST['begin_date'];
-	$_SESSION['begin_date'] = $twitter_id;
+	$_SESSION['begin_date'] = $begin_date;
 	// 日付範囲の終了日(入力値を格納)
 	$end_date = $_POST['end_date'];
-	$_SESSION['end_date'] = $twitter_id;
+	$_SESSION['end_date'] = $end_date;
 
 // auth.phpから呼び出された場合
 } elseif(strpos($caller, 'auth.php') !== false) {
