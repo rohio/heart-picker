@@ -360,15 +360,15 @@ if(count($input_error)){
 
 			// APIの使用回数制限の上限に達した場合
 			case 'api_restriction':
-				echo("TwitterAPIの使用回数の上限に達したため、いいねを取得できません。<br>");
+				echo("TwitterAPIの使用回数の上限に達したため、いいねを表示できません。<br>");
 				if(isset($_SESSION["oauth_token"]) == NULL && isset($_SESSION["oauth_token_secret"]) == NULL){
-					echo("上限を緩和したい場合は、以下からTwitterログインを行ってください。");
+					echo("上限を緩和したい場合は、以下からログインを行ってください。");
 					echo ($twitter_login_button);
 				}
 				break;
 
 			case 'suspend':
-				echo("指定したTwitterID [@" . $twitter_id . "] は、凍結されているアカウントのため、いいねを取得できません。");
+				echo("指定したTwitterID [@" . $twitter_id . "] は凍結されているアカウントのため、いいねを表示できません。");
 				break;
 			
 			// 原因不明のエラーが発生した場合
@@ -378,8 +378,8 @@ if(count($input_error)){
 
 			// 指定したTwitterIDが非公開アカウントの場合
 			case 'private_account':
-				echo("指定したTwitterID [@" . $twitter_id . "] は、非公開設定のアカウントのため、いいねを取得できません。<br>");
-				echo("いいねを表示したい場合は、[@" . $twitter_id . "] のアカウントで以下からTwitterログインを行ってください。");
+				echo("指定したTwitterID [@" . $twitter_id . "] は非公開設定のアカウントのため、いいねを表示できません。<br>");
+				echo("いいねを表示したい場合は、[@" . $twitter_id . "] のアカウントで以下からログインを行ってください。");
 				echo ($twitter_login_button);
 				break;
 
@@ -503,7 +503,7 @@ while(true){
 	if(array_key_exists('errors', $array)){
 		echo('<div class="error">');
 		if($array['errors'][0]['code'] === 88){
-			echo("TwitterAPIの使用回数の上限に達したため、いいねを取得できません。<br>");
+			echo("TwitterAPIの使用回数の上限に達したため、いいねを表示できません。<br>");
 			if(isset($_SESSION["oauth_token"]) == NULL && isset($_SESSION["oauth_token_secret"]) == NULL){
 				echo("上限を緩和したい場合は、ページ下部の｢詳しい使い方,仕様｣を参照し、Twitterでログインを行ってください。");
 			}
@@ -571,7 +571,6 @@ echo($form);
 $html .= "<form>";
 foreach($array as $key => $value){
 	// 埋め込みTweetの形で表示
-	// $html .= '<blockquote class="twitter-tweet tw-align-center" data-lang="ja"><p lang="ja" dir="ltr" text-align="center">' . $value["text"] . '</p>&mdash; ' . $value["user"]["name"] . '(@' . $value["user"]["screen_name"] . ') <a href="https://twitter.com/' . $value["user"]["screen_name"] . '/status/' . $value["id_str"] . '?ref_src=twsrc%5Etfw">' . $value["created_at"] . '</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> <br>';
 	$html .= '<blockquote class="twitter-tweet tw-align-center" data-lang="ja"><p lang="ja" dir="ltr" text-align="center">' . $value["text"] . '</p>&mdash; ' . $value["user"]["name"] . '(@' . $value["user"]["screen_name"] . ') <a href="https://twitter.com/' . $value["user"]["screen_name"] . '/status/' . $value["id_str"] . '?ref_src=twsrc%5Etfw">' . $value["created_at"] . '</a></blockquote> <br>';
 	$display_count++;
 	// 表示したいいね数が表示件数以上になったら、break
