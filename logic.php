@@ -5,66 +5,166 @@ session_start() ;
 $api_key = '5L41MwG316NQvDhd3ru1UDiIa'; 
 $api_secret = 'Y8daT5rjGsfQL49nHIzJKkL07Gq3BB2IAlR6NIl7owWSn00Lkz';
 
-// 入力フォームのhtml
-$form = "<form class=\"form\" action=\"heart.php\" method=\"post\">
-<label for=\"twitter_id\" accesskey=\"n\" class=\"item_EN\">TwitterID　<span class=\"must\">必須</span><br></label>
-<div class=\"input-group\">
-	<span class=\"input-group__addon\">@</span>
-	<input type=\"text\" name=\"twitter_id\" id=\"twitter_id\" class=\"input-group__control\" value=\"" . htmlspecialchars( $_POST['twitter_id'], ENT_QUOTES, 'UTF-8' ) . "\" placeholder=\"例: TwitterJP\" onChange=\"checkID(this)\" required>
-</div>
-<br>
+// 呼び出し元ファイル名を確認するための配列
+$caller_array = debug_backtrace();
+// 呼び出し元ファイル名
+$caller = $caller_array[0]["file"];
 
-<label for=\"begin_date\" accesskey=\"n\" class=\"item_JP\">日付範囲(開始日)　<span class=\"free\">任意</span><br>
-<div class=\"explain\">Year-Month-Day の形式で指定してください<br>※｢2010-11-5｣より前は指定できません</div></label>
-<input type=\"text\" name=\"begin_date\" placeholder=\"例: 2015-1-1\" id=\"begin_date\" class=\"user_input\" value=\"" . htmlspecialchars( $_POST['begin_date'], ENT_QUOTES, 'UTF-8' ) . "\" maxlength=\"10\" onChange=\"checkForm(this)\" pattern=\"(201[1-9][/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
+// heart.phpから呼び出された場合
+if(strpos($caller, 'heart.php') !== false){
+	// 入力フォームのhtml
+	$form = "<form class=\"form\" action=\"heart.php\" method=\"post\">
+	<label for=\"twitter_id\" accesskey=\"n\" class=\"item_EN\">TwitterID　<span class=\"must\">必須</span><br></label>
+	<div class=\"input-group\">
+		<span class=\"input-group__addon\">@</span>
+		<input type=\"text\" name=\"twitter_id\" id=\"twitter_id\" class=\"input-group__control\" value=\"" . htmlspecialchars( $_POST['twitter_id'], ENT_QUOTES, 'UTF-8' ) . "\" placeholder=\"例: TwitterJP\" onChange=\"checkID(this)\" required>
+	</div>
+	<br>
 
-<label for=\"end_date\" accesskey=\"n\" class=\"item_JP\">日付範囲(終了日)　<span class=\"free\">任意</span><br>
-<div class=\"explain\">Year-Month-Day の形式で指定してください<br>※｢2010-11-5｣より前は指定できません</div></label>
-<input type=\"text\" name=\"end_date\" placeholder=\"例: 2016-1-31\" id=\"end_date\" class=\"user_input\" value=\"" . htmlspecialchars( $_POST['end_date'], ENT_QUOTES, 'UTF-8' ) . "\" maxlength=\"10\" onChange=\"checkForm(this)\" pattern=\"(201[1-9][/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
+	<label for=\"begin_date\" accesskey=\"n\" class=\"item_JP\">日付範囲(開始日)　<span class=\"free\">任意</span><br>
+	<div class=\"explain\">Year-Month-Day の形式で指定してください<br>※｢2010-11-5｣より前は指定できません</div></label>
+	<input type=\"text\" name=\"begin_date\" placeholder=\"例: 2015-1-1\" id=\"begin_date\" class=\"user_input\" value=\"" . htmlspecialchars( $_POST['begin_date'], ENT_QUOTES, 'UTF-8' ) . "\" maxlength=\"10\" onChange=\"checkForm(this)\" pattern=\"(201[1-9][/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
 
-<br>
-<button type=\"submit\">はーとぴっく!</button>
-</form>
-<form class=\"form\" action=\"auth.php\" method=\"get\">
-<details>
-	<summary>詳しい使い方,仕様 (クリックで展開)</summary>
-	<div class=\"use\">
-		<ul class=\"list\">
-		<li>TwitterIDは自分、友達のどちらでも指定できます。</li>
-		<li>日付範囲を指定した場合、開始日から終了日までの間でランダムに表示します。日付範囲が未指定の場合、全件からランダムに選ばれます。</li>
-		<li>TwitterAPIの仕様により、3200件より多くのいいねをしているアカウントは、最近3200件のいいねの中からランダムに表示されます。</li>
-		<li>非公開アカウント（鍵アカウント）のいいねは表示できません。</li>
-		<li>TwitterAPIに使用回数の制限があるため、はーとぴっかーを利用する回数が多いと制限がかかり、はーとぴっかーを利用できなくなります。
-		より多く利用したい方は、以下からTwitterでログインしてください。<br>
-		<button class=\"login_twitter\" type=\"submit\">Twitterでログイン</button><br>
-		TwitterAPIの使用回数制限とTwitterのログインによるアプリケーション認証に関して、詳細を知りたい方は本ページの末尾にて説明しているので、そちらを参照ください。</li>
-		<li>TwiiterIDや日付の入力に不適切な文字(ひらがな、漢字等)があった場合、自動的に削除する仕様としています。</li>
-		<li>日付範囲が未指定であったり、日付範囲が広い場合、最近のものが選ばれる確率が少しだけ高くなります。</li><br>
-		</ul>
+	<label for=\"end_date\" accesskey=\"n\" class=\"item_JP\">日付範囲(終了日)　<span class=\"free\">任意</span><br>
+	<div class=\"explain\">Year-Month-Day の形式で指定してください<br>※｢2010-11-5｣より前は指定できません</div></label>
+	<input type=\"text\" name=\"end_date\" placeholder=\"例: 2016-1-31\" id=\"end_date\" class=\"user_input\" value=\"" . htmlspecialchars( $_POST['end_date'], ENT_QUOTES, 'UTF-8' ) . "\" maxlength=\"10\" onChange=\"checkForm(this)\" pattern=\"(201[1-9][/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
 
+	<br>
+	<button type=\"submit\">はーとぴっく!</button>
+	</form>
+	<form class=\"form\" action=\"auth.php\" method=\"get\">
+	<details>
+		<summary>詳しい使い方,仕様 (クリックで展開)</summary>
+		<div class=\"use\">
+			<ul class=\"list\">
+			<li>TwitterIDは自分、友達のどちらでも指定できます。</li>
+			<li>日付範囲を指定した場合、開始日から終了日までの間でランダムに表示します。日付範囲が未指定の場合、全件からランダムに選ばれます。</li>
+			<li>TwitterAPIの仕様により、3200件より多くのいいねをしているアカウントは、最近3200件のいいねの中からランダムに表示されます。</li>
+			<li>非公開アカウント（鍵アカウント）のいいねは表示できません。</li>
+			<li>TwitterAPIに使用回数の制限があるため、はーとぴっかーを利用する回数が多いと制限がかかり、はーとぴっかーを利用できなくなります。
+			より多く利用したい方は、以下からTwitterでログインしてください。<br>
+			<button class=\"login_twitter\" type=\"submit\">Twitterでログイン</button><br>
+			TwitterAPIの使用回数制限とTwitterのログインによるアプリケーション認証に関して、詳細を知りたい方は本ページの末尾にて説明しているので、そちらを参照ください。</li>
+			<li>TwiiterIDや日付の入力に不適切な文字(ひらがな、漢字等)があった場合、自動的に削除する仕様としています。</li>
+			<li>日付範囲が未指定であったり、日付範囲が広い場合、最近のものが選ばれる確率が少しだけ高くなります。</li><br>
+			</ul>
+
+			<details>
+				<summary>使用回数制限,認証に関して（クリックで展開）</summary>
+				<div class=\"limit\">
+					<ol>
+					<li>使用回数制限に関して<br>
+					TwitterAPIは、認証を行わない場合はアプリケーション単位、認証を行った場合はユーザ単位に対して使用回数が制限されます。
+					アプリケーション単位の場合は、アプリケーションを複数のユーザが使用している場合、複数ユーザの合計の使用回数を基準としてTwitterAPIの使用が制限されます。
+					ユーザ単位の場合は、アプリケーションを複数のユーザが使用している場合でも、ユーザ1人の使用回数を基準として、TwitterAPIの使用が制限されます。
+					そのため、アプリケーション認証を行えば使用制限が緩和されます。ユーザ認証を行った場合の使用回数の目安ですが、最低でも15分間当たり、15回のいいね表示を行うことができます。</li>
+					<li>アプリケーション認証(read only)に関して<br>
+					はーとぴっかーはアプリケーション認証を行っても、権限を悪用しユーザの意図に反するようなこと（ツイートする、フォローを行う等）は行いません。
+					しかし、1.で述べたようにはーとぴっかーはAPIの使用回数緩和のため、認証が必要となります。
+					そこで、最低限の権限の認証で十分なため、read権限のみの認証を行います。
+					以下は補足ですが、勝手にツイートがされてしまう、いわゆるスパムと呼ばれるものはread権限だけでなく、write権限を必要とします。
+					そのため、はーとぴっかーはスパムと呼ばれるようなアプリの動作は権限の面で不可能となっています。</li>
+					</ol>
+				</div>
+			</details>
+		</div>
+	</details>
+	<br>
+	<footer>ご意見・ご要望等のお問合せは、<a href=\"https://twitter.com/cutcurry\" target=\"_blank\">@cutcurry</a> へ <br> DM or リプライ で連絡をお願いします。</footer>
+	</form>";
+
+	// TwitterIDの入力値が空の場合、以降のプログラムを実行せずに終了
+	if($_POST['twitter_id'] === NULL){
+		echo($form);
+		return;
+	}
+	// TwitterのユーザID(入力値を格納)
+	// XSS対策のために、htmlspecialchars関数を使用
+	$twitter_id = htmlspecialchars($_POST['twitter_id'], ENT_QUOTES, 'UTF-8' );
+	$_SESSION['twitter_id'] = $twitter_id;
+	// 日付範囲の開始日(入力値を格納)
+	$begin_date = $_POST['begin_date'];
+	$_SESSION['begin_date'] = $twitter_id;
+	// 日付範囲の終了日(入力値を格納)
+	$end_date = $_POST['end_date'];
+	$_SESSION['end_date'] = $twitter_id;
+
+// auth.phpから呼び出された場合
+} elseif(strpos($caller, 'auth.php') !== false) {
+		// 入力フォームのhtml
+		$form = "<form class=\"form\" action=\"heart.php\" method=\"post\">
+		<label for=\"twitter_id\" accesskey=\"n\" class=\"item_EN\">TwitterID　<span class=\"must\">必須</span><br></label>
+		<div class=\"input-group\">
+			<span class=\"input-group__addon\">@</span>
+			<input type=\"text\" name=\"twitter_id\" id=\"twitter_id\" class=\"input-group__control\" value=\"" . htmlspecialchars( $_SESSION['twitter_id'], ENT_QUOTES, 'UTF-8' ) . "\" placeholder=\"例: TwitterJP\" onChange=\"checkID(this)\" required>
+		</div>
+		<br>
+	
+		<label for=\"begin_date\" accesskey=\"n\" class=\"item_JP\">日付範囲(開始日)　<span class=\"free\">任意</span><br>
+		<div class=\"explain\">Year-Month-Day の形式で指定してください<br>※｢2010-11-5｣より前は指定できません</div></label>
+		<input type=\"text\" name=\"begin_date\" placeholder=\"例: 2015-1-1\" id=\"begin_date\" class=\"user_input\" value=\"" . htmlspecialchars( $_SESSION['begin_date'], ENT_QUOTES, 'UTF-8' ) . "\" maxlength=\"10\" onChange=\"checkForm(this)\" pattern=\"(201[1-9][/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
+	
+		<label for=\"end_date\" accesskey=\"n\" class=\"item_JP\">日付範囲(終了日)　<span class=\"free\">任意</span><br>
+		<div class=\"explain\">Year-Month-Day の形式で指定してください<br>※｢2010-11-5｣より前は指定できません</div></label>
+		<input type=\"text\" name=\"end_date\" placeholder=\"例: 2016-1-31\" id=\"end_date\" class=\"user_input\" value=\"" . htmlspecialchars( $_SESSION['end_date'], ENT_QUOTES, 'UTF-8' ) . "\" maxlength=\"10\" onChange=\"checkForm(this)\" pattern=\"(201[1-9][/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
+	
+		<br>
+		<button type=\"submit\">はーとぴっく!</button>
+		</form>
+		<form class=\"form\" action=\"auth.php\" method=\"get\">
 		<details>
-			<summary>使用回数制限,認証に関して（クリックで展開）</summary>
-			<div class=\"limit\">
-				<ol>
-				<li>使用回数制限に関して<br>
-				TwitterAPIは、認証を行わない場合はアプリケーション単位、認証を行った場合はユーザ単位に対して使用回数が制限されます。
-				アプリケーション単位の場合は、アプリケーションを複数のユーザが使用している場合、複数ユーザの合計の使用回数を基準としてTwitterAPIの使用が制限されます。
-				ユーザ単位の場合は、アプリケーションを複数のユーザが使用している場合でも、ユーザ1人の使用回数を基準として、TwitterAPIの使用が制限されます。
-				そのため、アプリケーション認証を行えば使用制限が緩和されます。ユーザ認証を行った場合の使用回数の目安ですが、最低でも15分間当たり、15回のいいね表示を行うことができます。</li>
-				<li>アプリケーション認証(read only)に関して<br>
-				はーとぴっかーはアプリケーション認証を行っても、権限を悪用しユーザの意図に反するようなこと（ツイートする、フォローを行う等）は行いません。
-				しかし、1.で述べたようにはーとぴっかーはAPIの使用回数緩和のため、認証が必要となります。
-				そこで、最低限の権限の認証で十分なため、read権限のみの認証を行います。
-				以下は補足ですが、勝手にツイートがされてしまう、いわゆるスパムと呼ばれるものはread権限だけでなく、write権限を必要とします。
-				そのため、はーとぴっかーはスパムと呼ばれるようなアプリの動作は権限の面で不可能となっています。</li>
-				</ol>
+			<summary>詳しい使い方,仕様 (クリックで展開)</summary>
+			<div class=\"use\">
+				<ul class=\"list\">
+				<li>TwitterIDは自分、友達のどちらでも指定できます。</li>
+				<li>日付範囲を指定した場合、開始日から終了日までの間でランダムに表示します。日付範囲が未指定の場合、全件からランダムに選ばれます。</li>
+				<li>TwitterAPIの仕様により、3200件より多くのいいねをしているアカウントは、最近3200件のいいねの中からランダムに表示されます。</li>
+				<li>非公開アカウント（鍵アカウント）のいいねは表示できません。</li>
+				<li>TwitterAPIに使用回数の制限があるため、はーとぴっかーを利用する回数が多いと制限がかかり、はーとぴっかーを利用できなくなります。
+				より多く利用したい方は、以下からTwitterでログインしてください。<br>
+				<button class=\"login_twitter\" type=\"submit\">Twitterでログイン</button><br>
+				TwitterAPIの使用回数制限とTwitterのログインによるアプリケーション認証に関して、詳細を知りたい方は本ページの末尾にて説明しているので、そちらを参照ください。</li>
+				<li>TwiiterIDや日付の入力に不適切な文字(ひらがな、漢字等)があった場合、自動的に削除する仕様としています。</li>
+				<li>日付範囲が未指定であったり、日付範囲が広い場合、最近のものが選ばれる確率が少しだけ高くなります。</li><br>
+				</ul>
+	
+				<details>
+					<summary>使用回数制限,認証に関して（クリックで展開）</summary>
+					<div class=\"limit\">
+						<ol>
+						<li>使用回数制限に関して<br>
+						TwitterAPIは、認証を行わない場合はアプリケーション単位、認証を行った場合はユーザ単位に対して使用回数が制限されます。
+						アプリケーション単位の場合は、アプリケーションを複数のユーザが使用している場合、複数ユーザの合計の使用回数を基準としてTwitterAPIの使用が制限されます。
+						ユーザ単位の場合は、アプリケーションを複数のユーザが使用している場合でも、ユーザ1人の使用回数を基準として、TwitterAPIの使用が制限されます。
+						そのため、アプリケーション認証を行えば使用制限が緩和されます。ユーザ認証を行った場合の使用回数の目安ですが、最低でも15分間当たり、15回のいいね表示を行うことができます。</li>
+						<li>アプリケーション認証(read only)に関して<br>
+						はーとぴっかーはアプリケーション認証を行っても、権限を悪用しユーザの意図に反するようなこと（ツイートする、フォローを行う等）は行いません。
+						しかし、1.で述べたようにはーとぴっかーはAPIの使用回数緩和のため、認証が必要となります。
+						そこで、最低限の権限の認証で十分なため、read権限のみの認証を行います。
+						以下は補足ですが、勝手にツイートがされてしまう、いわゆるスパムと呼ばれるものはread権限だけでなく、write権限を必要とします。
+						そのため、はーとぴっかーはスパムと呼ばれるようなアプリの動作は権限の面で不可能となっています。</li>
+						</ol>
+					</div>
+				</details>
 			</div>
 		</details>
-	</div>
-</details>
-<br>
-<footer>ご意見・ご要望等のお問合せは、<a href=\"https://twitter.com/cutcurry\" target=\"_blank\">@cutcurry</a> へ <br> DM or リプライ で連絡をお願いします。</footer>
-</form>";
+		<br>
+		<footer>ご意見・ご要望等のお問合せは、<a href=\"https://twitter.com/cutcurry\" target=\"_blank\">@cutcurry</a> へ <br> DM or リプライ で連絡をお願いします。</footer>
+		</form>";
+	
+		// TwitterIDの入力値が空の場合、以降のプログラムを実行せずに終了
+		if($_SESSION['twitter_id'] === NULL){
+			echo($form);
+			return;
+		}
+		// TwitterのユーザID(入力値を格納)
+		// XSS対策のために、htmlspecialchars関数を使用
+		$twitter_id = htmlspecialchars($_SESSION['twitter_id'], ENT_QUOTES, 'UTF-8' );
+		// 日付範囲の開始日(入力値を格納)
+		$begin_date = $_SESSION['begin_date'];
+		// 日付範囲の終了日(入力値を格納)
+		$end_date = $_SESSION['end_date'];
+}
 
 // Twitterでログインするボタンを表示するhtml
 $twitter_login_button = 
@@ -116,13 +216,8 @@ $current_date = date("Y/m/d H:i:s");
 
 $rand_max = create_id($current_date);
 
-// 日付範囲の開始日(入力値を格納)
-$begin_date = $_POST['begin_date'];
 // "/"を"-"に置換
 $begin_date = str_replace('/', '-', $begin_date);
-// 日付範囲の終了日(入力値を格納)
-$end_date = $_POST['end_date'];
-// "/"を"-"に置換
 $end_date = str_replace('/', '-', $end_date);
 
 // $begin_dateが入力されていた場合、疑似のTweetIDを生成
@@ -189,16 +284,6 @@ if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"])){
 // 指定したユーザ情報を返却するAPIを使用
 $request_url = 'https://api.twitter.com/1.1/users/show.json' ;
 $request_method = 'GET' ;
-
-// TwitterIDの入力値が空の場合、以降のプログラムを実行せずに終了
-if($_POST['twitter_id'] === NULL){
-	echo($form);
-	return;
-}
-
-// TwitterのユーザID(入力値を格納)
-// XSS対策のために、htmlspecialchars関数を使用
-$twitter_id = htmlspecialchars($_POST['twitter_id'], ENT_QUOTES, 'UTF-8' );
 
 // htmlテキストを格納する変数を生成
 $html = '' ;

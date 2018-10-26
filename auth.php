@@ -215,81 +215,63 @@ if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
         <meta charset="UTF-8">
         <title>はーとぴっかー</title>
         <link rel="stylesheet/less" type="text/css" href="style.less">
-		<link rel="icon" href="favicon.ico">
+        <link rel="icon" href="favicon.ico">
         <meta name="viewport" content="width=device-width, user-scale=yes, initial-scale=1.0, maximum-scale=5.0" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.5.1/less.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="check_input.js"></script>
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        <script type="text/javascript">
+            //■page topボタン
+            $(function(){
+            var topBtn=$('#pageTop');
+            topBtn.hide();
+            //◇ボタンの表示設定
+            $(window).scroll(function(){
+                if($(this).scrollTop()>80){
+                    //---- 画面を80pxスクロールしたら、ボタンを表示する
+                    topBtn.fadeIn();
+                }else{
+                    //---- 画面が80pxより上なら、ボタンを表示しない
+                    topBtn.fadeOut();
+                }
+            });
+            // ◇ボタンをクリックしたら、スクロールして上に戻る
+            topBtn.click(function(){
+                $('body,html').animate({
+                    scrollTop: 0},500);
+                    return false;
+                });
+            });
+
+            $('head').append(
+                '<style type="text/css">#wrapper { display: none; } #fade, #loader { display: block; }</style>'
+            );
+            
+            jQuery.event.add(window,"load",function() { // 全ての読み込み完了後に呼ばれる関数
+                var pageH = $("#wrapper").height();
+            
+                $("#fade").css("height", pageH).delay(900).fadeOut(800);
+                $("#loader").delay(600).fadeOut(300);
+                $("#wrapper").css("display", "block");
+            });
+        </script>
     </head>
     <body>
+        <div id="loader">
+            <img src="./loading.gif" alt="Now Loading..." width="80px" height="80px" />
+        </div>
+        <div id="fade"></div>
         <div class="wrapper">
             <div class="container">
-
                 <h1>はーと♡ぴっかー</h1>
-                
-                はーとぴっかーは, 自分や友達のいいねをランダムに表示するサービスです。<br>
-				TwitterIDを指定して, はーとぴっくボタンを押してね！
-                
-                <form class="form" action="heart.php" method="post">
-                    <label for="twitter_id" accesskey="n" class="item_EN">TwitterID　<span class="must">必須</span><br></label>
-                    <div class="input-group">
-                        <span class="input-group__addon">@</span>
-                        <input type="text" name="twitter_id" id="twitter_id" class="input-group__control" placeholder="例: TwitterJP" onChange="checkID(this)" required>
-                    </div>
-                    <br>
 
-                    <label for="begin_date" accesskey="n" class="item_JP">日付範囲(開始日)　<span class="free">任意</span><br>
-                    <div class="explain">Year-Month-Day の形式で指定してください<br>※｢2010-11-5｣より前は指定できません</div></label>
-                    <input type="text" name="begin_date" placeholder="例: 2015-1-1" id="begin_date" class="user_input" maxlength="10" onChange="checkForm(this)" pattern="(201[1-9][/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))">
+                いいねはページ下部に表示されます。<br>
 
-                    <label for="end_date" accesskey="n" class="item_JP">日付範囲(終了日)　<span class="free">任意</span><br>
-                    <div class="explain">Year-Month-Day の形式で指定してください<br>※｢2010-11-5｣より前は指定できません</div></label>
-                    <input type="text" name="end_date" placeholder="例: 2016-1-31" id="end_date" class="user_input" maxlength="10" onChange="checkForm(this)" pattern="(201[1-9][/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))">
-
-                    <br>
-                    <button type="submit">はーとぴっく!</button>
-                </form>
-                <form class="form" action="auth.php" method="get">
-                <details>
-                    <summary>詳しい使い方,仕様 (クリックで展開)</summary>
-                    <div class="use">
-                        <ul class="list">
-                        <li>TwitterIDは自分、友達のどちらでも指定できます。</li>
-                        <li>日付範囲を指定した場合、開始日から終了日までの間でランダムに表示します。日付範囲が未指定の場合、全件からランダムに選ばれます。</li>
-                        <li>TwitterAPIの仕様により、3200件より多くのいいねをしているアカウントは、最近3200件のいいねの中からランダムに表示されます。</li>
-                        <li>非公開アカウント（鍵アカウント）のいいねは表示できません。</li>
-                        <li>TwitterAPIに使用回数の制限があるため、はーとぴっかーを利用する回数が多いと制限がかかり、はーとぴっかーを利用できなくなります。
-                        より多く利用したい方は、以下からTwitterでログインしてください。<br>
-                        <button class="login_twitter" type="submit">Twitterでログイン</button><br>
-                        TwitterAPIの使用回数制限とTwitterのログインによるアプリケーション認証に関して、詳細を知りたい方は本ページの末尾にて説明しているので、そちらを参照ください。</li>
-						<li>TwiiterIDや日付の入力に不適切な文字(ひらがな、漢字等)があった場合、自動的に削除する仕様としています。</li>
-                        <li>日付範囲が未指定であったり、日付範囲が広い場合、最近のものが選ばれる確率が少しだけ高くなります。</li><br>
-                        </ul>
-                        <details>
-                            <summary>使用回数制限,認証に関して (クリックで展開)</summary>
-                            <div class="limit">
-                                <ol>
-                                <li>使用回数制限に関して<br>
-                                TwitterAPIは、認証を行わない場合はアプリケーション単位、認証を行った場合はユーザ単位に対して使用回数が制限されます。
-                                アプリケーション単位の場合は、アプリケーションを複数のユーザが使用している場合、複数ユーザの合計の使用回数を基準としてTwitterAPIの使用が制限されます。
-                                ユーザ単位の場合は、アプリケーションを複数のユーザが使用している場合でも、ユーザ1人の使用回数を基準として、TwitterAPIの使用が制限されます。
-                                そのため、アプリケーション認証を行えば使用制限が緩和されます。ユーザ認証を行った場合の使用回数の目安ですが、最低でも15分間当たり、15回のいいね表示を行うことができます。</li>
-                                <li>アプリケーション認証(read only)に関して<br>
-                                はーとぴっかーはアプリケーション認証を行っても、権限を悪用しユーザの意図に反するようなこと（ツイートする、フォローを行う等）は行いません。
-                                しかし、1.で述べたようにはーとぴっかーはAPIの使用回数緩和のため、認証が必要となります。
-                                そこで、最低限の権限の認証で十分なため、read権限のみの認証を行います。
-                                以下は補足ですが、勝手にツイートがされてしまう、いわゆるスパムと呼ばれるものはread権限だけでなく、write権限を必要とします。
-                                そのため、はーとぴっかーはスパムと呼ばれるようなアプリの動作は権限の面で不可能となっています。</li>
-                                </ol>
-                            </div>
-                        </details>
-                    </div>
-                </details>
-				<br>
-				<footer>ご意見・ご要望等のお問合せは、<a href="https://twitter.com/cutcurry" target="_blank">@cutcurry</a> へ <br> DM or リプライ で連絡をお願いします。</footer>
-                </form>
+                <?php require('logic.php'); ?>
             </div>
-            <ul class="bg-bubbles-index">
+
+            <ul class="bg-bubbles-heart">
                 <li></li>
                 <li></li>
                 <li></li>
@@ -302,7 +284,8 @@ if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
                 <li></li>
             </ul>
         </div>
-	</body>
+        
+    </body>
 </html>
 
 <!--
