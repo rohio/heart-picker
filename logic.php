@@ -127,7 +127,7 @@ if($begin_date != ""){
 		array_push($input_error, 'not_exist_begin_date');
 	}
 
-	// 日付が未来の場合エラー処理 
+	// 日付が未来の場合エラー処理
 	if(strtotime($begin_date) > strtotime(date("Y/m/d"))){
 		array_push($input_error, 'begin_date_future');
 	}
@@ -313,7 +313,7 @@ if(array_key_exists('errors', $array_user)){
 	}
 };
 
-// アカウントが非公開ユーザでいいねにアクセスできない、かつTwitterでログインしたIDと入力値のIDが一致していない場合、以降の処理を行わず、終了
+// アカウントが非公開アカウントでいいねにアクセスできない、かつTwitterでログインしたIDと入力値のIDが一致していない場合、以降の処理を行わず、終了
 if($array_user['protected'] && ($_SESSION["screen_name"] != $twitter_id)){
 	array_push($input_error, 'private_account');
 }
@@ -362,7 +362,7 @@ if(count($input_error)){
 				break;
 
 			case 'suspend':
-				echo("指定したTwitterID [@" . $twitter_id . "] は、凍結されているユーザのため、いいねを取得できません。");
+				echo("指定したTwitterID [@" . $twitter_id . "] は、凍結されているアカウントのため、いいねを取得できません。");
 				break;
 			
 			// 原因不明のエラーが発生した場合
@@ -375,7 +375,8 @@ if(count($input_error)){
 
 			// 指定したTwitterIDが非公開アカウントの場合
 			case 'private_account':
-				echo("指定したTwitterID [@" . $twitter_id . "] は、非公開設定のユーザのため、いいねを取得できません。");
+				echo("指定したTwitterID [@" . $twitter_id . "] は、非公開設定のアカウントのため、いいねを取得できません。");
+				echo("非公開設定のアカウント [@" . $twitter_id . "] のいいねを表示したい場合は、ページ下部の｢詳しい使い方,仕様｣を参照し、[@" . $twitter_id . "] からTwitterでログインを行ってください。");
 				break;
 
 			// 原因不明で、指定されたTwitterIDの情報を取得できなかった場合
@@ -487,12 +488,12 @@ while(true){
 	// JSONをオブジェクトに変換
 	$array = json_decode($json, true);
 
-	// 非公開アカウントのTweetを削除
-	foreach($array as $key => $value){
-		if($value["user"]["protected"]){
-			unset($array[$key]);
-		}
-	}
+	// 非公開アカウントのTweetを削除 TODO
+	// foreach($array as $key => $value){
+	// 	if($value["user"]["protected"]){
+	// 		unset($array[$key]);
+	// 	}
+	// }
 
 	// 入力値の表示件数以上のいいねを取得できたらループを抜ける
 	if(count($array) >= $DISPLAY_NUM){break;};
