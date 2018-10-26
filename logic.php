@@ -313,8 +313,8 @@ if(array_key_exists('errors', $array_user)){
 	}
 };
 
-// アカウントが非公開ユーザでいいねにアクセスできない場合、以降の処理を行わず、終了
-if($array_user['protected']){
+// アカウントが非公開ユーザでいいねにアクセスできない、かつTwitterでログインしたIDと入力値のIDが一致していない場合、以降の処理を行わず、終了
+if($array_user['protected'] && ($_SESSION["screen_name"] != $twitter_id)){
 	array_push($input_error, 'private_account');
 }
 
