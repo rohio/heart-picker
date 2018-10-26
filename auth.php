@@ -202,10 +202,10 @@ if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
 	/*** ユーザーを認証画面へ飛ばす ***/
 
 	// ユーザーを認証画面へ飛ばす (毎回ボタンを押す場合)
-	// header( "Location: https://api.twitter.com/oauth/authorize?oauth_token=" . $query["oauth_token"] ) ;
+	header( "Location: https://api.twitter.com/oauth/authorize?oauth_token=" . $query["oauth_token"] ) ;
 
 	// ユーザーを認証画面へ飛ばす (二回目以降は認証画面をスキップする場合)
-	header( "Location: https://api.twitter.com/oauth/authenticate?oauth_token=" . $query["oauth_token"] ) ;
+	// header( "Location: https://api.twitter.com/oauth/authenticate?oauth_token=" . $query["oauth_token"] ) ;
 }
 ?>
 
