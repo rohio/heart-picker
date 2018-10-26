@@ -66,6 +66,11 @@ $form = "<form class=\"form\" action=\"heart.php\" method=\"post\">
 <footer>ご意見・ご要望等のお問合せは、<a href=\"https://twitter.com/cutcurry\" target=\"_blank\">@cutcurry</a> へ <br> DM or リプライ で連絡をお願いします。</footer>
 </form>";
 
+// Twitterでログインするボタンを表示するhtml
+$twitter_login_button = 
+"<br><form class=\"form\" action=\"auth.php\" method=\"get\">
+<button class=\"login_twitter\" type=\"submit\">Twitterでログイン</button></form>";
+
 // 画面に表示するいいねの件数
 $DISPLAY_NUM = 20;
 // 一度のAPIへのアクセスで取得するいいねの件数。TwitterAPIの仕様の最大値が200なので200を設定。
@@ -357,7 +362,8 @@ if(count($input_error)){
 			case 'api_restriction':
 				echo("TwitterAPIの使用回数の上限に達したため、いいねを取得できません。<br>");
 				if(isset($_SESSION["oauth_token"]) == NULL && isset($_SESSION["oauth_token_secret"]) == NULL){
-					echo("上限を緩和したい場合は、ページ下部の｢詳しい使い方,仕様｣を参照し、Twitterでログインを行ってください。");
+					echo("上限を緩和したい場合は、以下からTwitterログインを行ってください。");
+					echo ($twitter_login_button);
 				}
 				break;
 
@@ -376,7 +382,8 @@ if(count($input_error)){
 			// 指定したTwitterIDが非公開アカウントの場合
 			case 'private_account':
 				echo("指定したTwitterID [@" . $twitter_id . "] は、非公開設定のアカウントのため、いいねを取得できません。");
-				echo("非公開設定のアカウント [@" . $twitter_id . "] のいいねを表示したい場合は、ページ下部の｢詳しい使い方,仕様｣を参照し、[@" . $twitter_id . "] からTwitterでログインを行ってください。");
+				echo("非公開設定のアカウント [@" . $twitter_id . "] のいいねを表示したい場合は、[@" . $twitter_id . "] のアカウントで以下からTwitterログインを行ってください。");
+				echo ($twitter_login_button);
 				break;
 
 			// 原因不明で、指定されたTwitterIDの情報を取得できなかった場合
@@ -488,12 +495,12 @@ while(true){
 	// JSONをオブジェクトに変換
 	$array = json_decode($json, true);
 
-	// 非公開アカウントのTweetを削除 TODO
-	// foreach($array as $key => $value){
-	// 	if($value["user"]["protected"]){
-	// 		unset($array[$key]);
-	// 	}
-	// }
+	// 非公開アカウントのTweetを削除
+	foreach($array as $key => $value){
+		if($value["user"]["protected"]){
+			unset($array[$key]);
+		}
+	}
 
 	// 入力値の表示件数以上のいいねを取得できたらループを抜ける
 	if(count($array) >= $DISPLAY_NUM){break;};
