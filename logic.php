@@ -15,11 +15,11 @@ $form = "<form class=\"form\" action=\"heart.php\" method=\"post\">
 <br>
 
 <label for=\"begin_date\" accesskey=\"n\" class=\"item_JP\">日付範囲(開始日)　<span class=\"free\">任意</span><br>
-<div class=\"explain\">Year-Month-Day の形式で指定してください<br>※｢2010-11-4｣より前は指定できません</div></label>
+<div class=\"explain\">Year-Month-Day の形式で指定してください<br>※｢2010-11-5｣より前は指定できません</div></label>
 <input type=\"text\" name=\"begin_date\" placeholder=\"例: 2015-1-1\" id=\"begin_date\" class=\"user_input\" value=\"" . htmlspecialchars( $_POST['begin_date'], ENT_QUOTES, 'UTF-8' ) . "\" maxlength=\"10\" onChange=\"checkForm(this)\" pattern=\"(201[1-9][/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
 
 <label for=\"end_date\" accesskey=\"n\" class=\"item_JP\">日付範囲(終了日)　<span class=\"free\">任意</span><br>
-<div class=\"explain\">Year-Month-Day の形式で指定してください<br>※｢2010-11-4｣より前は指定できません</div></label>
+<div class=\"explain\">Year-Month-Day の形式で指定してください<br>※｢2010-11-5｣より前は指定できません</div></label>
 <input type=\"text\" name=\"end_date\" placeholder=\"例: 2016-1-31\" id=\"end_date\" class=\"user_input\" value=\"" . htmlspecialchars( $_POST['end_date'], ENT_QUOTES, 'UTF-8' ) . "\" maxlength=\"10\" onChange=\"checkForm(this)\" pattern=\"(201[1-9][/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
 
 <br>
@@ -31,7 +31,7 @@ $form = "<form class=\"form\" action=\"heart.php\" method=\"post\">
 	<div class=\"use\">
 		<ul class=\"list\">
 		<li>TwitterIDは自分、友達のどちらでも指定できます。</li>
-		<li>日付範囲が未指定の場合、全件からランダムに選ばれます。</li>
+		<li>日付範囲を指定した場合、開始日から終了日までの間でランダムに表示します。日付範囲が未指定の場合、全件からランダムに選ばれます。</li>
 		<li>TwitterAPIの仕様により、3200件より多くのいいねをしているアカウントは、最近3200件のいいねの中からランダムに表示されます。</li>
 		<li>非公開アカウント（鍵アカウント）のいいねは表示できません。</li>
 		<li>TwitterAPIに使用回数の制限があるため、はーとぴっかーを利用する回数が多いと制限がかかり、はーとぴっかーを利用できなくなります。
@@ -569,7 +569,8 @@ echo($form);
 $html .= "<form>";
 foreach($array as $key => $value){
 	// 埋め込みTweetの形で表示
-	$html .= '<blockquote class="twitter-tweet tw-align-center" data-lang="ja"><p lang="ja" dir="ltr" text-align="center">' . $value["text"] . '</p>&mdash; ' . $value["user"]["name"] . '(@' . $value["user"]["screen_name"] . ') <a href="https://twitter.com/' . $value["user"]["screen_name"] . '/status/' . $value["id_str"] . '?ref_src=twsrc%5Etfw">' . $value["created_at"] . '</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> <br>';
+	// $html .= '<blockquote class="twitter-tweet tw-align-center" data-lang="ja"><p lang="ja" dir="ltr" text-align="center">' . $value["text"] . '</p>&mdash; ' . $value["user"]["name"] . '(@' . $value["user"]["screen_name"] . ') <a href="https://twitter.com/' . $value["user"]["screen_name"] . '/status/' . $value["id_str"] . '?ref_src=twsrc%5Etfw">' . $value["created_at"] . '</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> <br>';
+	$html .= '<blockquote class="twitter-tweet tw-align-center" data-lang="ja"><p lang="ja" dir="ltr" text-align="center">' . $value["text"] . '</p>&mdash; ' . $value["user"]["name"] . '(@' . $value["user"]["screen_name"] . ') <a href="https://twitter.com/' . $value["user"]["screen_name"] . '/status/' . $value["id_str"] . '?ref_src=twsrc%5Etfw">' . $value["created_at"] . '</a></blockquote> <br>';
 	$display_count++;
 	// 表示したいいね数が表示件数以上になったら、break
 	if($display_count >= $DISPLAY_NUM){break;}
