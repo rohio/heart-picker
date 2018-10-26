@@ -68,7 +68,7 @@ $form = "<form class=\"form\" action=\"heart.php\" method=\"post\">
 
 // Twitterでログインするボタンを表示するhtml
 $twitter_login_button = 
-"<br><form class=\"form\" action=\"auth.php\" method=\"get\">
+"<form class=\"form\" action=\"auth.php\" method=\"get\">
 <button class=\"login_twitter\" type=\"submit\">Twitterでログイン</button></form>";
 
 // 画面に表示するいいねの件数
@@ -374,24 +374,18 @@ if(count($input_error)){
 			// 原因不明のエラーが発生した場合
 			case 'unknown_error':
 				echo("何らかのエラーが発生しました。申し訳ございません。");
-				echo "<pre>";
-				print_r($array_user['errors']);
-				echo "</pre>";
 				break;
 
 			// 指定したTwitterIDが非公開アカウントの場合
 			case 'private_account':
-				echo("指定したTwitterID [@" . $twitter_id . "] は、非公開設定のアカウントのため、いいねを取得できません。");
-				echo("非公開設定のアカウント [@" . $twitter_id . "] のいいねを表示したい場合は、[@" . $twitter_id . "] のアカウントで以下からTwitterログインを行ってください。");
+				echo("指定したTwitterID [@" . $twitter_id . "] は、非公開設定のアカウントのため、いいねを取得できません。<br>");
+				echo("いいねを表示したい場合は、[@" . $twitter_id . "] のアカウントで以下からTwitterログインを行ってください。");
 				echo ($twitter_login_button);
 				break;
 
 			// 原因不明で、指定されたTwitterIDの情報を取得できなかった場合
 			case 'empty_array_user':
 				echo("何らかの理由で、指定したTwitterID [@" . $twitter_id . "] の情報を取得できませんでした。<br>申し訳ございません。");
-				echo "<pre>";
-				print_r($array_user['errors']);
-				echo "</pre>";
 				break;
 
 		}
