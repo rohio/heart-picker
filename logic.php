@@ -68,7 +68,7 @@ $form = "<form class=\"form\" action=\"heart.php\" method=\"post\">
 
 // Twitterでログインするボタンを表示するhtml
 $twitter_login_button = 
-"<form class=\"form\" action=\"auth.php\" method=\"get\">
+"<form class=\"form_twitter_login_button\" action=\"auth.php\" method=\"get\">
 <button class=\"login_twitter\" type=\"submit\">Twitterでログイン</button></form>";
 
 // 画面に表示するいいねの件数
