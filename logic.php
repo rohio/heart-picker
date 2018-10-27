@@ -23,11 +23,11 @@ if(strpos($caller, 'heart.php') !== false){
 
 	<label for=\"begin_date\" accesskey=\"n\" class=\"item_JP\">日付範囲(開始日)　<span class=\"free\">任意</span><br>
 	<div class=\"explain\">Year-Month-Day の形式で指定してください<br>※｢2010-11-5｣より前は指定できません</div></label>
-	<input type=\"text\" name=\"begin_date\" placeholder=\"例: 2015-1-1\" id=\"begin_date\" class=\"user_input\" value=\"" . htmlspecialchars( $_POST['begin_date'], ENT_QUOTES, 'UTF-8' ) . "\" maxlength=\"10\" onChange=\"checkForm(this)\" pattern=\"(201[1-9][/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
+	<input type=\"text\" name=\"begin_date\" placeholder=\"例: 2015-1-1\" id=\"begin_date\" class=\"user_input\" value=\"" . htmlspecialchars( $_POST['begin_date'], ENT_QUOTES, 'UTF-8' ) . "\" maxlength=\"10\" onChange=\"checkForm(this)\" pattern=\"(20(1[1-9]|2[0-9])[/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
 
 	<label for=\"end_date\" accesskey=\"n\" class=\"item_JP\">日付範囲(終了日)　<span class=\"free\">任意</span><br>
 	<div class=\"explain\">Year-Month-Day の形式で指定してください<br>※｢2010-11-5｣より前は指定できません</div></label>
-	<input type=\"text\" name=\"end_date\" placeholder=\"例: 2016-1-31\" id=\"end_date\" class=\"user_input\" value=\"" . htmlspecialchars( $_POST['end_date'], ENT_QUOTES, 'UTF-8' ) . "\" maxlength=\"10\" onChange=\"checkForm(this)\" pattern=\"(201[1-9][/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
+	<input type=\"text\" name=\"end_date\" placeholder=\"例: 2016-1-31\" id=\"end_date\" class=\"user_input\" value=\"" . htmlspecialchars( $_POST['end_date'], ENT_QUOTES, 'UTF-8' ) . "\" maxlength=\"10\" onChange=\"checkForm(this)\" pattern=\"(20(1[1-9]|2[0-9])[/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
 
 	<br>
 	<button type=\"submit\">はーとぴっく!</button>
@@ -45,8 +45,8 @@ if(strpos($caller, 'heart.php') !== false){
 			より多く利用したい方は、以下からTwitterでログインしてください。<br>
 			<button class=\"login_twitter\" type=\"submit\">Twitterでログイン</button><br>
 			TwitterAPIの使用回数制限とTwitterのログインによるアプリケーション認証に関して、詳細を知りたい方は本ページの末尾にて説明しているので、そちらを参照ください。</li>
-			<li>TwiiterIDや日付の入力に不適切な文字(ひらがな、漢字等)があった場合、自動的に削除する仕様としています。</li>
-			<li>日付範囲が未指定であったり、日付範囲が広い場合、最近のものが選ばれる確率が少しだけ高くなります。</li><br>
+			<li>TwiiterIDや日付の入力に不適切な文字（ひらがな、漢字等）があった場合、自動的に削除する仕様としています。</li>
+			<li>日付範囲が未指定の場合や日付範囲が広い場合、最近のものが選ばれる確率が少しだけ高くなります。</li><br>
 			</ul>
 
 			<details>
@@ -58,7 +58,7 @@ if(strpos($caller, 'heart.php') !== false){
 					アプリケーション単位の場合は、アプリケーションを複数のユーザが使用している場合、複数ユーザの合計の使用回数を基準としてTwitterAPIの使用が制限されます。
 					ユーザ単位の場合は、アプリケーションを複数のユーザが使用している場合でも、ユーザ1人の使用回数を基準として、TwitterAPIの使用が制限されます。
 					そのため、アプリケーション認証を行えば使用制限が緩和されます。ユーザ認証を行った場合の使用回数の目安ですが、最低でも15分間当たり、15回のいいね表示を行うことができます。</li>
-					<li>アプリケーション認証(read only)に関して<br>
+					<li>アプリケーション認証に関して<br>
 					はーとぴっかーはアプリケーション認証を行っても、権限を悪用しユーザの意図に反するようなこと（ツイートする、フォローを行う等）は行いません。
 					しかし、1.で述べたようにはーとぴっかーはAPIの使用回数緩和のため、認証が必要となります。
 					そこで、最低限の権限の認証で十分なため、read権限のみの認証を行います。
@@ -102,11 +102,11 @@ if(strpos($caller, 'heart.php') !== false){
 	
 		<label for=\"begin_date\" accesskey=\"n\" class=\"item_JP\">日付範囲(開始日)　<span class=\"free\">任意</span><br>
 		<div class=\"explain\">Year-Month-Day の形式で指定してください<br>※｢2010-11-5｣より前は指定できません</div></label>
-		<input type=\"text\" name=\"begin_date\" placeholder=\"例: 2015-1-1\" id=\"begin_date\" class=\"user_input\" value=\"" . htmlspecialchars( $_SESSION['begin_date'], ENT_QUOTES, 'UTF-8' ) . "\" maxlength=\"10\" onChange=\"checkForm(this)\" pattern=\"(201[1-9][/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
+		<input type=\"text\" name=\"begin_date\" placeholder=\"例: 2015-1-1\" id=\"begin_date\" class=\"user_input\" value=\"" . htmlspecialchars( $_SESSION['begin_date'], ENT_QUOTES, 'UTF-8' ) . "\" maxlength=\"10\" onChange=\"checkForm(this)\" pattern=\"(20(1[1-9]|2[0-9])[/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
 	
 		<label for=\"end_date\" accesskey=\"n\" class=\"item_JP\">日付範囲(終了日)　<span class=\"free\">任意</span><br>
 		<div class=\"explain\">Year-Month-Day の形式で指定してください<br>※｢2010-11-5｣より前は指定できません</div></label>
-		<input type=\"text\" name=\"end_date\" placeholder=\"例: 2016-1-31\" id=\"end_date\" class=\"user_input\" value=\"" . htmlspecialchars( $_SESSION['end_date'], ENT_QUOTES, 'UTF-8' ) . "\" maxlength=\"10\" onChange=\"checkForm(this)\" pattern=\"(201[1-9][/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
+		<input type=\"text\" name=\"end_date\" placeholder=\"例: 2016-1-31\" id=\"end_date\" class=\"user_input\" value=\"" . htmlspecialchars( $_SESSION['end_date'], ENT_QUOTES, 'UTF-8' ) . "\" maxlength=\"10\" onChange=\"checkForm(this)\" pattern=\"(20(1[1-9]|2[0-9])[/-]([1-9]|0[1-9]|1[012])[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])|2010[/-]1(1[/-]([5-9]|0[5-9]|[1-2][0-9]|3[01])|2[/-]([1-9]|0[1-9]|[1-2][0-9]|3[01])))\">
 	
 		<br>
 		<button type=\"submit\">はーとぴっく!</button>
@@ -124,8 +124,8 @@ if(strpos($caller, 'heart.php') !== false){
 				より多く利用したい方は、以下からTwitterでログインしてください。<br>
 				<button class=\"login_twitter\" type=\"submit\">Twitterでログイン</button><br>
 				TwitterAPIの使用回数制限とTwitterのログインによるアプリケーション認証に関して、詳細を知りたい方は本ページの末尾にて説明しているので、そちらを参照ください。</li>
-				<li>TwiiterIDや日付の入力に不適切な文字(ひらがな、漢字等)があった場合、自動的に削除する仕様としています。</li>
-				<li>日付範囲が未指定であったり、日付範囲が広い場合、最近のものが選ばれる確率が少しだけ高くなります。</li><br>
+				<li>TwiiterIDや日付の入力に不適切な文字（ひらがな、漢字等）があった場合、自動的に削除する仕様としています。</li>
+				<li>日付範囲が未指定の場合や日付範囲が広い場合、最近のものが選ばれる確率が少しだけ高くなります。</li><br>
 				</ul>
 	
 				<details>
@@ -137,7 +137,7 @@ if(strpos($caller, 'heart.php') !== false){
 						アプリケーション単位の場合は、アプリケーションを複数のユーザが使用している場合、複数ユーザの合計の使用回数を基準としてTwitterAPIの使用が制限されます。
 						ユーザ単位の場合は、アプリケーションを複数のユーザが使用している場合でも、ユーザ1人の使用回数を基準として、TwitterAPIの使用が制限されます。
 						そのため、アプリケーション認証を行えば使用制限が緩和されます。ユーザ認証を行った場合の使用回数の目安ですが、最低でも15分間当たり、15回のいいね表示を行うことができます。</li>
-						<li>アプリケーション認証(read only)に関して<br>
+						<li>アプリケーション認証に関して<br>
 						はーとぴっかーはアプリケーション認証を行っても、権限を悪用しユーザの意図に反するようなこと（ツイートする、フォローを行う等）は行いません。
 						しかし、1.で述べたようにはーとぴっかーはAPIの使用回数緩和のため、認証が必要となります。
 						そこで、最低限の権限の認証で十分なため、read権限のみの認証を行います。
