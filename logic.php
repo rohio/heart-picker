@@ -7,9 +7,6 @@ $api_secret = 'Y8daT5rjGsfQL49nHIzJKkL07Gq3BB2IAlR6NIl7owWSn00Lkz';
 
 // 呼び出し元ファイル名を確認するための配列
 $caller_array = debug_backtrace();
-// TODO
-var_dump(debug_backtrace());
-
 
 // 呼び出し元ファイル名
 $caller = $caller_array[0]["file"];
@@ -78,7 +75,12 @@ if(strpos($caller, 'heart.php') !== false){
 	</form>";
 
 	// TwitterIDの入力値が空の場合、以降のプログラムを実行せずに終了
+	// 1.ページ遷移でなく、外部から直接heart.phpに来た場合を想定
+	// 2.ログアウトボタンを押したときを想定
 	if($_POST['twitter_id'] === NULL){
+		unset($_SESSION["oauth_token"]);
+		unset($_SESSION["screen_name"]);
+		unset($_SESSION["oauth_token_secret"]);
 		echo($form);
 		return;
 	}
@@ -177,7 +179,7 @@ $twitter_login_button =
 
 // Twitterでログアウトするボタンを表示するhtml
 $twitter_logout_button = 
-"<form class=\"form_twitter_button\" action=\"heart.php\" method=\"get\" name=\"logout\">
+"<form class=\"form_twitter_button\" action=\"heart.php\" method=\"get\">
 <button class=\"logout_twitter\" type=\"submit\">ログアウト</button></form>";
 
 // 画面に表示するいいねの件数
