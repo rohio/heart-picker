@@ -160,6 +160,13 @@ if(strpos($caller, 'heart.php') !== false){
 	
 		// TwitterIDの入力値が空の場合、以降のプログラムを実行せずに終了
 		if($_SESSION['twitter_id'] === NULL){
+			// ログインしているTwitterIDを表示
+			if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"])){
+				echo('<div class="session">');
+				echo ('あなたは今、TwitterID [@' . $_SESSION["screen_name"] . '] で、<br>はーとぴっかーにログインしています。');
+				echo ($twitter_logout_button);
+				echo("</div><br>");
+			}
 			echo($form);
 			return;
 		}
