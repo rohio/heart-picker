@@ -7,6 +7,10 @@ $api_secret = 'Y8daT5rjGsfQL49nHIzJKkL07Gq3BB2IAlR6NIl7owWSn00Lkz';
 
 // 呼び出し元ファイル名を確認するための配列
 $caller_array = debug_backtrace();
+// TODO
+var_dump(debug_backtrace());
+
+
 // 呼び出し元ファイル名
 $caller = $caller_array[0]["file"];
 
@@ -168,8 +172,13 @@ if(strpos($caller, 'heart.php') !== false){
 
 // Twitterでログインするボタンを表示するhtml
 $twitter_login_button = 
-"<form class=\"form_twitter_login_button\" action=\"auth.php\" method=\"get\">
+"<form class=\"form_twitter_button\" action=\"auth.php\" method=\"get\">
 <button class=\"login_twitter\" type=\"submit\">Twitterでログイン</button></form>";
+
+// Twitterでログアウトするボタンを表示するhtml
+$twitter_logout_button = 
+"<form class=\"form_twitter_button\" action=\"heart.php\" method=\"get\" name=\"logout\">
+<button class=\"logout_twitter\" type=\"submit\">ログアウト</button></form>";
 
 // 画面に表示するいいねの件数
 $DISPLAY_NUM = 20;
@@ -387,6 +396,7 @@ if(array_key_exists('errors', $array_user)){
 if(isset($_SESSION["oauth_token"]) && isset($_SESSION["oauth_token_secret"])){
 	echo('<div class="session">');
 	echo ('あなたは今、TwitterID [@' . $_SESSION["screen_name"] . '] で、<br>はーとぴっかーにログインしています。');
+	echo ($twitter_logout_button);
 	echo("</div><br>");
 }
 
