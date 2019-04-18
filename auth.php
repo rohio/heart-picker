@@ -4,7 +4,7 @@ $api_key = '5L41MwG316NQvDhd3ru1UDiIa';
 $api_secret = 'Y8daT5rjGsfQL49nHIzJKkL07Gq3BB2IAlR6NIl7owWSn00Lkz';
 $callback_url = "https://heart-picker.herokuapp.com/auth.php" ;	// Callback URL (このプログラムのURLアドレス)
 
-// 認証画面から戻ってきた時 (認証OK)
+// 認証画面から戻ってきた時(認証OK)
 if ( isset( $_GET['oauth_token'] ) || isset($_GET["oauth_verifier"]) ) {
 	/*** アクセストークンを取得する ***/
 	//[リクエストトークン・シークレット]をセッションから取得
